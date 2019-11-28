@@ -1,16 +1,16 @@
 package by.epam.onlinetraining.utils;
 
-import by.epam.onlinetraining.database.ConnectionPool;
+import by.epam.onlinetraining.database.ProxyConnectionPool;
 import by.epam.onlinetraining.database.ProxyConnection;
 import by.epam.onlinetraining.repository.impl.*;
 
 public class RepositoryCreator implements AutoCloseable {
-    private ConnectionPool connectionPool;
+    private ProxyConnectionPool proxyConnectionPool;
     private ProxyConnection connection;
 
     public RepositoryCreator() {
-        connectionPool = ConnectionPool.getInstance();
-        connection = connectionPool.getConnection();
+        proxyConnectionPool = ProxyConnectionPool.getInstance();
+        connection = proxyConnectionPool.getConnection();
     }
 
     public UserRepository getUserRepository() {
@@ -21,12 +21,8 @@ public class RepositoryCreator implements AutoCloseable {
         return new TrainingRepository(connection);
     }
 
-    public TaskRepository getTaskRepository() {
-        return new TaskRepository(connection);
-    }
-
-    public TopicRepository getTopicRepository() {
-        return new TopicRepository(connection);
+    public AssignmentRepository getTaskRepository() {
+        return new AssignmentRepository(connection);
     }
 
     public ConsultationRepository getConsultationRepository() {
@@ -39,6 +35,6 @@ public class RepositoryCreator implements AutoCloseable {
 
     @Override
     public void close() {
-        connectionPool.closeConnection(connection);
+        proxyConnectionPool.closeConnection(connection);
     }
 }

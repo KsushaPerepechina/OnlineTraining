@@ -1,5 +1,5 @@
 body {
-    background-image: url(../img/bg03.jpg);
+    background-image: url(../img/background2.jpg);
     background-size: cover;
 }
 
@@ -63,7 +63,7 @@ input[type=text] {
     margin-top: 6px;
 }
 
-.submitBtn {
+.submitButton {
     padding: 13px 26px;
     margin: 3% 0 0 45%;
     font-size: 16px;
@@ -74,7 +74,7 @@ input[type=text] {
     cursor: pointer;
 }
 
-.submitBtn:hover {
+.submitButton:hover {
     transition: all 0.3s;
     background-color: rgba(173, 216, 230, 0.8);
     color: black;

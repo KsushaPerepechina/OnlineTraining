@@ -1,5 +1,8 @@
 package by.epam.onlinetraining.database;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.DriverManager;
@@ -7,28 +10,37 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionCreator {
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final String RESOURCE_FILE = "db.properties";
+    private static final String URL = "db.url";
+    private static final String NAME = "db.name";
+    private static final String PASSWORD = "db.password";
+    private static final String DRIVER = "db.driver";
+    private static final String DRIVER_NOT_FOUND = "Driver not found";
+    private static final String FILE_NOT_FOUND = "File not found";
+
     public ProxyConnection createConnection() {
         try {
-            Class<? extends ConnectionCreator> aClass = this.getClass();
-            ClassLoader classLoader = aClass.getClassLoader();
-            InputStream inputStream = classLoader.getResourceAsStream("db.properties");
-
+            Class<? extends ConnectionCreator> thisClass = this.getClass();
+            ClassLoader classLoader = thisClass.getClassLoader();
+            InputStream inputStream = classLoader.getResourceAsStream(RESOURCE_FILE);
             Properties property = new Properties();
             property.load(inputStream);
-
-            String url = property.getProperty("db.url");
-            String name = property.getProperty("db.name");
-            String password = property.getProperty("db.password");
-            String driver = property.getProperty("db.driver");
-
+            String url = property.getProperty(URL);
+            String name = property.getProperty(NAME);
+            String password = property.getProperty(PASSWORD);
+            String driver = property.getProperty(DRIVER);
             Class.forName(driver);
             return new ProxyConnection(DriverManager.getConnection(url, name, password));
         } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
             throw new IllegalArgumentException();
         } catch (ClassNotFoundException e) {
-            throw new IllegalArgumentException("Driver is not found" + e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
+            throw new IllegalArgumentException(DRIVER_NOT_FOUND + e.getMessage(), e);
         } catch (IOException e) {
-            throw new IllegalArgumentException("File not found" + e.getMessage(), e);
+            LOGGER.error(e.getMessage(), e);
+            throw new IllegalArgumentException(FILE_NOT_FOUND + e.getMessage(), e);
         }
     }
 }

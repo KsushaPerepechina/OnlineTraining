@@ -67,55 +67,53 @@ tr td:last-child {
 }
 
 .processButton {
-    background-color: #32CD32;
+    background-color: lightskyblue;
 }
 
-.editButton, .deleteButton, .showRoomPrice, .deleteOrderButton {
+.editButton, .deleteButton, .showTrainingInfo, .deleteOrderButton {
     border-radius: 4px;
     background-color: transparent;
     cursor: pointer;
     border: none;
 }
 
-.tableImg {
+.tableImage {
     width: 40px;
     height: 32px;
 }
 
 .deleteOrderButton {
-    background-color: #f44336;
+    background-color: lightpink;
 }
 
 .paymentButton {
-    background-color: #40E0D0;
+    background-color: lightskyblue;
 }
 
 .completeButton {
-    background-color: #00FF00;
+    background-color: lightskyblue;
 }
 
 .block {
-    background-color: red;
+    background-color: lightpink;
 }
 
 .unblock {
-    background-color: #00FF00;
+    background-color: lightskyblue;
 }
 
-.blockedBtn a, .prcBtn a, .showPriceButton a {
+.blockedButton a, .processButton a, .showPriceButton a {
     text-align: center;
     color: black;
     text-decoration: none;
 }
 
 .showDetailsButton {
-    background-color: #008B8B;
+    background-color: lightskyblue;
 }
 
-
-
 .processButton:hover, .editButton:hover, .deleteButton:hover, .paymentButton:hover,
-.completeButton:hover, .showDetailsButton:hover, .block:hover, .unblock:hover, .showRoomPrice:hover, .deleteOrderButton:hover {
+.completeButton:hover, .showDetailsButton:hover, .block:hover, .unblock:hover, .showTrainingInfo:hover, .deleteOrderButton:hover {
     opacity: 1;
 }
 

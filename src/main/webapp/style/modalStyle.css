@@ -38,7 +38,7 @@ select {
     border-radius: 4px;
 }
 
-.prcButton, .edtButton {
+.processButton, .edtButton {
     color: white;
     padding: 14px 20px;
     margin: 1% 25% -2%;
@@ -48,7 +48,7 @@ select {
     width: 50%;
 }
 
-.prcButton {
+.processButton {
     background-color: #4CAF50;
 }
 
@@ -57,7 +57,7 @@ select {
     background-color: #FFFF00;
 }
 
-.prcButton:hover, .cancelButton:hover, .edtButton:hover {
+.processButton:hover, .cancelButton:hover, .edtButton:hover {
     opacity: 0.8;
 }
 

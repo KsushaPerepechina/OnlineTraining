@@ -1,5 +1,5 @@
 body{
-    background-image: url(../img/bg03.jpg);
+    background-image: url(../img/background2.jpg);
     background-size: cover;
 }
 
@@ -39,7 +39,7 @@ body{
     padding: 7% ;
 }
 
-#sumUp{
+#sum{
     margin:-3% 0 0 20%;
     width: 45%;
     padding: 10px 10px;
@@ -47,12 +47,12 @@ body{
     border-radius: 10px;
 }
 
-#sumUp:invalid:not(:placeholder-shown) {
-    border-color: red;
+#sum:invalid:not(:placeholder-shown) {
+    border-color: pink;
 }
 
-#sumUp:valid:not(:placeholder-shown) {
-    border-color: green;
+#sum:valid:not(:placeholder-shown) {
+    border-color: darkseagreen;
 }
 
 .addBalance {

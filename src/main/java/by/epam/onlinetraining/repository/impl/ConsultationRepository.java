@@ -2,11 +2,11 @@ package by.epam.onlinetraining.repository.impl;
 
 import by.epam.onlinetraining.builder.EntityBuilder;
 import by.epam.onlinetraining.builder.impl.ConsultationBuilder;
+import by.epam.onlinetraining.database.ProxyConnection;
 import by.epam.onlinetraining.entity.Consultation;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.specification.SqlSpecification;
 
-import java.sql.Connection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,8 @@ import java.util.Optional;
 
 public class ConsultationRepository extends AbstractRepository<Consultation> {
     private static final String TABLE_NAME = "consultations";
-    private static final String SELECT_QUERY = "SELECT * FROM consultations ";//TODO *
+    private static final String SELECT_QUERY = "SELECT id AS pk_id, student_id, mentor_id, date_time, cost, mark, quality " +
+            "FROM consultations ";
     private static final String ID = "id";
     private static final String STUDENT_ID = "student_id";
     private static final String MENTOR_ID = "mentor_id";
@@ -23,7 +24,7 @@ public class ConsultationRepository extends AbstractRepository<Consultation> {
     private static final String MARK = "mark";
     private static final String QUALITY = "quality";
 
-    public ConsultationRepository(Connection connection) {
+    public ConsultationRepository(ProxyConnection connection) {
         super(connection);
     }
 

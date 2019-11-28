@@ -5,13 +5,14 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
-public class QueryHelper {//TODO refactor QueryConstructor
+public class QueryHelper {
     private static final String INSERT_QUERY = "INSERT INTO ";
     private static final String UPDATE_QUERY = "UPDATE ";
     private static final String SET = " SET ";
     private static final String VALUES = " VALUES";
     private static final String WHERE = " WHERE ";
     private static final String ID = "id";
+    private static final String ACTIVITY_OFF = "activity = 'off'";
     private static final String COMMA = ",";
     private static final String OPENING_BRACKET = "(";
     private static final String CLOSING_BRACKET = ")";
@@ -53,25 +54,14 @@ public class QueryHelper {//TODO refactor QueryConstructor
         return UPDATE_QUERY + table + SET + query;
     }
 
-    public static void prepare(PreparedStatement preparedStatement, Map<String, Object> fields) throws SQLException {
-        int i = 0;
-        for (Map.Entry<String, Object> entry : fields.entrySet()) {
-            Object value = entry.getValue();
-            if (value != null) {
-                preparedStatement.setString(++i, String.valueOf(value));
-            }
-        }
+    public static String formDeleteQuery(String table) {
+        return UPDATE_QUERY + table + SET + ACTIVITY_OFF + WHERE + ID + EQUAL_MARK + QUESTION_MARK;
     }
 
-    public static void prepare(PreparedStatement preparedStatement, List<Object> params) throws SQLException {//TODO
-        int length = params.size();
-        for (int i = 0; i < length; i++) {
+    public static void prepare(PreparedStatement preparedStatement, List<Object> params) throws SQLException {
+        for (int i = 0; i < params.size(); i++) {
             Object param = params.get(i);
-            if (!(param instanceof Integer)) {
-                preparedStatement.setString(i + 1, String.valueOf(param));
-            } else {
-                preparedStatement.setInt(i + 1, (Integer) param);
-            }
+            preparedStatement.setObject(i + 1,  param);
         }
     }
 }

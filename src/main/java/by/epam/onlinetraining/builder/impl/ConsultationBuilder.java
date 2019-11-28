@@ -3,6 +3,8 @@ package by.epam.onlinetraining.builder.impl;
 import by.epam.onlinetraining.builder.EntityBuilder;
 import by.epam.onlinetraining.entity.Consultation;
 import by.epam.onlinetraining.exception.RepositoryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -11,13 +13,15 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class ConsultationBuilder implements EntityBuilder<Consultation> {
-    private static final String ID = "id";
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final String ID = "pk_id";
     private static final String STUDENT_ID = "student_id";
     private static final String MENTOR_ID = "mentor_id";
     private static final String DATE_TIME = "date_time";
     private static final String COST = "cost";
     private static final String MARK = "mark";
     private static final String QUALITY = "quality";
+    //TODO assignments
 
     @Override
     public Consultation build(ResultSet resultSet) throws RepositoryException {
@@ -31,7 +35,8 @@ public class ConsultationBuilder implements EntityBuilder<Consultation> {
             int quality = resultSet.getInt(QUALITY);
             return new Consultation(id, studentId, mentorId, dateTime, cost, mark, quality);
         } catch (SQLException e) {
-            throw new RepositoryException(e.getMessage(), e);//TODO message
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e.getMessage(), e);
         }
     }
 }

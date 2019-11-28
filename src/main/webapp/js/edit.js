@@ -1,7 +1,7 @@
-var addRoom = document.getElementById('editRoom');
+var addUser = document.getElementById('editUser');
 
 window.onclick = function(event) {
-    if (event.target === addRoom) {
-        addRoom.style.display = "none";
+    if (event.target === addUser) {
+        addUser.style.display = "none";
     }
 };

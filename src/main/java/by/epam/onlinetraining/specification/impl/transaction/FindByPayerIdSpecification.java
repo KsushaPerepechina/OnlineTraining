@@ -14,7 +14,7 @@ public class FindByPayerIdSpecification implements SqlSpecification {
 
     @Override
     public String toSql() {
-        return "WHERE payer_id = ?";
+        return " WHERE payer_id = ?";
     }
 
     public List<Object> getParameters() {

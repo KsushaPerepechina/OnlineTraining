@@ -17,4 +17,6 @@ public interface Repository<T> {
     String getTableName();
 
     Map<String, Object> getFields(T item);
+
+    void remove(int id) throws RepositoryException;
 }

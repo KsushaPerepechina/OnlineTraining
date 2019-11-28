@@ -1,4 +1,4 @@
-function openCity(evt, tableName) {
+function openTab(evt, tableName) {
     var i, rightColumn, tabLinks;
     rightColumn = document.getElementsByClassName("rightColumn");
     for (i = 0; i < rightColumn.length; i++) {

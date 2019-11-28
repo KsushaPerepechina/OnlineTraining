@@ -18,7 +18,7 @@ import java.io.IOException;
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String COMMAND = "command";
-    private static final String ERROR_PAGE = "WEB-INF/pages/error/Error500.jsp";
+    private static final String ERROR_500_PAGE = "WEB-INF/page/error/Error500.jsp";
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,23 +31,23 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CommandFactory commandFactory = new CommandFactory();
-        String parameter = request.getParameter(COMMAND);
-        Command command = commandFactory.create(parameter);
+        CommandFactory commandFactory = new CommandFactory();//создание фабрики команды
+        String parameter = request.getParameter(COMMAND);//получение команды из параметров запроса
+        Command command = commandFactory.create(parameter);//создание команды
         try {
-            CommandResult commandResult = command.execute(request, response);//результат выполнения команды
+            CommandResult commandResult = command.execute(request, response);//вызов выполнения команды и получение результата выполнения команды(страница и действие)
             String page = commandResult.getPage();//страница, на которую перенаправляемся
             if (commandResult.isRedirect()) {
                 response.sendRedirect(page);//перенаправление на другую стр
             } else {
-                ServletContext servletContext = getServletContext();
-                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(page);
+                ServletContext servletContext = getServletContext();//контекст сервлета
+                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(page);//диспетчер запроса
                 requestDispatcher.forward(request, response);//с сохранением запроса переход
             }
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);
-            CommandResult.forward(ERROR_PAGE);//TODO
-            response.sendRedirect(ERROR_PAGE);
+            //CommandResult.forward(ERROR_500_PAGE);//TODO
+            response.sendRedirect(ERROR_500_PAGE);
         }
     }
 }

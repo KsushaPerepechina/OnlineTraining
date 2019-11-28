@@ -38,17 +38,26 @@
 
     <error-page>
         <error-code>403</error-code>
-        <location>/WEB-INF/pages/error/Error403.jsp</location>
+        <location>/WEB-INF/page/error/Error403.jsp</location>
     </error-page>
 
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/pages/error/Error404.jsp</location>
-    </error-page>
+<!--    <error-page>-->
+<!--        <error-code>404</error-code>-->
+<!--        <location>/WEB-INF/page/error/Error404.jsp</location>-->
+<!--    </error-page>-->
 
-    <error-page>
-        <error-code>500</error-code>
-        <location>/WEB-INF/pages/error/Error500.jsp</location>
-    </error-page>
+<!--    <error-page>-->
+<!--        <error-code>500</error-code>-->
+<!--        <location>/WEB-INF/page/error/Error500.jsp</location>-->
+<!--    </error-page>-->
+
+    <servlet>
+        <servlet-name>profile</servlet-name>
+        <jsp-file>/WEB-INF/page/profile.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>profile</servlet-name>
+        <url-pattern>/controller?command=showProfile</url-pattern>
+    </servlet-mapping>
 
 </web-app>

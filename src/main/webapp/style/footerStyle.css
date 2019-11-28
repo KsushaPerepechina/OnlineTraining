@@ -1,4 +1,5 @@
 .footer {
+    float: bottom;
     margin: 540px 5px 20px;
     padding: 14px 16px;
     overflow: hidden;

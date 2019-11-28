@@ -51,7 +51,7 @@ public class PagesDelimiterTest {
 
     @Test(dataProvider = "calculatePagesPositiveTest")
     public void calculatePagesPositiveTest(List<Object> itemList, int limit, List<Integer> expected) {
-        List<Integer> actual = pagesDelimiter.calculatePages(itemList, limit);
+        List<Integer> actual = pagesDelimiter.composePageNumbersList(itemList, limit);
 
         Assert.assertEquals(actual, expected);
     }

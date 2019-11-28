@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PagesDelimiter<T> {
-    public List<Integer> calculatePages(List<T> itemList, int limit) {
-        List<Integer> list = new ArrayList<>();
+    public List<Integer> composePageNumbersList(List<T> itemList, int limit) {
+        List<Integer> pageNumbersList = new ArrayList<>();
         int listSize = itemList.size();
-        int count ;
+        int counter;
         if (listSize % limit != 0) {
-            count = (listSize / limit) + 1;
+            counter = (listSize / limit) + 1;
         } else {
-            count = (listSize / limit);
+            counter = (listSize / limit);
         }
-        for (int i = 1; i <= count; i++) {
-            list.add(i);
+        for (int i = 1; i <= counter; i++) {
+            pageNumbersList.add(i);
         }
-        return list;
+        return pageNumbersList;
     }
 }

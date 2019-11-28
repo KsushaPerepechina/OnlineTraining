@@ -17,12 +17,12 @@ public class FindByEmailAndPasswordSpecification implements SqlSpecification {
 
     @Override
     public String toSql() {
-        return "WHERE email = ? AND password = ?";
+        return "WHERE email = ? AND password = ? AND users.activity = 'on'";
     }
 
     public List<Object> getParameters() {
-        String encryptedPassword = decryptPassword(password);
-        return Arrays.asList(email, encryptedPassword);
+        //String encryptedPassword = decryptPassword(password);//TODO
+        return Arrays.asList(email, password);
     }
 
     private String decryptPassword(String password) {

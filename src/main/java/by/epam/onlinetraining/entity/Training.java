@@ -11,18 +11,31 @@ public class Training extends Entity {
     private Date startDate;
     private Date endDate;
     private TrainingProgress progress;
-    private List<Topic> topics;
-    private List<Task> tasks;
+    private User mentor;
+    private List<StudentRecord> students;
 
     public Training() {
     }
 
-    public Training(int id, String name, Date startDate, Date endDate, TrainingProgress progress) {
+    public Training(Integer id, String name, Date startDate, Date endDate,
+                    TrainingProgress progress, User mentor, List<StudentRecord> students) {
         super(id);
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.progress = progress;
+        this.students = students;
+        this.mentor = mentor;
+    }
+
+    public Training(Integer id, String name, Date startDate, Date endDate,
+                    TrainingProgress progress, User mentor) {//TODO remove
+        super(id);
+        this.name = name;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.progress = progress;
+        this.mentor = mentor;
     }
 
     public String getName() {
@@ -57,6 +70,22 @@ public class Training extends Entity {
         this.progress = progress;
     }
 
+    public User getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(User mentor) {
+        this.mentor = mentor;
+    }
+
+    public List<StudentRecord> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<StudentRecord> students) {
+        this.students = students;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -66,18 +95,24 @@ public class Training extends Entity {
             return false;
         }
         Training training = (Training) o;
-        return (name == training.name || (name != null && name.equals(training.name))) &&
-                (topics == training.topics || (topics != null && topics.equals(training.topics))) &&
-                (tasks == training.tasks || (tasks != null && tasks.equals(training.tasks)));
+        return progress == training.progress &&
+                getId() != null && getId().equals(training.getId()) &&
+                (name == training.name || (name != null && name.equals(training.name))) &&
+                (startDate == training.startDate || (startDate != null && startDate.equals(training.startDate))) &&
+                (endDate == training.endDate || (endDate != null && endDate.equals(training.endDate))) &&
+                (mentor == training.mentor || (mentor != null && mentor.equals(training.mentor)));
     }
 
     @Override
     public int hashCode() {
         final int seed = 31;
         int result = 0;
+        result += seed * (getId() == null ? 0 : getId().hashCode());
         result += seed * (name == null ? 0 : name.hashCode());
-        result += seed * (topics == null ? 0 : topics.hashCode());
-        result += seed * (tasks == null ? 0 : tasks.hashCode());
+        result += seed * (startDate == null ? 0 : startDate.hashCode());
+        result += seed * (endDate == null ? 0 : endDate.hashCode());
+        result += seed * progress.hashCode();
+        result += seed * (mentor == null ? 0 : mentor.hashCode());
         return result;
     }
 
@@ -86,8 +121,10 @@ public class Training extends Entity {
         return new StringJoiner(", ", Training.class.getSimpleName() + "[", "]")
                 .add("id=" + getId())
                 .add("name='" + name + "'")
-                .add("topics=" + topics)
-                .add("tasks=" + tasks)
+                .add("startDate=" + startDate)
+                .add("endDate=" + endDate)
+                .add("progress=" + progress)
+                .add("mentor=" + mentor)
                 .toString();
     }
 }

@@ -2,20 +2,34 @@ package by.epam.onlinetraining.entity;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 import java.util.StringJoiner;
 
-public class Consultation extends Entity {
+public class Consultation extends Entity {//TODO
     private int studentId;
     private int mentorId;
     private Date dateTime;
     private BigDecimal cost;
     private int mark;
     private int quality;
+    private List<Assignment> assignments;
 
     public Consultation() {
     }
 
-    public Consultation(int id, int studentId, int mentorId, Date dateTime, BigDecimal cost, int mark, int quality) {
+    public Consultation(Integer id, int studentId, int mentorId, Date dateTime, BigDecimal cost, int mark, int quality,
+                        List<Assignment> assignments) {
+        super(id);
+        this.studentId = studentId;
+        this.mentorId = mentorId;
+        this.dateTime = dateTime;
+        this.cost = cost;
+        this.mark = mark;
+        this.quality = quality;
+        this.assignments = assignments;
+    }
+
+    public Consultation(Integer id, int studentId, int mentorId, Date dateTime, BigDecimal cost, int mark, int quality) {//TODO delete
         super(id);
         this.studentId = studentId;
         this.mentorId = mentorId;
@@ -73,6 +87,14 @@ public class Consultation extends Entity {
         this.quality = quality;
     }
 
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -82,8 +104,9 @@ public class Consultation extends Entity {
             return false;
         }
         Consultation that = (Consultation) o;
-        return getId() == that.getId() && studentId == that.studentId && mentorId == that.mentorId &&
+        return studentId == that.studentId && mentorId == that.mentorId &&
                 mark == that.mark && quality == that.quality &&
+                getId() != null && getId().equals(that.getId()) &&
                 (dateTime == that.dateTime || (dateTime != null && dateTime.equals(that.dateTime))) &&
                 (cost == that.cost || (cost != null && cost.equals(that.cost)));
     }
@@ -92,7 +115,7 @@ public class Consultation extends Entity {
     public int hashCode() {
         final int seed = 31;
         int result = 0;
-        result += seed * getId();
+        result += seed * (getId() == null ? 0 : getId().hashCode());
         result += seed * studentId;
         result += seed * mentorId;
         result += seed * mark;
