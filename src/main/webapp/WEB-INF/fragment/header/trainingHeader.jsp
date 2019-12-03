@@ -17,23 +17,28 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/verticalMenuStyle.css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <jsp:useBean id="training" scope="request" type="by.epam.onlinetraining.entity.Training"/>
 </head>
 <body>
 <div class="vertical-menu">
     <div class="buttons">
-        <a href="controller?command=showTrainingInfo&trainingId=${training.id}">${info}</a>
+        <a href="controller?command=showTrainingInfo&trainingId=${requestScope.trainingId}">${info}</a>
     </div>
     <c:if test="${not empty sessionScope.role}"> <!-- TODO поверка на то, что студент обучается в этой группе -->
         <div class="buttons">
-            <a href="controller?command=show&pageNumber=1&limit=5">${assignments}</a>
+            <a href="controller?command=showTrainingAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
+                    ${assignments}
+            </a>
         </div>
     <div class="buttons">
-        <a href="controller?command=showTrainings&pageNumber=1&limit=5">${consultations}</a>
+        <a href="controller?command=showTrainingConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
+                ${consultations}
+        </a>
     </div>
     <c:if test="${sessionScope.role != 'STUDENT'}">
         <div class="buttons">
-            <a href="controller?command=showTrainingStudents&trainingId=${training.id}&pageNumber=1&limit=5">${students}</a>
+            <a href="controller?command=showTrainingStudents&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
+                    ${students}
+            </a>
         </div>
     </c:if>
     </c:if>

@@ -53,11 +53,13 @@
             <div class="logInForm">
                 <div class="inputText">
                     <input class="signInForm" type="text" id="login" name="login" placeholder="${placeLogin}"
-                           pattern="^.+$" required><!-- TODO -->
+                           pattern="(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08 \\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])\n"
+                    required>
                 </div>
                 <div class="inputText">
                     <input class="signInForm" type="password" id="password" name="password" placeholder="${placePassword}"
-                           required><!-- TODO -->
+                           pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$"
+                           required>
                 </div>
                 <c:if test="${not empty requestScope.errorMessage}">
                     <div class="wrongParameters">
@@ -80,7 +82,7 @@
         <form action="${pageContext.servletContext.contextPath}/controller?command=signUp" method="post">
             <div class="inputText">
                 <input class="signUpForm" type="text" id="lastName" name="lastName" placeholder="${lastName}"
-                       pattern="^([a-zA-Z]){3,44}$" autocomplete="off" required>
+                       pattern="^(([A-z]([A-z]){1,16}([\u0020-][A-z]([A-z]){1,16})?))$" autocomplete="off" required>
             </div>
 
             <c:if test="${(not empty requestScope.signUpError) and (requestScope.signUpError eq 'lastName')}">
@@ -91,7 +93,7 @@
 
             <div class="inputText">
                 <input class="signUpForm" type="text" id="firstName" name="firstName" placeholder="${firstName}"
-                       pattern="^([a-zA-Z]){3,44}$" autocomplete="off" required>
+                       pattern="^(([A-z]([A-z]){1,16}([\u0020-][A-z]([A-z]){1,16})?))$" autocomplete="off" required>
             </div>
 
             <c:if test="${(not empty requestScope.signUpError) and (requestScope.signUpError eq 'firstName')}">
@@ -102,7 +104,8 @@
 
             <div class="inputText">
                 <input class="signUpForm" type="text" id="email" name="email" placeholder="${email}"
-                       pattern="^(\w+[\.-]?\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,6})$" autocomplete="off" required>
+                       pattern="(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])"
+                autocomplete="off" required>
             </div>
 
             <div class="inputText">
@@ -126,13 +129,20 @@
             <div class="inputText">
                 <input class="signUpForm" type="text" id="birthDate" name="birthDate" placeholder="${birthDate}"
                        onfocus="(this.type='date')" onblur="(this.type='text')"
-                       pattern="^([1|2]{1}[0-9]{3}-[0-9]{1,2}-[0-9]{1,2})$"required>
-                <!-- TODO дата вида 1999-6-3 не парситься -->
+                <c:choose>
+                <c:when test="${sessionScope.language eq 'EN'}">
+                       pattern="^(((0[13-9]|1[012])[-]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-]?31|02[-]?(0[1-9]|1[0-9]|2[0-8]))[-]?[0-9]{4}|02[-]?29[-]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"
+                </c:when>
+                <c:when test="${sessionScope.language eq 'RU'}">
+                        pattern="^(((0[1-9]|[12][0-9]|30)[.]?(0[13-9]|1[012])|31[.]?(0[13578]|1[02])|(0[1-9]|1[0-9]|2[0-8])[.]?02)[.]?[0-9]{4}|29[.]?02[.]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"
+                </c:when>
+                </c:choose>
+                required>
             </div>
 
             <div class="inputText">
                 <input class="signUpForm" type="password" id="userPassword" name="userPassword" placeholder="${placePassword}"
-                       autocomplete="off" pattern="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,15}$"
+                       autocomplete="off" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$"
                        required>
             </div>
 

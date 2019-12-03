@@ -6,7 +6,7 @@ window.onclick = function(event) {
     }
 };
 
-function addedTraining() {
+function addingTraining() {
     document.getElementById('addTraining').style.display='none';
     document.getElementById('addTrainingNotify').style.display='block';
 }

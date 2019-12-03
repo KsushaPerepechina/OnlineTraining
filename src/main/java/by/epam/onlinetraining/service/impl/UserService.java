@@ -1,22 +1,21 @@
 package by.epam.onlinetraining.service.impl;
 
-import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.BlockingStatus;
-import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.UserRepository;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
 import by.epam.onlinetraining.specification.impl.user.*;
-import by.epam.onlinetraining.utils.RepositoryCreator;
+import by.epam.onlinetraining.util.RepositoryCreator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +29,15 @@ public class UserService {
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String BIRTH_DATE = "birthDate";
     private static final String PASSWORD = "userPassword";
+    private static final String BLOCKING_STATUS = "blockingStatus";
+    private static final String ROLE = "role";
+    private static final String EN = "EN";
+    private static final String RU = "RU";
+    private static final String UNSUPPORTED_LANG_MESSAGE = "Unsupported language: ";
+    private static final String EN_DATE_FORMAT = "MM-dd-yyyy";
+    private static final String RU_DATE_FORMAT = "dd.MM.yyyy";
+    private static final String SPACE_CHAR = "\u0020";
+    private static final String UNDERSCORE_SYMBOL = "\u005f";
 
     public Optional<User> logIn(String email, String password) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
@@ -41,12 +49,22 @@ public class UserService {
         }
     }
 
-    public void signUp(Map<String, String> signUpData) throws ServiceException {
+    public void signUp(Map<String, String> signUpData, String language) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {//TODO try-with-resources
             UserRepository userRepository = repositoryCreator.getUserRepository();
             String firstName = signUpData.get(FIRST_NAME);
             String lastName = signUpData.get(LAST_NAME);
-            Date birthDate = Date.valueOf(signUpData.get(BIRTH_DATE));
+            LocalDate birthDate;
+            String stringBirthDate = signUpData.get(BIRTH_DATE);
+            if (EN.equals(language)) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(EN_DATE_FORMAT);
+                birthDate = LocalDate.parse(stringBirthDate, formatter);
+            } else if (RU.equals(language)) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RU_DATE_FORMAT);
+                birthDate = LocalDate.parse(stringBirthDate, formatter);
+            } else {
+                throw new ServiceException(UNSUPPORTED_LANG_MESSAGE + language);
+            }
             String email = signUpData.get(EMAIL);
             String phoneNumber = signUpData.get(PHONE_NUMBER);
             String password = signUpData.get(PASSWORD);
@@ -90,16 +108,6 @@ public class UserService {
         }
     }
 
-    public List<User> findByRole(UserRole role, int limit, int offset) throws ServiceException {
-        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
-            UserRepository userRepository = repositoryCreator.getUserRepository();
-            return userRepository.queryAll(new FindByRoleWithOffsetSpecification(role, limit, offset));
-        } catch (RepositoryException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
     public List<User> findByRoleAndBlockingStatus(UserRole role, BlockingStatus blockingStatus) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -110,15 +118,36 @@ public class UserService {
         }
     }
 
-    public void updateProfile(Map<String, String> profileData) throws ServiceException {
+    public void updateProfile(Map<String, String> profileData, String language) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
             int id = Integer.parseInt(profileData.get(ID));
             String firstName = profileData.get(FIRST_NAME);
             String lastName = profileData.get(LAST_NAME);
-            Date birthDate = Date.valueOf(profileData.get(BIRTH_DATE));
+            LocalDate birthDate;
+            String stringBirthDate = profileData.get(BIRTH_DATE);
+            if (EN.equals(language)) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(EN_DATE_FORMAT);
+                birthDate = LocalDate.parse(stringBirthDate, formatter);
+            } else if (RU.equals(language)) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RU_DATE_FORMAT);
+                birthDate = LocalDate.parse(stringBirthDate, formatter);
+            } else {
+                throw new ServiceException(UNSUPPORTED_LANG_MESSAGE + language);
+            }
             String phoneNumber = profileData.get(PHONE_NUMBER);
-            User user = new User(id, firstName, lastName, birthDate, phoneNumber);
+            String stringBlockingStatus = profileData.get(BLOCKING_STATUS);
+            String stringRole = profileData.get(ROLE);
+            BlockingStatus blockingStatus = null;
+            UserRole role = null;
+            if (stringBlockingStatus != null) {
+                blockingStatus = BlockingStatus.valueOf(stringBlockingStatus.toUpperCase());
+            }
+            if (stringRole != null) {
+                role = UserRole.valueOf(stringRole.toUpperCase().replace(SPACE_CHAR, UNDERSCORE_SYMBOL));
+            }
+            User user = new User(id, firstName, lastName, birthDate, null, phoneNumber, blockingStatus,
+                    role, null);
             userRepository.save(user);
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);

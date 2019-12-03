@@ -31,22 +31,21 @@ public class Controller extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        CommandFactory commandFactory = new CommandFactory();//создание фабрики команды
-        String parameter = request.getParameter(COMMAND);//получение команды из параметров запроса
-        Command command = commandFactory.create(parameter);//создание команды
+        CommandFactory commandFactory = new CommandFactory();
+        String parameter = request.getParameter(COMMAND);
+        Command command = commandFactory.create(parameter);
         try {
-            CommandResult commandResult = command.execute(request, response);//вызов выполнения команды и получение результата выполнения команды(страница и действие)
-            String page = commandResult.getPage();//страница, на которую перенаправляемся
+            CommandResult commandResult = command.execute(request, response);
+            String page = commandResult.getPage();
             if (commandResult.isRedirect()) {
-                response.sendRedirect(page);//перенаправление на другую стр
+                response.sendRedirect(page);
             } else {
-                ServletContext servletContext = getServletContext();//контекст сервлета
-                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(page);//диспетчер запроса
-                requestDispatcher.forward(request, response);//с сохранением запроса переход
+                ServletContext servletContext = getServletContext();
+                RequestDispatcher requestDispatcher = servletContext.getRequestDispatcher(page);
+                requestDispatcher.forward(request, response);
             }
         } catch (ServiceException e) {
             LOGGER.error(e.getMessage(), e);
-            //CommandResult.forward(ERROR_500_PAGE);//TODO
             response.sendRedirect(ERROR_500_PAGE);
         }
     }

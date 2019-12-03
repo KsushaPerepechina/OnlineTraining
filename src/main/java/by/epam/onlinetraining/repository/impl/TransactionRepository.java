@@ -13,7 +13,8 @@ import java.util.Optional;
 
 public class TransactionRepository extends AbstractRepository<Transaction> {
     private static final String TABLE_NAME = "transactions";
-    private static final String SELECT_QUERY = "SELECT id AS pk_id, payer_id, date, operation_type, sum FROM transactions ";
+    private static final String SELECT_QUERY = "SELECT id, payer_id, date, operation_type, sum " +
+            "FROM transactions ";
     private static final String ID = "id";
     private static final String PAYER_ID = "payer_id";
     private static final String DATE = "date";

@@ -1,6 +1,6 @@
 package util;
 
-import by.epam.onlinetraining.utils.PagesDelimiter;
+import by.epam.onlinetraining.util.PagesDelimiter;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;

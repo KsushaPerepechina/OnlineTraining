@@ -1,19 +1,31 @@
 package by.epam.onlinetraining.command;
 
-import by.epam.onlinetraining.command.impl.admin.training.DeleteTrainingCommand;
-import by.epam.onlinetraining.command.impl.admin.user.ShowAdminsCommand;
-import by.epam.onlinetraining.command.impl.admin.user.ShowMentorsCommand;
-import by.epam.onlinetraining.command.impl.admin.user.ShowStudentsCommand;
-import by.epam.onlinetraining.command.impl.admin.training.EditTrainingCommand;
-import by.epam.onlinetraining.command.impl.admin.training.ShowTrainingsCommand;
+import by.epam.onlinetraining.command.impl.training.assignment.ShowTrainingAssignmentsCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.RateConsultationQualityCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.RateStudentPerformanceCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.RequestConsultationCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.ShowTrainingConsultationsCommand;
+import by.epam.onlinetraining.command.impl.training.main.DeleteTrainingCommand;
+import by.epam.onlinetraining.command.impl.training.main.SaveTrainingCommand;
+import by.epam.onlinetraining.command.impl.training.main.ShowTrainingInfoCommand;
+import by.epam.onlinetraining.command.impl.training.main.ShowTrainingsCommand;
+import by.epam.onlinetraining.command.impl.training.student.ApplyForTrainingCommand;
+import by.epam.onlinetraining.command.impl.training.student.ChangeStudentStatusCommand;
+import by.epam.onlinetraining.command.impl.training.student.RateStudentCommand;
+import by.epam.onlinetraining.command.impl.training.student.ShowTrainingStudentsCommand;
+import by.epam.onlinetraining.command.impl.user.authentication.LogOutCommand;
+import by.epam.onlinetraining.command.impl.user.listing.ShowAdminsCommand;
+import by.epam.onlinetraining.command.impl.user.listing.ShowMentorsCommand;
+import by.epam.onlinetraining.command.impl.user.listing.ShowStudentsCommand;
 import by.epam.onlinetraining.command.impl.common.*;
-import by.epam.onlinetraining.command.impl.mentor.ShowTrainingStudentsCommand;
-import by.epam.onlinetraining.command.impl.student.balance.ShowBalanceCommand;
-import by.epam.onlinetraining.command.impl.unauthorized.LogInCommand;
-import by.epam.onlinetraining.command.impl.unauthorized.ShowStartPageCommand;
-import by.epam.onlinetraining.command.impl.unauthorized.SignUpCommand;
-import by.epam.onlinetraining.command.impl.unauthorized.StartLogInCommand;
-import by.epam.onlinetraining.command.impl.student.balance.RefillBalanceCommand;
+import by.epam.onlinetraining.command.impl.user.balance.ShowBalanceCommand;
+import by.epam.onlinetraining.command.impl.user.authentication.LogInCommand;
+import by.epam.onlinetraining.command.impl.common.ShowStartPageCommand;
+import by.epam.onlinetraining.command.impl.user.authentication.SignUpCommand;
+import by.epam.onlinetraining.command.impl.user.authentication.StartLogInCommand;
+import by.epam.onlinetraining.command.impl.user.balance.RefillBalanceCommand;
+import by.epam.onlinetraining.command.impl.user.profile.EditProfileCommand;
+import by.epam.onlinetraining.command.impl.user.profile.ShowProfileCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,11 +46,18 @@ public class CommandFactory {
     private static final String SHOW_TRAININGS = "showTrainings";
     private static final String SHOW_TRAINING_INFO = "showTrainingInfo";
     private static final String DELETE_TRAINING = "deleteTraining";
-    private static final String ADD_TRAINING = "addTraining";
-    private static final String EDIT_TRAINING = "editTraining";
+    private static final String SAVE_TRAINING = "saveTraining";
     private static final String SHOW_TRAINING_STUDENTS = "showTrainingStudents";
+    private static final String SHOW_TRAINING_ASSIGNMENTS = "showTrainingAssignments";
+    private static final String SHOW_TRAINING_CONSULTATIONS = "showTrainingConsultations";
     private static final String SHOW_BALANCE = "showBalance";
     private static final String REFILL_BALANCE = "refillBalance";
+    private static final String CHANGE_STUDENT_STATUS = "changeStudentStatus";
+    private static final String RATE_STUDENT = "rateStudent";
+    private static final String RATE_CONSULTATION_QUALITY = "rateConsultationQuality";
+    private static final String RATE_STUDENT_PERFORMANCE = "rateStudentPerformance";
+    private static final String APPLY_FOR_TRAINING = "applyForTraining";
+    private static final String REQUEST_CONSULTATION = "requestConsultation";
     private static final String UNSUPPORTED_OPERATION_MESSAGE = "Called operation is unsupported currently: ";
 
     public Command create(String command) {
@@ -67,10 +86,14 @@ public class CommandFactory {
                 return new ShowTrainingInfoCommand();
             case DELETE_TRAINING:
                 return new DeleteTrainingCommand();
-            case EDIT_TRAINING:
-                return new EditTrainingCommand();
+            case SAVE_TRAINING:
+                return new SaveTrainingCommand();
+            case SHOW_TRAINING_ASSIGNMENTS:
+                return new ShowTrainingAssignmentsCommand();
             case SHOW_TRAINING_STUDENTS:
                 return new ShowTrainingStudentsCommand();
+            case SHOW_TRAINING_CONSULTATIONS:
+                return new ShowTrainingConsultationsCommand();
             case SHOW_ADMINS:
                 return new ShowAdminsCommand();
             case SHOW_MENTORS:
@@ -81,6 +104,18 @@ public class CommandFactory {
                 return new ShowBalanceCommand();
             case REFILL_BALANCE:
                 return new RefillBalanceCommand();
+            case CHANGE_STUDENT_STATUS:
+                return new ChangeStudentStatusCommand();
+            case RATE_STUDENT:
+                return new RateStudentCommand();
+            case RATE_STUDENT_PERFORMANCE:
+                return new RateStudentPerformanceCommand();
+            case RATE_CONSULTATION_QUALITY:
+                return new RateConsultationQualityCommand();
+            case APPLY_FOR_TRAINING:
+                return new ApplyForTrainingCommand();
+            case REQUEST_CONSULTATION:
+                return new RequestConsultationCommand();
             default:
                 LOGGER.error(UNSUPPORTED_OPERATION_MESSAGE + command);
                 throw new UnsupportedOperationException();

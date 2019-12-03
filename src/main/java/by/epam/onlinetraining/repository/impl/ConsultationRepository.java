@@ -14,14 +14,16 @@ import java.util.Optional;
 
 public class ConsultationRepository extends AbstractRepository<Consultation> {
     private static final String TABLE_NAME = "consultations";
-    private static final String SELECT_QUERY = "SELECT id AS pk_id, student_id, mentor_id, date_time, cost, mark, quality " +
-            "FROM consultations ";
+    private static final String SELECT_QUERY = "SELECT consultations.id, date_time, cost, status, performance, quality, " +
+            "users.id, first_name, last_name, trainings.id, trainings.mentor_id FROM consultations " +
+            "LEFT JOIN users ON consultations.student_id = users.id LEFT JOIN trainings ON consultations.training_id = " +
+            "trainings.id ";
     private static final String ID = "id";
     private static final String STUDENT_ID = "student_id";
-    private static final String MENTOR_ID = "mentor_id";
+    private static final String TRAINING_ID = "training_id";
     private static final String DATE_TIME = "date_time";
     private static final String COST = "cost";
-    private static final String MARK = "mark";
+    private static final String PERFORMANCE = "performance";
     private static final String QUALITY = "quality";
 
     public ConsultationRepository(ProxyConnection connection) {
@@ -31,11 +33,11 @@ public class ConsultationRepository extends AbstractRepository<Consultation> {
     @Override
     public Map<String, Object> getFields(Consultation consultation) {
         Map<String, Object> values = new LinkedHashMap<>();
-        values.put(STUDENT_ID, consultation.getStudentId());
-        values.put(MENTOR_ID, consultation.getMentorId());
+        values.put(STUDENT_ID, consultation.getStudent().getId());
+        values.put(TRAINING_ID, consultation.getTraining().getId());
         values.put(DATE_TIME, consultation.getDateTime());
         values.put(COST, consultation.getCost());
-        values.put(MARK, consultation.getMark());
+        values.put(PERFORMANCE, consultation.getPerformance());
         values.put(QUALITY, consultation.getQuality());
         values.put(ID, consultation.getId());
         return values;

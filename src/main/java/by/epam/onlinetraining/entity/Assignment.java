@@ -1,9 +1,7 @@
 package by.epam.onlinetraining.entity;
 
 import by.epam.onlinetraining.entity.type.AssignmentType;
-import by.epam.onlinetraining.entity.type.TaskState;
 
-import java.sql.Date;
 import java.util.StringJoiner;
 
 public class Assignment extends Entity {

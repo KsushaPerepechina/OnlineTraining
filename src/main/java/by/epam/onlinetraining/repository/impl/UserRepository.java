@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class UserRepository extends AbstractRepository<User> {
     private static final String TABLE_NAME = "users";
-    private static final String SELECT_QUERY = "SELECT id AS pk_id, first_name, last_name, birth_date, email, phone_number, " +
+    private static final String SELECT_QUERY = "SELECT id, first_name, last_name, birth_date, email, phone_number, " +
             "password, blocking_status, role, balance FROM users ";
     private static final String ID = "id";
     private static final String FIRST_NAME = "first_name";
@@ -36,8 +36,8 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     @Override
-    public Map<String, Object> getFields(User user) {//для извлечения данных из сущности
-        Map<String, Object> values = new LinkedHashMap<>();//пары поле-значение сущности
+    public Map<String, Object> getFields(User user) {
+        Map<String, Object> values = new LinkedHashMap<>();
         values.put(FIRST_NAME, user.getFirstName());
         values.put(LAST_NAME, user.getLastName());
         values.put(BIRTH_DATE, user.getBirthDate());
@@ -67,11 +67,11 @@ public class UserRepository extends AbstractRepository<User> {
     }
 
     @Override
-    public Optional<User> query(SqlSpecification specification) throws RepositoryException {//запрос к БД по спецификации
-        String query = SELECT_QUERY + specification.toSql();//формирование строки запроса вида SELECT ... FROM ... WHERE
-        EntityBuilder<User> builder = new UserBuilder();//конструктор сущностей
-        List<Object> params = specification.getParameters();//параметры спецификации
-        return executeQueryForSingleResult(query, builder, params);//выполнение с передачей запроса билдера и параметров
+    public Optional<User> query(SqlSpecification specification) throws RepositoryException {
+        String query = SELECT_QUERY + specification.toSql();
+        EntityBuilder<User> builder = new UserBuilder();
+        List<Object> params = specification.getParameters();
+        return executeQueryForSingleResult(query, builder, params);
     }
 
     @Override

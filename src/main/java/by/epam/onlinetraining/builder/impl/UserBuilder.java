@@ -16,10 +16,7 @@ import java.time.LocalDate;
 
 public class UserBuilder implements EntityBuilder<User> {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String PK_ID = "pk_id";
-    private static final String ID = "id";
-    private static final String MENTOR_MARK = "m.";
-    private static final String STUDENT_MARK = "s.";
+    private static final String ID = "users.id";
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
     private static final String BIRTH_DATE = "birth_date";
@@ -34,10 +31,14 @@ public class UserBuilder implements EntityBuilder<User> {
     @Override
     public User build(ResultSet resultSet) throws RepositoryException {
         try {
-            int id = resultSet.getInt(PK_ID);
+            int id = resultSet.getInt(ID);
             String firstName = resultSet.getString(FIRST_NAME);
             String lastName = resultSet.getString(LAST_NAME);
-            Date birthDate = resultSet.getDate(BIRTH_DATE);
+            Date birthSqlDate = resultSet.getDate(BIRTH_DATE);
+            LocalDate birthDate = null;
+            if (birthSqlDate != null) {
+                birthDate = birthSqlDate.toLocalDate();
+            }
             String email = resultSet.getString(EMAIL);
             String phoneNumber = resultSet.getString(PHONE_NUMBER);
             BlockingStatus blockingStatus = BlockingStatus.valueOf(resultSet.getString(BLOCKING_STATUS).toUpperCase());
@@ -50,18 +51,11 @@ public class UserBuilder implements EntityBuilder<User> {
             throw new RepositoryException(e.getMessage(), e);
         }
     }
-
-    public User buildByRole(ResultSet resultSet, boolean isMentor) throws RepositoryException {
-        final String MARK;
-        if (isMentor) {
-            MARK = MENTOR_MARK;
-        } else {
-            MARK = STUDENT_MARK;
-        }
+    public User buildRepresentation(ResultSet resultSet) throws RepositoryException {
         try {
-            int id = resultSet.getInt(MARK + ID);
-            String firstName = resultSet.getString(MARK + FIRST_NAME);
-            String lastName = resultSet.getString(MARK + LAST_NAME);
+            int id = resultSet.getInt(ID);
+            String firstName = resultSet.getString(FIRST_NAME);
+            String lastName = resultSet.getString(LAST_NAME);
             return new User(id, firstName, lastName);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

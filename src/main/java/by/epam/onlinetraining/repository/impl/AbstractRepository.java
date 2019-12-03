@@ -5,7 +5,7 @@ import by.epam.onlinetraining.database.ProxyConnection;
 import by.epam.onlinetraining.entity.Entity;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.repository.Repository;
-import by.epam.onlinetraining.utils.QueryHelper;
+import by.epam.onlinetraining.util.QueryHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,15 +23,14 @@ public abstract class AbstractRepository<T extends Entity> implements Repository
         this.connection = connection;
     }
 
-    List<T> executeQuery(String query, EntityBuilder<T> builder, List<Object> params) throws RepositoryException {//выборка из БД
-        List<T> objects = new ArrayList<>();//список резулттатов выборки
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {//подготовка запроса с передачей строки запроса
-            QueryHelper.prepare(preparedStatement, params);//подготовка паремтров запролса
-            LOGGER.error(preparedStatement);
-            ResultSet resultSet = preparedStatement.executeQuery();//выполнение
-            while (resultSet.next()) {//для каждой записи выборки
-                T item = builder.build(resultSet);//билдим сущность
-                objects.add(item);//добавляем в список
+    List<T> executeQuery(String query, EntityBuilder<T> builder, List<Object> params) throws RepositoryException {
+        List<T> objects = new ArrayList<>();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            QueryHelper.prepare(preparedStatement, params);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                T item = builder.build(resultSet);
+                objects.add(item);
             }
             resultSet.close();
         } catch (SQLException e) {
@@ -41,30 +40,29 @@ public abstract class AbstractRepository<T extends Entity> implements Repository
         return objects;
     }
 
-    Optional<T> executeQueryForSingleResult(String query, EntityBuilder<T> builder, List<Object> params) throws RepositoryException {//выполнение выборки с ед результатом
-        List<T> items = executeQuery(query, builder, params);//выполнение
-        return items.size() == 1 ?//если результирующая выборка из 1 записи
-                Optional.of(items.get(0)) ://возвращаем первый и ед эл-т списка
-                Optional.empty();//если нет, то возвращаем пустой опшнл
+    Optional<T> executeQueryForSingleResult(String query, EntityBuilder<T> builder, List<Object> params) throws RepositoryException {
+        List<T> items = executeQuery(query, builder, params);
+        return items.size() == 1 ?
+                Optional.of(items.get(0)) :
+                Optional.empty();
     }
 
     @Override
-    public void save(T item) throws RepositoryException {//метод добавления новой записи
+    public void save(T item) throws RepositoryException {
         try {
             String query;
-            Map<String, Object> fields = getFields(item);//поля таблицы
-            String tableName = getTableName();//название таблицы
-            if (item.getId() != null) {//если id существует
-                query = QueryHelper.formUpdateQuery(fields, tableName);//формируем запрос по обновлению данных
-            } else {//если id не существует
-                query = QueryHelper.formInsertQuery(fields, tableName);//формируем запрос по добавлению данных
+            Map<String, Object> fields = getFields(item);
+            String tableName = getTableName();
+            if (item.getId() != null) {
+                query = QueryHelper.formUpdateQuery(fields, tableName);
+            } else {
+                query = QueryHelper.formInsertQuery(fields, tableName);
             }
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {//подготовка statement-а
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
                 List<Object> params = new ArrayList<>(fields.values());
                 params = params.stream().filter(param -> !(param == null)).collect(Collectors.toList());
-                QueryHelper.prepare(preparedStatement, params);//установка аргументов ? ? ?
-                LOGGER.error(preparedStatement);
-                preparedStatement.executeUpdate();//выполнение обновления
+                QueryHelper.prepare(preparedStatement, params);
+                preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

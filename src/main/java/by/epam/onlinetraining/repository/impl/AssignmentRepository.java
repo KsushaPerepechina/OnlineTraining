@@ -6,6 +6,8 @@ import by.epam.onlinetraining.database.ProxyConnection;
 import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.specification.SqlSpecification;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,8 +15,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AssignmentRepository extends AbstractRepository<Assignment> {
+    private static final Logger LOGGER = LogManager.getLogger();
     private static final String TABLE_NAME = "assignments";
-    private static final String SELECT_QUERY = "SELECT id AS pk_id, name, type, training_id FROM assignments ";
+    private static final String SELECT_QUERY = "SELECT assignments.id, name, type, training_id FROM assignments ";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String TYPE = "type";

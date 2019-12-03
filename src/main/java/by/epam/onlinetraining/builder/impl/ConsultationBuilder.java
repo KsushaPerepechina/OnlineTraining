@@ -2,6 +2,9 @@ package by.epam.onlinetraining.builder.impl;
 
 import by.epam.onlinetraining.builder.EntityBuilder;
 import by.epam.onlinetraining.entity.Consultation;
+import by.epam.onlinetraining.entity.Training;
+import by.epam.onlinetraining.entity.User;
+import by.epam.onlinetraining.entity.type.ConsultationStatus;
 import by.epam.onlinetraining.exception.RepositoryException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,26 +17,31 @@ import java.time.LocalDate;
 
 public class ConsultationBuilder implements EntityBuilder<Consultation> {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String ID = "pk_id";
-    private static final String STUDENT_ID = "student_id";
-    private static final String MENTOR_ID = "mentor_id";
+    private static final String ID = "consultations.id";
     private static final String DATE_TIME = "date_time";
     private static final String COST = "cost";
-    private static final String MARK = "mark";
+    private static final String STATUS = "status";
+    private static final String PERFORMANCE = "performance";
     private static final String QUALITY = "quality";
-    //TODO assignments
+    private static UserBuilder userBuilder = new UserBuilder();
+    private static TrainingBuilder trainingBuilder = new TrainingBuilder();
 
     @Override
     public Consultation build(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(ID);
-            int studentId = resultSet.getInt(STUDENT_ID);
-            int mentorId = resultSet.getInt(MENTOR_ID);
-            Date dateTime = resultSet.getDate(DATE_TIME);//TODO
+            Date sqlDateTime = resultSet.getDate(DATE_TIME);
+            LocalDate dateTime = null;
+            if (sqlDateTime != null) {
+                dateTime = sqlDateTime.toLocalDate();
+            }
             BigDecimal cost = resultSet.getBigDecimal(COST);
-            int mark = resultSet.getInt(MARK);
+            ConsultationStatus status = ConsultationStatus.valueOf(resultSet.getString(STATUS).toUpperCase());
+            int performance = resultSet.getInt(PERFORMANCE);
             int quality = resultSet.getInt(QUALITY);
-            return new Consultation(id, studentId, mentorId, dateTime, cost, mark, quality);
+            User student = userBuilder.buildRepresentation(resultSet);
+            Training training = trainingBuilder.buildRepresentation(resultSet);
+            return new Consultation(id, student, training, dateTime, cost, status, performance, quality);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
             throw new RepositoryException(e.getMessage(), e);

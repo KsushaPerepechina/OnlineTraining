@@ -16,7 +16,6 @@ public class FindByIdSpecification implements SqlSpecification {
 
     @Override
     public String toSql() {
-
         return "WHERE " + tableName + ".id = ? AND " + tableName + ".activity = 'on'";
     }
 

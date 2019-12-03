@@ -10,14 +10,16 @@ public class FindByProgressSpecification implements SqlSpecification {
     private static final String SPACE_CHAR = "\u0020";
     private static final String UNDERSCORE_SYMBOL = "\u005f";
     private String progress;
+    private String tableName;
 
-    public FindByProgressSpecification(TrainingProgress progress) {
+    public FindByProgressSpecification(TrainingProgress progress, String tableName) {
         this.progress = progress.toString().toLowerCase().replace(UNDERSCORE_SYMBOL, SPACE_CHAR);
+        this.tableName = tableName;
     }
 
     @Override
     public String toSql() {
-        return "WHERE progress = ? AND t.activity = 'on'";
+        return "WHERE progress = ? AND " + tableName + ".activity = 'on'";
     }
 
     @Override

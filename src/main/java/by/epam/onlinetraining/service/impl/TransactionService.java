@@ -6,12 +6,12 @@ import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.TransactionRepository;
 import by.epam.onlinetraining.specification.impl.transaction.FindByPayerIdSpecification;
-import by.epam.onlinetraining.utils.RepositoryCreator;
+import by.epam.onlinetraining.util.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class TransactionService {
@@ -28,7 +28,7 @@ public class TransactionService {
     }
 
     public void addOperation(int payerId, OperationType operationType,
-                              Date date, BigDecimal sum) throws ServiceException {
+                             LocalDate date, BigDecimal sum) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TransactionRepository transactionRepository = repositoryCreator.getTransactionRepository();
             Transaction transaction = new Transaction(null, payerId, date, operationType, sum);

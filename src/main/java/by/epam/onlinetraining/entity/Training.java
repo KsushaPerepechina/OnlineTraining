@@ -2,40 +2,36 @@ package by.epam.onlinetraining.entity;
 
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 
-import java.sql.Date;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.StringJoiner;
 
 public class Training extends Entity {
     private String name;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private TrainingProgress progress;
     private User mentor;
-    private List<StudentRecord> students;
 
     public Training() {
     }
 
-    public Training(Integer id, String name, Date startDate, Date endDate,
-                    TrainingProgress progress, User mentor, List<StudentRecord> students) {
+    public Training(Integer id, String name, LocalDate startDate, LocalDate endDate,
+                    TrainingProgress progress, User mentor) {
         super(id);
         this.name = name;
         this.startDate = startDate;
         this.endDate = endDate;
         this.progress = progress;
-        this.students = students;
         this.mentor = mentor;
     }
 
-    public Training(Integer id, String name, Date startDate, Date endDate,
-                    TrainingProgress progress, User mentor) {//TODO remove
+    public Training(Integer id, User mentor) {
         super(id);
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.progress = progress;
         this.mentor = mentor;
+    }
+
+    public Training(Integer id) {
+        super(id);
     }
 
     public String getName() {
@@ -46,19 +42,19 @@ public class Training extends Entity {
         this.name = name;
     }
 
-    public Date getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -76,14 +72,6 @@ public class Training extends Entity {
 
     public void setMentor(User mentor) {
         this.mentor = mentor;
-    }
-
-    public List<StudentRecord> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<StudentRecord> students) {
-        this.students = students;
     }
 
     @Override

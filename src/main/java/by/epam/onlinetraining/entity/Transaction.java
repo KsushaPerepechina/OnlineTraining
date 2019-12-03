@@ -3,16 +3,16 @@ package by.epam.onlinetraining.entity;
 import by.epam.onlinetraining.entity.type.OperationType;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.StringJoiner;
 
 public class Transaction extends Entity {
     private int payerId;
-    private Date date;
+    private LocalDate date;
     private OperationType operationType;
     private BigDecimal sum;
 
-    public Transaction(Integer id, int payerId, Date date, OperationType operationType, BigDecimal sum) {
+    public Transaction(Integer id, int payerId, LocalDate date, OperationType operationType, BigDecimal sum) {
         super(id);
         this.payerId = payerId;
         this.date = date;
@@ -28,11 +28,11 @@ public class Transaction extends Entity {
         this.payerId = payerId;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 

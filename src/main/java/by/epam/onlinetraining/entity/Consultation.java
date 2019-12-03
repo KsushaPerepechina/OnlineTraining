@@ -1,65 +1,63 @@
 package by.epam.onlinetraining.entity;
 
+import by.epam.onlinetraining.entity.type.ConsultationStatus;
+
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.StringJoiner;
 
-public class Consultation extends Entity {//TODO
-    private int studentId;
-    private int mentorId;
-    private Date dateTime;
+public class Consultation extends Entity {
+    private User student;
+    private Training training;
+    private LocalDate dateTime;
     private BigDecimal cost;
-    private int mark;
+    private ConsultationStatus status;
+    private int performance;
     private int quality;
-    private List<Assignment> assignments;
+    private List<Assignment> assignments;//TODO
 
     public Consultation() {
     }
 
-    public Consultation(Integer id, int studentId, int mentorId, Date dateTime, BigDecimal cost, int mark, int quality,
-                        List<Assignment> assignments) {
+    public Consultation(Integer id, User student, Training training, LocalDate dateTime, BigDecimal cost,
+                        ConsultationStatus status, int performance, int quality) {
         super(id);
-        this.studentId = studentId;
-        this.mentorId = mentorId;
+        this.student = student;
+        this.training = training;
         this.dateTime = dateTime;
         this.cost = cost;
-        this.mark = mark;
-        this.quality = quality;
-        this.assignments = assignments;
-    }
-
-    public Consultation(Integer id, int studentId, int mentorId, Date dateTime, BigDecimal cost, int mark, int quality) {//TODO delete
-        super(id);
-        this.studentId = studentId;
-        this.mentorId = mentorId;
-        this.dateTime = dateTime;
-        this.cost = cost;
-        this.mark = mark;
+        this.status = status;
+        this.performance = performance;
         this.quality = quality;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public Consultation(User student, Training training) {
+        this.student = student;
+        this.training = training;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public User getStudent() {
+        return student;
     }
 
-    public int getMentorId() {
-        return mentorId;
+    public void setStudent(User student) {
+        this.student = student;
     }
 
-    public void setMentorId(int mentorId) {
-        this.mentorId = mentorId;
+    public Training getTraining() {
+        return training;
     }
 
-    public Date getDateTime() {
+    public void setTraining(Training training) {
+        this.training = training;
+    }
+
+    public LocalDate getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(LocalDate dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -71,12 +69,20 @@ public class Consultation extends Entity {//TODO
         this.cost = cost;
     }
 
-    public int getMark() {
-        return mark;
+    public ConsultationStatus getStatus() {
+        return status;
     }
 
-    public void setMark(int mark) {
-        this.mark = mark;
+    public void setStatus(ConsultationStatus status) {
+        this.status = status;
+    }
+
+    public int getPerformance() {
+        return performance;
+    }
+
+    public void setPerformance(int performance) {
+        this.performance = performance;
     }
 
     public int getQuality() {
@@ -104,9 +110,10 @@ public class Consultation extends Entity {//TODO
             return false;
         }
         Consultation that = (Consultation) o;
-        return studentId == that.studentId && mentorId == that.mentorId &&
-                mark == that.mark && quality == that.quality &&
+        return performance == that.performance && quality == that.quality && status != null && status == that.status &&
                 getId() != null && getId().equals(that.getId()) &&
+                (student == that.student || (student != null && student.equals(that.student))) &&
+                (training == that.training || (training != null && training.equals(that.training))) &&
                 (dateTime == that.dateTime || (dateTime != null && dateTime.equals(that.dateTime))) &&
                 (cost == that.cost || (cost != null && cost.equals(that.cost)));
     }
@@ -116,12 +123,13 @@ public class Consultation extends Entity {//TODO
         final int seed = 31;
         int result = 0;
         result += seed * (getId() == null ? 0 : getId().hashCode());
-        result += seed * studentId;
-        result += seed * mentorId;
-        result += seed * mark;
-        result += seed * quality;
+        result += seed * (student == null ? 0 : student.hashCode());
+        result += seed * (training == null ? 0 : training.hashCode());
         result += seed * (dateTime == null ? 0 : dateTime.hashCode());
         result += seed * (cost == null ? 0 : cost.hashCode());
+        result += seed * (status == null ? 0 : status.hashCode());
+        result += seed * performance;
+        result += seed * quality;
         return result;
     }
 
@@ -129,12 +137,13 @@ public class Consultation extends Entity {//TODO
     public String toString() {
         return new StringJoiner(", ", Consultation.class.getSimpleName() + "[", "]")
                 .add("id=" + getId())
-                .add("studentId=" + studentId)
-                .add("mentorId=" + mentorId)
+                .add("student=" + student)
+                .add("training=" + training)
                 .add("dateTime=" + dateTime)
                 .add("cost=" + cost)
-                .add("mark=" + mark)
+                .add("performance=" + performance)
                 .add("quality=" + quality)
+                .add("assignments=" + assignments)
                 .toString();
     }
 }

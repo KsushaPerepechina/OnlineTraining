@@ -4,13 +4,13 @@ import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.UserRole;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.StringJoiner;
 
 public class User extends Entity {
     private String firstName;
     private String lastName;
-    private Date birthDate;
+    private LocalDate birthDate;
     private String email;
     private String phoneNumber;
     private String password;
@@ -21,7 +21,7 @@ public class User extends Entity {
     public User() {
     }
 
-    public User(Integer id, String firstName, String lastName, Date birthDate, String email, String phoneNumber,
+    public User(Integer id, String firstName, String lastName, LocalDate birthDate, String email, String phoneNumber,
                 BlockingStatus blockingStatus, UserRole role, BigDecimal balance) {
         super(id);
         this.firstName = firstName;
@@ -34,7 +34,7 @@ public class User extends Entity {
         this.balance = balance;
     }
 
-    public User(int id, String firstName, String lastName, Date birthDate, String phoneNumber) {
+    public User(int id, String firstName, String lastName, LocalDate birthDate, String phoneNumber) {
         super(id);
         this.firstName = firstName;
         this.lastName = lastName;
@@ -42,7 +42,7 @@ public class User extends Entity {
         this.phoneNumber = phoneNumber;
     }
 
-    public User(String firstName, String lastName, Date birthDate, String email, String phoneNumber, String password, BigDecimal balance) {
+    public User(String firstName, String lastName, LocalDate birthDate, String email, String phoneNumber, String password, BigDecimal balance) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;
@@ -93,11 +93,11 @@ public class User extends Entity {
         this.lastName = lastName;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
