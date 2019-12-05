@@ -51,13 +51,4 @@
 <!--        <location>/WEB-INF/page/error/Error500.jsp</location>-->
 <!--    </error-page>-->
 
-    <servlet>
-        <servlet-name>profile</servlet-name>
-        <jsp-file>/WEB-INF/page/profile.jsp</jsp-file>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>profile</servlet-name>
-        <url-pattern>/controller?command=showProfile</url-pattern>
-    </servlet-mapping>
-
 </web-app>

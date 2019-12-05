@@ -39,8 +39,11 @@
 <div class="container">
     <div class="leftColumn">
         <c:choose>
-            <c:when test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}"> <!--TODO mentor header-->
+            <c:when test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}">
                 <jsp:include page="../../fragment/header/adminHeader.jsp"/>
+            </c:when>
+            <c:when test="${sessionScope.role == 'MENTOR'}">
+                <jsp:include page="../../fragment/header/mentorHeader.jsp"/>
             </c:when>
             <c:when test="${sessionScope.role == 'STUDENT'}">
                 <jsp:include page="../../fragment/header/studentHeader.jsp"/>

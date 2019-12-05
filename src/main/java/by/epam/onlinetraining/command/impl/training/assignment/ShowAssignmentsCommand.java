@@ -3,18 +3,25 @@ package by.epam.onlinetraining.command.impl.training.assignment;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.Assignment;
+import by.epam.onlinetraining.entity.Training;
+import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.service.impl.AssignmentService;
+import by.epam.onlinetraining.service.impl.RecordService;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
-public class ShowTrainingAssignmentsCommand implements Command {
+public class ShowAssignmentsCommand implements Command {
+    private static final Logger LOGGER = LogManager.getLogger();
+    private static final String ROLE = "role";
+    private static final String ID = "id";
     private static final String TRAINING_ID = "trainingId";
     private static final String ASSIGNMENT_LIST = "assignmentList";
     private static final String PAGE_NUMBER = "pageNumber";
@@ -23,11 +30,33 @@ public class ShowTrainingAssignmentsCommand implements Command {
     private static final String ERROR_PAGE = "/WEB-INF/page/error/Error404.jsp";
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
-    private static final String TRAINING_ASSIGNMENTS_PAGE = "/WEB-INF/page/training/trainingAssignments.jsp";
+    private static final String TRAINING_ASSIGNMENTS_PAGE = "/WEB-INF/page/training/assignments.jsp";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
+        HttpSession session = request.getSession();
+        UserRole role = (UserRole) session.getAttribute(ROLE);
+        List<Assignment> assignmentList;
+        AssignmentService assignmentService = new AssignmentService();
+        if (UserRole.STUDENT == role) {
+            int studentId = (Integer) session.getAttribute(ID);
+            RecordService recordService = new RecordService();
+            List<Training> trainingList = recordService.findAllStudentTrainings(studentId);
+            List<Assignment> assignments = new ArrayList<>();
+            trainingList.forEach(training -> {
+                try {
+                    assignments.addAll(assignmentService.findByTrainingId(training.getId()));
+                } catch (ServiceException e) {
+                    LOGGER.error(e.getMessage(), e);
+                }
+            });
+            assignmentList = assignments;
+        } else {
+            int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
+            assignmentList = assignmentService.findByTrainingId(trainingId);
+            //request.setAttribute(TRAINING_ID, trainingId);
+        }
+
         String stringLimit = request.getParameter(LIMIT);
         String stringPageNumber = request.getParameter(PAGE_NUMBER);
         Map<String, String> pageData = new HashMap<>();
@@ -41,12 +70,8 @@ public class ShowTrainingAssignmentsCommand implements Command {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        AssignmentService assignmentService = new AssignmentService();
-        List<Assignment> assignmentList = assignmentService.findByTrainingId(trainingId);
-
         PagesDelimiter<Assignment> pagesDelimiter = new PagesDelimiter<>();
         List<Integer> pageNumbersList = pagesDelimiter.composePageNumbersList(assignmentList, limit);
-        request.setAttribute(TRAINING_ID, trainingId);
         request.setAttribute(LIMIT, limit);
         request.setAttribute(PAGES, pageNumbersList);
         request.setAttribute(PAGE_NUMBER, pageNumber);

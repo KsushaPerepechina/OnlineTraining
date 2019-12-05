@@ -9,6 +9,7 @@
 
 <fmt:message bundle="${naming}" key="studentHeader.label.consultations" var="consultations"/>
 <fmt:message bundle="${naming}" key="user.editing.role.student" var="student"/>
+<fmt:message bundle="${naming}" key="assignment.table.training" var="training"/>
 <fmt:message bundle="${naming}" key="user.balance.table.operationDate" var="date"/>
 <fmt:message bundle="${naming}" key="consultation.table.cost" var="cost"/>
 <fmt:message bundle="${naming}" key="student.table.performance" var="performance"/>
@@ -39,28 +40,49 @@
     <div class="title">
         ${consultations}
     </div>
-    <div class="leftColumn">
-        <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
-    </div>
+    <c:choose>
+        <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
+            <div class="leftColumn">
+                <jsp:include page="/WEB-INF/fragment/header/adminHeader.jsp"/>
+            </div>
+        </c:when>
+        <c:when test="${sessionScope.role eq 'MENTOR'}">
+            <div class="leftColumn">
+                <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
+            </div>
+        </c:when>
+        <c:when test="${sessionScope.role eq 'STUDENT'}">
+            <div class="leftColumn">
+                <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
+            </div>
+        </c:when>
+    </c:choose>
     <div class="rightColumn">
         <div class="itemLimit">
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showTrainingConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=15"
+               href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=15"
                formmethod="post" onclick=changeStatus(event)>15
             </a>
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showTrainingConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=10"
+               href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=10"
                formmethod="post" onclick=changeStatus(event)>10
             </a>
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showTrainingConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5"
+               href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5"
                formmethod="post" onclick=changeStatus(event)>5
             </a>
         </div>
         <div class="card">
             <table>
                 <tr>
-                    <th>${student}</th>
+                    <c:choose>
+                        <c:when test="${sessionScope.role eq 'STUDENT'}">
+                            <th>${training}</th>
+                        </c:when>
+                        <c:otherwise>
+                            <th>${student}</th>
+                        </c:otherwise>
+                    </c:choose>
                     <th>${date}</th>
                     <th>${status}</th>
                     <th>${performance}</th>
@@ -70,9 +92,18 @@
                 <c:forEach items="${consultationList}" var="consultation">
                     <tr>
                         <td>
-                            <div class="data">
-                                    ${consultation.student.firstName} ${consultation.student.lastName}
-                            </div>
+                            <c:choose>
+                                <c:when test="${sessionScope.role eq 'STUDENT'}">
+                                    <div class="data">
+                                            ${consultation.training.name}
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="data">
+                                            ${consultation.student.firstName} ${consultation.student.lastName}
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
                         </td>
                         <td>
                             <div class="data">
@@ -132,9 +163,9 @@
                         <td>
                             <div class="data">
                                 <c:choose>
-                                    <c:when test="${consultation.performance == 0 && consultation.status == 'SCHEDULED'}">
+                                    <c:when test="${consultation.performance == 0}">
                                         <c:choose>
-                                            <c:when test="${consultation.training.mentor.id == sessionScope.id}">
+                                            <c:when test="${consultation.training.mentor.id == sessionScope.id && consultation.status == 'SCHEDULED'}">
                                                 <form action="${pageContext.servletContext.contextPath}/controller?command=rateStudentPerformance&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}"
                                                       method="post">
                                                     <div class="value">
@@ -164,9 +195,9 @@
                         <td>
                             <div class="data">
                                 <c:choose>
-                                    <c:when test="${consultation.quality == 0 && consultation.status == 'SCHEDULED'}">
+                                    <c:when test="${consultation.quality == 0}">
                                         <c:choose>
-                                            <c:when test="${consultation.student.id == sessionScope.id}">
+                                            <c:when test="${consultation.student.id == sessionScope.id && consultation.status == 'SCHEDULED'}">
                                                 <form action="${pageContext.servletContext.contextPath}/controller?command=rateConsultationQuality&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}"
                                                       method="post">
                                                     <div class="value">
@@ -200,12 +231,14 @@
                                     <img class="tableImage" src="img/icon/info.png">
                                 </a>
                             </div>
+                            <c:if test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
                             <div class="deleteConsultationButton">
                                 <a href="${pageContext.servletContext.contextPath}/controller?command=deleteConsultation&consultationId=${consultation.id}"
                                    class="showConsultationInfo">
                                     <img class="tableImage" src="img/icon/delete.png">
                                 </a>
                             </div>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -214,7 +247,7 @@
         <div class="pages">
             <jsp:useBean id="pages" scope="request" type="java.util.List"/>
             <c:forEach items="${pages}" var="pages">
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showTrainingConsultations&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
             </c:forEach>
         </div>
     </div>

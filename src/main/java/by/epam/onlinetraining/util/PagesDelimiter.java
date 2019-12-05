@@ -2,6 +2,7 @@ package by.epam.onlinetraining.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class PagesDelimiter<T> {
     public List<Integer> composePageNumbersList(List<T> itemList, int limit) {

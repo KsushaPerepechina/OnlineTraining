@@ -4,7 +4,7 @@ import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.AssignmentRepository;
-import by.epam.onlinetraining.specification.impl.assignment.FindByTrainingIdSpecification;
+import by.epam.onlinetraining.specification.impl.record.FindByTrainingIdSpecification;
 import by.epam.onlinetraining.util.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

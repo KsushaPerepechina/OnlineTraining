@@ -15,9 +15,9 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AssignmentRepository extends AbstractRepository<Assignment> {
-    private static final Logger LOGGER = LogManager.getLogger();
     private static final String TABLE_NAME = "assignments";
-    private static final String SELECT_QUERY = "SELECT assignments.id, name, type, training_id FROM assignments ";
+    private static final String SELECT_QUERY = "SELECT assignments.id, assignments.name, type, trainings.id, " +
+            "trainings.name, trainings.mentor_id FROM assignments JOIN trainings ON assignments.training_id = trainings.id ";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String TYPE = "type";
@@ -32,7 +32,7 @@ public class AssignmentRepository extends AbstractRepository<Assignment> {
         Map<String, Object> values = new LinkedHashMap<>();
         values.put(NAME, assignment.getName());
         values.put(TYPE, assignment.getType().toString().toLowerCase());
-        values.put(TRAINING_ID, assignment.getTrainingId());
+        values.put(TRAINING_ID, assignment.getTraining().getId());
         values.put(ID, assignment.getId());
         return values;
     }

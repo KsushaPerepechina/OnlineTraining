@@ -16,7 +16,7 @@
 <fmt:message bundle="${naming}" key="student.table.status.expelled" var="expelled"/>
 <fmt:message bundle="${naming}" key="student.table.status.completed" var="completed"/>
 <fmt:message bundle="${naming}" key="student.table.status.rejected" var="rejected"/>
-<fmt:message bundle="${naming}" key="student.table.performance" var="performance"/>
+<fmt:message bundle="${naming}" key="student.table.mark" var="mark"/>
 <fmt:message bundle="${naming}" key="adminHeader.label.students" var="students"/>
 <fmt:message bundle="${naming}" key="button.edit" var="edit"/>
 <fmt:message bundle="${naming}" key="button.rate" var="rate"/>
@@ -63,7 +63,7 @@
                     <th>${lastName}</th>
                     <th>${status}</th>
                     <c:if test="${requestScope.progress != 'REGISTRATION_OPENED'}">
-                        <th>${performance}</th>
+                        <th>${mark}</th>
                     </c:if>
                     <c:if test="${(requestScope.progress == 'REGISTRATION_OPENED' && (sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN')) || (sessionScope.id == recordList.get(0).training.mentor.id && requestScope.progress == 'IN_PROCESS')}">
                     <th></th>
@@ -110,13 +110,13 @@
                                 <td>
                                     <div class="data">
                                         <c:choose>
-                                            <c:when test="${record.performance == 0}">
+                                            <c:when test="${record.mark == 0}">
                                                 <c:choose>
                                                     <c:when test="${record.training.mentor.id == sessionScope.id}">
                                                         <form action="${pageContext.servletContext.contextPath}/controller?command=rateStudent&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}"
                                                               method="post">
                                                             <div class="value">
-                                                                <input type="text" id="performance" name="performance"
+                                                                <input type="text" id="mark" name="mark"
                                                                    pattern="^([1-9]|10)$" required>
                                                             </div>
                                                             <div class="submitButton">
@@ -130,7 +130,7 @@
                                                 </c:choose>
                                             </c:when>
                                             <c:otherwise>
-                                                ${record.performance}
+                                                ${record.mark}
                                             </c:otherwise>
                                         </c:choose>
                                     </div>

@@ -1,15 +1,15 @@
 package by.epam.onlinetraining.command;
 
-import by.epam.onlinetraining.command.impl.training.assignment.ShowTrainingAssignmentsCommand;
+import by.epam.onlinetraining.command.impl.training.assignment.ShowAssignmentsCommand;
 import by.epam.onlinetraining.command.impl.training.consultation.RateConsultationQualityCommand;
 import by.epam.onlinetraining.command.impl.training.consultation.RateStudentPerformanceCommand;
 import by.epam.onlinetraining.command.impl.training.consultation.RequestConsultationCommand;
-import by.epam.onlinetraining.command.impl.training.consultation.ShowTrainingConsultationsCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.ShowConsultationsCommand;
 import by.epam.onlinetraining.command.impl.training.main.DeleteTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.main.SaveTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.main.ShowTrainingInfoCommand;
 import by.epam.onlinetraining.command.impl.training.main.ShowTrainingsCommand;
-import by.epam.onlinetraining.command.impl.training.student.ApplyForTrainingCommand;
+import by.epam.onlinetraining.command.impl.user.training.ApplyForTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.student.ChangeStudentStatusCommand;
 import by.epam.onlinetraining.command.impl.training.student.RateStudentCommand;
 import by.epam.onlinetraining.command.impl.training.student.ShowTrainingStudentsCommand;
@@ -26,6 +26,7 @@ import by.epam.onlinetraining.command.impl.user.authentication.StartLogInCommand
 import by.epam.onlinetraining.command.impl.user.balance.RefillBalanceCommand;
 import by.epam.onlinetraining.command.impl.user.profile.EditProfileCommand;
 import by.epam.onlinetraining.command.impl.user.profile.ShowProfileCommand;
+import by.epam.onlinetraining.command.impl.user.training.ShowStudentRequestsCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,8 +49,8 @@ public class CommandFactory {
     private static final String DELETE_TRAINING = "deleteTraining";
     private static final String SAVE_TRAINING = "saveTraining";
     private static final String SHOW_TRAINING_STUDENTS = "showTrainingStudents";
-    private static final String SHOW_TRAINING_ASSIGNMENTS = "showTrainingAssignments";
-    private static final String SHOW_TRAINING_CONSULTATIONS = "showTrainingConsultations";
+    private static final String SHOW_ASSIGNMENTS = "showAssignments";
+    private static final String SHOW_CONSULTATIONS = "showConsultations";
     private static final String SHOW_BALANCE = "showBalance";
     private static final String REFILL_BALANCE = "refillBalance";
     private static final String CHANGE_STUDENT_STATUS = "changeStudentStatus";
@@ -58,6 +59,7 @@ public class CommandFactory {
     private static final String RATE_STUDENT_PERFORMANCE = "rateStudentPerformance";
     private static final String APPLY_FOR_TRAINING = "applyForTraining";
     private static final String REQUEST_CONSULTATION = "requestConsultation";
+    private static final String SHOW_STUDENT_REQUESTS = "showStudentRequests";
     private static final String UNSUPPORTED_OPERATION_MESSAGE = "Called operation is unsupported currently: ";
 
     public Command create(String command) {
@@ -88,12 +90,12 @@ public class CommandFactory {
                 return new DeleteTrainingCommand();
             case SAVE_TRAINING:
                 return new SaveTrainingCommand();
-            case SHOW_TRAINING_ASSIGNMENTS:
-                return new ShowTrainingAssignmentsCommand();
+            case SHOW_ASSIGNMENTS:
+                return new ShowAssignmentsCommand();
             case SHOW_TRAINING_STUDENTS:
                 return new ShowTrainingStudentsCommand();
-            case SHOW_TRAINING_CONSULTATIONS:
-                return new ShowTrainingConsultationsCommand();
+            case SHOW_CONSULTATIONS:
+                return new ShowConsultationsCommand();
             case SHOW_ADMINS:
                 return new ShowAdminsCommand();
             case SHOW_MENTORS:
@@ -116,6 +118,8 @@ public class CommandFactory {
                 return new ApplyForTrainingCommand();
             case REQUEST_CONSULTATION:
                 return new RequestConsultationCommand();
+            case SHOW_STUDENT_REQUESTS:
+                return new ShowStudentRequestsCommand();
             default:
                 LOGGER.error(UNSUPPORTED_OPERATION_MESSAGE + command);
                 throw new UnsupportedOperationException();

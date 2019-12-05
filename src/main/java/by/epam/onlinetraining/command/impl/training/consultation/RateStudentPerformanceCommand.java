@@ -18,7 +18,7 @@ public class RateStudentPerformanceCommand implements Command {
     private static final String PAGE_NUMBER = "pageNumber";
     private static final String LIMIT = "limit";
     private static final String ERROR_PAGE = "/WEB-INF/page/error/Error500.jsp";
-    private static final String SHOW_TRAINING_CONSULTATIONS_COMMAND = "controller?command=showTrainingConsultations&trainingId=";
+    private static final String SHOW_TRAINING_CONSULTATIONS_COMMAND = "controller?command=showConsultations&trainingId=";
     private static final String PAGE_NUMBER_PARAMETER = "&pageNumber=";
     private static final String LIMIT_PARAMETER = "&limit=";
 

@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ValidationTest {
-
     private Validation validation;
 
     @BeforeClass

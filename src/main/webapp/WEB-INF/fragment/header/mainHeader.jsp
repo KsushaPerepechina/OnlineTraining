@@ -12,6 +12,7 @@
 <fmt:message bundle="${naming}" key="mainHeader.label.profile" var="profile"/>
 <fmt:message bundle="${naming}" key="mainHeader.user.label.requests" var="requests"/>
 <fmt:message bundle="${naming}" key="mainHeader.user.label.learning" var="learning"/>
+<fmt:message bundle="${naming}" key="mainHeader.user.label.mentoring" var="mentoring"/>
 <fmt:message bundle="${naming}" key="mainHeader.label.lang" var="lang"/>
 <fmt:message bundle="${naming}" key="user.balance.label" var="balance"/>
 <fmt:message bundle="${naming}" key="mainHeader.admin.label.administrate" var="admininstrate"/>
@@ -39,39 +40,50 @@
         </div>
     </div>
 
-    <c:if test="${empty sessionScope.role}">
-        <div class="optionalButton">
-            <a href="${pageContext.request.contextPath}/controller?command=startLogIn">${signIn}</a>
-        </div>
-    </c:if>
-
-    <c:if test="${sessionScope.role == 'STUDENT'}">
-        <div class="dropDown">
-            <button class="dropButton-profile">${sessionScope.name}
-            </button>
-            <div class="dropDownContent-profile">
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showProfile">${profile}</a>
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showRequests&pageNumber=1&limit=5">${requests}</a>
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showLearning">${learning}</a>
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showBalance">${balance}</a>
-                <a href="${pageContext.servletContext.contextPath}/controller?command=signOut">${signOut}</a>
+    <c:choose>
+        <c:when test="${empty sessionScope.role}">
+            <div class="optionalButton">
+                <a href="${pageContext.request.contextPath}/controller?command=startLogIn">${signIn}</a>
             </div>
-        </div>
-    </c:if>
-
-    <c:if test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}">
-        <div class="dropDown">
-            <button class="dropButton-profile">${sessionScope.name}
-            </button>
-            <div class="dropDownContent-profile">
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showProfile">${profile}</a>
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showTrainings&pageNumber=1&limit=5">${admininstrate}</a>
-                <a href="${pageContext.servletContext.contextPath}/controller?command=signOut">${signOut}</a>
+        </c:when>
+        <c:when test="${sessionScope.role == 'STUDENT'}">
+            <div class="dropDown">
+                <button class="dropButton-profile">${sessionScope.name}
+                </button>
+                <div class="dropDownContent-profile">
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showProfile">${profile}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showStudentRequests&pageNumber=1&limit=5">${requests}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&pageNumber=1&limit=5">${learning}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showBalance">${balance}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=signOut">${signOut}</a>
+                </div>
             </div>
-        </div>
-    </c:if>
+        </c:when>
+        <c:when test="${sessionScope.role == 'MENTOR'}">
+            <div class="dropDown">
+                <button class="dropButton-profile">${sessionScope.name}
+                </button>
+                <div class="dropDownContent-profile">
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showProfile">${profile}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showTrainings">${mentoring}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=signOut">${signOut}</a>
+                </div>
+            </div>
+        </c:when>
+        <c:when test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}">
+            <div class="dropDown">
+                <button class="dropButton-profile">${sessionScope.name}
+                </button>
+                <div class="dropDownContent-profile">
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showProfile">${profile}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=showTrainings&pageNumber=1&limit=5">${admininstrate}</a>
+                    <a href="${pageContext.servletContext.contextPath}/controller?command=signOut">${signOut}</a>
+                </div>
+            </div>
+        </c:when>
+    </c:choose>
 
-    <c:if test="${not empty sessionScope.role}">
+    <c:if test="${empty sessionScope.role || sessionScope.role eq 'STUDENT'}">
         <div class="requiredButton">
             <a href="${pageContext.servletContext.contextPath}/controller?command=showTrainings&pageNumber=1&limit=5">${trainings}</a>
         </div>

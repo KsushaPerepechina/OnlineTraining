@@ -15,7 +15,7 @@ import java.util.Optional;
 public class ConsultationRepository extends AbstractRepository<Consultation> {
     private static final String TABLE_NAME = "consultations";
     private static final String SELECT_QUERY = "SELECT consultations.id, date_time, cost, status, performance, quality, " +
-            "users.id, first_name, last_name, trainings.id, trainings.mentor_id FROM consultations " +
+            "users.id, first_name, last_name, trainings.id, trainings.name, trainings.mentor_id FROM consultations " +
             "LEFT JOIN users ON consultations.student_id = users.id LEFT JOIN trainings ON consultations.training_id = " +
             "trainings.id ";
     private static final String ID = "id";

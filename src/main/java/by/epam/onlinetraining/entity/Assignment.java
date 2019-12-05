@@ -7,16 +7,16 @@ import java.util.StringJoiner;
 public class Assignment extends Entity {
     private String name;
     private AssignmentType type;
-    private int trainingId;
+    private Training training;
 
     public Assignment() {
     }
 
-    public Assignment(Integer id, String name, AssignmentType type, int trainingId) {
+    public Assignment(Integer id, String name, AssignmentType type, Training training) {
         super(id);
         this.name = name;
         this.type = type;
-        this.trainingId = trainingId;
+        this.training = training;
     }
 
     public String getName() {
@@ -35,12 +35,12 @@ public class Assignment extends Entity {
         this.type = type;
     }
 
-    public Integer getTrainingId() {
-        return trainingId;
+    public Training getTraining() {
+        return training;
     }
 
-    public void setTrainingId(Integer trainingId) {
-        this.trainingId = trainingId;
+    public void setTraining(Training training) {
+        this.training = training;
     }
 
     @Override
@@ -52,8 +52,9 @@ public class Assignment extends Entity {
             return false;
         }
         Assignment assignment = (Assignment) o;
-        return trainingId == assignment.trainingId && type == assignment.type &&
+        return type == assignment.type &&
                 getId() != null && getId().equals(assignment.getId()) &&
+                training != null && training.equals(assignment.getTraining()) &&
                 name != null && name.equals(assignment.name);
     }
 
@@ -64,7 +65,7 @@ public class Assignment extends Entity {
         result += seed * (getId() == null ? 0 : getId().hashCode());
         result += seed * (name == null ? 0 : name.hashCode());
         result += seed * type.hashCode();
-        result += seed * trainingId;
+        result += seed * (training == null ? 0 : training.hashCode());
         return result;
     }
 
@@ -74,7 +75,7 @@ public class Assignment extends Entity {
                 .add("id=" + getId())
                 .add("name='" + name + "'")
                 .add("type=" + type)
-                .add("trainingId=" + trainingId)
+                .add("training=" + training)
                 .toString();
     }
 }

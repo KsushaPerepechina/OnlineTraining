@@ -10,7 +10,6 @@
 <fmt:message bundle="${naming}" key="studentHeader.label.consultations" var="consultations"/>
 <fmt:message bundle="${naming}" key="adminHeader.label.students" var="students"/>
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,15 +21,14 @@
 <div class="vertical-menu">
     <div class="buttons">
         <a href="controller?command=showTrainingInfo&trainingId=${requestScope.trainingId}">${info}</a>
-    </div>
-    <c:if test="${not empty sessionScope.role}"> <!-- TODO поверка на то, что студент обучается в этой группе -->
+    </div><!-- TODO поверка на то, что студент обучается в этой группе -->
         <div class="buttons">
-            <a href="controller?command=showTrainingAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
+            <a href="controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
                     ${assignments}
             </a>
         </div>
     <div class="buttons">
-        <a href="controller?command=showTrainingConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
+        <a href="controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
                 ${consultations}
         </a>
     </div>
@@ -40,7 +38,6 @@
                     ${students}
             </a>
         </div>
-    </c:if>
     </c:if>
 </div>
 </body>

@@ -19,15 +19,15 @@ public class RecordBuilder implements EntityBuilder<Record> {
     private static final String MARK = "mark";
     private static final String SPACE_CHAR = "\u0020";
     private static final String UNDERSCORE_SYMBOL = "\u005f";
+    private static UserBuilder userBuilder = new UserBuilder();
+    private static TrainingBuilder trainingBuilder = new TrainingBuilder();
 
     @Override
     public Record build(ResultSet resultSet) throws RepositoryException {
         try {
             Integer id = resultSet.getInt(ID);
-            UserBuilder userBuilder = new UserBuilder();
             User student = userBuilder.buildRepresentation(resultSet);
-            TrainingBuilder trainingBuilder = new TrainingBuilder();
-            Training training = trainingBuilder.buildRepresentation(resultSet);
+            Training training = trainingBuilder.build(resultSet);
             StudentStatus status = StudentStatus.valueOf(resultSet.getString(STATUS)
                     .toUpperCase().replace(SPACE_CHAR, UNDERSCORE_SYMBOL));
             int mark = resultSet.getInt(MARK);

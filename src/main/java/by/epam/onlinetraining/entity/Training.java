@@ -25,8 +25,9 @@ public class Training extends Entity {
         this.mentor = mentor;
     }
 
-    public Training(Integer id, User mentor) {
+    public Training(Integer id, String name, User mentor) {
         super(id);
+        this.name = name;
         this.mentor = mentor;
     }
 

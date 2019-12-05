@@ -18,7 +18,7 @@ import java.util.List;
 public class TrainingBuilder implements EntityBuilder<Training> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "trainings.id";
-    private static final String NAME = "name";
+    private static final String NAME = "trainings.name";
     private static final String START_DATE = "start_date";
     private static final String END_DATE = "end_date";
     private static final String PROGRESS = "progress";
@@ -47,12 +47,13 @@ public class TrainingBuilder implements EntityBuilder<Training> {
     public Training buildRepresentation(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(ID);
+            String name = resultSet.getString(NAME);
 //            TrainingProgress progress = TrainingProgress.valueOf(resultSet.getString(PROGRESS)
 //                    .toUpperCase().replace(SPACE_CHAR, UNDERSCORE_SYMBOL));//TODO
             int mentorId = resultSet.getInt(MENTOR_ID);
             User mentor = new User(mentorId);
             //return new Training(id, progress, mentor);
-            return new Training(id, mentor);
+            return new Training(id, name, mentor);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
             throw new RepositoryException(e.getMessage(), e);

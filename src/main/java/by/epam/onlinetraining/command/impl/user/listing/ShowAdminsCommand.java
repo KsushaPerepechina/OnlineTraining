@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ShowAdminsCommand implements Command {
-    private static final String ADMINS_PAGE = "/WEB-INF/page/user/admins.jsp";
+    private static final String ADMINS_PAGE = "/WEB-INF/page/user/listing/admins.jsp";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {

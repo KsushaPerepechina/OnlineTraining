@@ -1,4 +1,4 @@
-package by.epam.onlinetraining.specification.impl.assignment;
+package by.epam.onlinetraining.specification.impl.record;
 
 import by.epam.onlinetraining.specification.SqlSpecification;
 

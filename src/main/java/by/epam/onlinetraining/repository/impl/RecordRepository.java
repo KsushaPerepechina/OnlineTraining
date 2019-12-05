@@ -16,9 +16,10 @@ import java.util.Optional;
 
 public class RecordRepository extends AbstractRepository<Record> {
     private static final String TABLE_NAME = "records";
-    private static final String SELECT_QUERY = "SELECT records.id, users.id, users.first_name, users.last_name, " +
-            "mark, status, trainings.id, trainings.progress, trainings.mentor_id FROM records JOIN users " +
-            "ON records.student_id = users.id JOIN trainings ON records.training_id = trainings.id ";
+    private static final String SELECT_QUERY = "SELECT records.id, mark, status, users.id, users.first_name, " +
+            "users.last_name, trainings.id, trainings.name, trainings.start_date, trainings.end_date, " +
+            "trainings.progress, trainings.mentor_id FROM records JOIN users ON records.student_id = users.id " +
+            "JOIN trainings ON records.training_id = trainings.id ";
     private static final String ID = "id";
     private static final String STUDENT_ID = "student_id";
     private static final String TRAINING_ID = "training_id";

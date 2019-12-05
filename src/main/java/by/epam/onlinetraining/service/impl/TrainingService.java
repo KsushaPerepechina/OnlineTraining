@@ -8,6 +8,8 @@ import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.TrainingRepository;
 import by.epam.onlinetraining.specification.impl.FindAllSpecification;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
+import by.epam.onlinetraining.specification.impl.training.FindByMentorIdSpecification;
+import by.epam.onlinetraining.specification.impl.training.FindByProgressAndMentorIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByProgressSpecification;
 import by.epam.onlinetraining.util.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
@@ -43,10 +45,10 @@ public class TrainingService { //TODO implements Service<Training> {
         }
     }
 
-    public List<Training> findAll() throws ServiceException {
+    public List<Training> findByMentorId(int mentorId) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
-            return trainingRepository.queryAll(new FindAllSpecification(trainingRepository.getTableName()));
+            return trainingRepository.queryAll(new FindByMentorIdSpecification(mentorId, trainingRepository.getTableName()));
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
@@ -57,6 +59,26 @@ public class TrainingService { //TODO implements Service<Training> {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
             return trainingRepository.queryAll(new FindByProgressSpecification(progress, trainingRepository.getTableName()));
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    public List<Training> findByProgressAndMentorId(TrainingProgress progress, int mentorId) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
+            return trainingRepository.queryAll(new FindByProgressAndMentorIdSpecification(progress, mentorId));
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    public List<Training> findAll() throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
+            return trainingRepository.queryAll(new FindAllSpecification(trainingRepository.getTableName()));
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

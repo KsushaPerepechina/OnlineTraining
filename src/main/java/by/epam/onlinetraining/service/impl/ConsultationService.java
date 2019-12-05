@@ -1,17 +1,15 @@
 package by.epam.onlinetraining.service.impl;
 
 import by.epam.onlinetraining.entity.Consultation;
-import by.epam.onlinetraining.entity.Record;
 import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.ConsultationStatus;
-import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.ConsultationRepository;
-import by.epam.onlinetraining.repository.impl.RecordRepository;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
-import by.epam.onlinetraining.specification.impl.assignment.FindByTrainingIdSpecification;
+import by.epam.onlinetraining.specification.impl.record.FindByStudentIdSpecification;
+import by.epam.onlinetraining.specification.impl.record.FindByTrainingIdSpecification;
 import by.epam.onlinetraining.util.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +25,17 @@ public class ConsultationService {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             ConsultationRepository consultationRepository = repositoryCreator.getConsultationRepository();
             return consultationRepository.queryAll(new FindByTrainingIdSpecification(trainingId,
+                    consultationRepository.getTableName()));
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    public List<Consultation> findByStudentId(int studentId) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            ConsultationRepository consultationRepository = repositoryCreator.getConsultationRepository();
+            return consultationRepository.queryAll(new FindByStudentIdSpecification(studentId,
                     consultationRepository.getTableName()));
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);

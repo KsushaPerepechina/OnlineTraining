@@ -31,20 +31,30 @@
         ${assignments}
     </div>
     <div class="leftColumn">
-        <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
+        <c:choose>
+            <c:when test="${sessionScope.role eq 'MENTOR'}">
+                <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
+            </c:when>
+            <c:when test="${sessionScope.role eq 'STUDENT'}">
+                <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
+            </c:otherwise>
+        </c:choose>
     </div>
     <div class="rightColumn">
         <div class="itemLimit">
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showTrainingAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=15"
+               href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=15"
                formmethod="post" onclick=changeStatus(event)>15
             </a>
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showTrainingAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=10"
+               href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=10"
                formmethod="post" onclick=changeStatus(event)>10
             </a>
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showTrainingAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5"
+               href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5"
                formmethod="post" onclick=changeStatus(event)>5
             </a>
         </div>
@@ -53,6 +63,7 @@
                 <tr>
                     <th>${name}</th>
                     <th>${type}</th>
+                    <th>${training}</th>
                 </tr>
                 <c:forEach items="${assignmentList}" var="assignment">
                     <tr>
@@ -73,6 +84,11 @@
                                 </c:choose>
                             </div>
                         </td>
+                        <td>
+                            <div class="data">
+                                    ${assignment.training.name}
+                            </div>
+                        </td>
                     </tr>
                 </c:forEach>
             </table>
@@ -80,7 +96,7 @@
         <div class="pages">
             <jsp:useBean id="pages" scope="request" type="java.util.List"/>
             <c:forEach items="${pages}" var="pages">
-                <a href="${pageContext.servletContext.contextPath}/controller?command=showTrainingAssignments&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
+                <a href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
             </c:forEach>
         </div>
     </div>
