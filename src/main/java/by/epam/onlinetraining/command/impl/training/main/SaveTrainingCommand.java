@@ -24,7 +24,7 @@ public class SaveTrainingCommand implements Command {
     private static final String TRAININGS_ADDRESS = "controller?command=showTrainings";
     private static final String SHOW_TRAINING_INFO_ADDRESS = "controller?command=showTrainingInfo&trainingId=";
     private static final String MESSAGE = "&message=";
-    private static final String ERROR_MESSAGE = "invalidTraining";
+    private static final String ERROR_MESSAGE = "invalid";
     private static final String ADDED_TRAINING = "added";
     private static final String EDITED_TRAINING = "edited";
 

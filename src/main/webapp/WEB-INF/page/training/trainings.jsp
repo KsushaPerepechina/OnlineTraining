@@ -15,9 +15,8 @@
 <fmt:message bundle="${naming}" key="training.section.inProcess" var="inProcess"/>
 <fmt:message bundle="${naming}" key="training.section.registrationOpened" var="registrationOpened"/>
 <fmt:message bundle="${naming}" key="training.table.button.showInfo" var="showInfo"/>
-<fmt:message bundle="${naming}" key="training.message.added" var="addedTraining"/>
-<fmt:message bundle="${naming}" key="training.message.edited" var="editedTraining"/>
-<fmt:message bundle="${naming}" key="training.message.invalidTraining" var="invalidTraining"/>
+<fmt:message bundle="${naming}" key="training.message.added" var="added"/>
+<fmt:message bundle="${naming}" key="training.message.invalid" var="invalid"/>
 <fmt:message bundle="${naming}" key="button.add" var="add"/>
 <fmt:message bundle="${naming}" key="button.delete" var="delete"/>
 
@@ -25,7 +24,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon/favicon.png" type="image/png"> <!-- TODO replace all icons-->
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon/favicon.png" type="image/png">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/dataStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/tableStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/tabStyle.css">
@@ -41,7 +40,7 @@
     <div class="title">
         ${trainings}
     </div>
-    <c:if test="${not empty sessionScope && sessionScope.role ne 'STUDENT'}">
+    <c:if test="${not empty sessionScope.role && sessionScope.role ne 'STUDENT'}">
         <div class="tab">
             <button class="tabLinks" onclick="openTab(event, 'finished')">${finished}</button>
             <button class="tabLinks active" onclick="openTab(event, 'inProcess')">${inProcess}</button>
@@ -51,23 +50,19 @@
         </div>
     </c:if>
 
+    <div class="leftColumn">
     <c:choose>
         <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
-            <div class="leftColumn">
-                <jsp:include page="/WEB-INF/fragment/header/adminHeader.jsp"/>
-            </div>
+            <jsp:include page="/WEB-INF/fragment/header/adminHeader.jsp"/>
         </c:when>
         <c:when test="${sessionScope.role eq 'MENTOR'}">
-            <div class="leftColumn">
-                <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
-            </div>
+            <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
         </c:when>
         <c:when test="${sessionScope.role eq 'STUDENT'}">
-            <div class="leftColumn">
-                <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
-            </div>
+            <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
         </c:when>
     </c:choose>
+    </div>
 
     <div id="finished" class="rightColumn" style="display: none;">
         <div class="tableScroll">
@@ -292,22 +287,19 @@
                     <div class="notify-resultButtons">
                         <c:choose>
                             <c:when test="${requestScope.notifyMessage eq 'added'}">
-                                <label>${addedTraining}</label>
+                                <label>${added}</label>
                             </c:when>
-                            <c:when test="${requestScope.notifyMessage eq 'edited'}">
-                                <label>${editedTraining}</label>
+                            <c:when test="${requestScope.notifyMessage eq 'invalid'}">
+                                <label>${invalid}</label>
                             </c:when>
-                            <c:when test="${requestScope.notifyMessage eq 'invalidTraining'}">
-                                <label>${invalidTraining}</label>
-                            </c:when>
-                            <c:when test="${requestScope.notifyMessage eq 'deletedTraining'}">
-                                <label>${isDeleted}</label>
+                            <c:when test="${requestScope.notifyMessage eq 'deleted'}">
+                                <label>${deleted}</label>
                             </c:when>
                         </c:choose>
                     </div>
                     <div class="notify-resultButtons">
                         <a class="okButton" id="okButton" type="submit"
-                           href="${pageContext.servletContext.contextPath}/controller?command=showTrainings">Ok
+                           href="${pageContext.servletContext.contextPath}/controller?command=showTrainings&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}">Ok
                         </a>
                     </div>
                 </div>

@@ -63,19 +63,19 @@ input[type=text] {
     margin-top: 6px;
 }
 
-.submitButton {
-    padding: 13px 26px;
-    margin: 3% 0 0 45%;
-    font-size: 16px;
-    color: black;
-    background-color: rgba(30, 144, 255, 0.5);
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
+/*.submitButton {*/
+/*    padding: 13px 26px;*/
+/*    margin: 3% 0 0 45%;*/
+/*    font-size: 16px;*/
+/*    color: black;*/
+/*    background-color: rgba(30, 144, 255, 0.5);*/
+/*    border: none;*/
+/*    border-radius: 6px;*/
+/*    cursor: pointer;*/
+/*}*/
 
-.submitButton:hover {
-    transition: all 0.3s;
-    background-color: rgba(173, 216, 230, 0.8);
-    color: black;
-}
+/*.submitButton:hover {*/
+/*    transition: all 0.3s;*/
+/*    background-color: rgba(173, 216, 230, 0.8);*/
+/*    color: black;*/
+/*}*/

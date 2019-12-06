@@ -54,7 +54,7 @@ public class ShowAssignmentsCommand implements Command {
         } else {
             int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
             assignmentList = assignmentService.findByTrainingId(trainingId);
-            //request.setAttribute(TRAINING_ID, trainingId);
+            request.setAttribute(TRAINING_ID, trainingId);
         }
 
         String stringLimit = request.getParameter(LIMIT);

@@ -36,7 +36,7 @@ public class TrainingBuilder implements EntityBuilder<Training> {
             TrainingProgress progress = TrainingProgress.valueOf(resultSet.getString(PROGRESS)
                     .toUpperCase().replace(SPACE_CHAR, UNDERSCORE_SYMBOL));
             UserBuilder userBuilder = new UserBuilder();
-            User mentor = userBuilder.buildRepresentation(resultSet);
+            User mentor = userBuilder.buildMentor(resultSet);
             return new Training(id, name, startDate, endDate, progress, mentor);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
@@ -48,11 +48,8 @@ public class TrainingBuilder implements EntityBuilder<Training> {
         try {
             int id = resultSet.getInt(ID);
             String name = resultSet.getString(NAME);
-//            TrainingProgress progress = TrainingProgress.valueOf(resultSet.getString(PROGRESS)
-//                    .toUpperCase().replace(SPACE_CHAR, UNDERSCORE_SYMBOL));//TODO
             int mentorId = resultSet.getInt(MENTOR_ID);
             User mentor = new User(mentorId);
-            //return new Training(id, progress, mentor);
             return new Training(id, name, mentor);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);

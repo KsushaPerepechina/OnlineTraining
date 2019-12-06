@@ -1,5 +1,6 @@
 package by.epam.onlinetraining.command;
 
+import by.epam.onlinetraining.command.impl.training.assignment.SaveAssignmentCommand;
 import by.epam.onlinetraining.command.impl.training.assignment.ShowAssignmentsCommand;
 import by.epam.onlinetraining.command.impl.training.consultation.RateConsultationQualityCommand;
 import by.epam.onlinetraining.command.impl.training.consultation.RateStudentPerformanceCommand;
@@ -50,6 +51,7 @@ public class CommandFactory {
     private static final String SAVE_TRAINING = "saveTraining";
     private static final String SHOW_TRAINING_STUDENTS = "showTrainingStudents";
     private static final String SHOW_ASSIGNMENTS = "showAssignments";
+    private static final String SAVE_ASSIGNMENT = "saveAssignment";
     private static final String SHOW_CONSULTATIONS = "showConsultations";
     private static final String SHOW_BALANCE = "showBalance";
     private static final String REFILL_BALANCE = "refillBalance";
@@ -92,6 +94,8 @@ public class CommandFactory {
                 return new SaveTrainingCommand();
             case SHOW_ASSIGNMENTS:
                 return new ShowAssignmentsCommand();
+            case SAVE_ASSIGNMENT:
+                return new SaveAssignmentCommand();
             case SHOW_TRAINING_STUDENTS:
                 return new ShowTrainingStudentsCommand();
             case SHOW_CONSULTATIONS:

@@ -39,7 +39,7 @@ public class ConsultationBuilder implements EntityBuilder<Consultation> {
             ConsultationStatus status = ConsultationStatus.valueOf(resultSet.getString(STATUS).toUpperCase());
             int performance = resultSet.getInt(PERFORMANCE);
             int quality = resultSet.getInt(QUALITY);
-            User student = userBuilder.buildRepresentation(resultSet);
+            User student = userBuilder.buildStudent(resultSet);
             Training training = trainingBuilder.buildRepresentation(resultSet);
             return new Consultation(id, student, training, dateTime, cost, status, performance, quality);
         } catch (SQLException e) {

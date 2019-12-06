@@ -23,12 +23,12 @@ public class SignUpCommand implements Command {
     private static final String PHONE_NUMBER = "phoneNumber";
     private static final String LANGUAGE = "language";
     private static final String BIRTH_DATE = "birthDate";
-    private static final String LOGIN = "login";//TODO
+    private static final String LOGIN = "login";
     private static final String PASSWORD = "userPassword";
-    private static final String START_PAGE = "controller?command=startLogIn";//TODO
+    private static final String START_PAGE = "controller?command=startLogIn";
     private static final String LOG_IN_PAGE = "/WEB-INF/page/common/login.jsp";
     private static final String SIGN_UP_ERROR = "signUpError";
-    private static final String LOGIN_ERROR = "loginError";//emailError
+    private static final String LOGIN_ERROR = "loginError";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {

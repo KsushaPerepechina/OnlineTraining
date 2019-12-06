@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class UserBuilder implements EntityBuilder<User> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "users.id";
+    private static final String MENTOR_ID = "mentor_id";
     private static final String FIRST_NAME = "first_name";
     private static final String LAST_NAME = "last_name";
     private static final String BIRTH_DATE = "birth_date";
@@ -51,9 +52,21 @@ public class UserBuilder implements EntityBuilder<User> {
             throw new RepositoryException(e.getMessage(), e);
         }
     }
-    public User buildRepresentation(ResultSet resultSet) throws RepositoryException {
+    public User buildStudent(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(ID);
+            String firstName = resultSet.getString(FIRST_NAME);
+            String lastName = resultSet.getString(LAST_NAME);
+            return new User(id, firstName, lastName);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e.getMessage(), e);
+        }
+    }
+
+    public User buildMentor(ResultSet resultSet) throws RepositoryException {
+        try {
+            int id = resultSet.getInt(MENTOR_ID);
             String firstName = resultSet.getString(FIRST_NAME);
             String lastName = resultSet.getString(LAST_NAME);
             return new User(id, firstName, lastName);

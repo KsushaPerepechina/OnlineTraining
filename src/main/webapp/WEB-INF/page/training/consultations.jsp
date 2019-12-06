@@ -40,23 +40,19 @@
     <div class="title">
         ${consultations}
     </div>
+    <div class="leftColumn">
     <c:choose>
-        <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
-            <div class="leftColumn">
-                <jsp:include page="/WEB-INF/fragment/header/adminHeader.jsp"/>
-            </div>
-        </c:when>
-        <c:when test="${sessionScope.role eq 'MENTOR'}">
-            <div class="leftColumn">
-                <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
-            </div>
-        </c:when>
         <c:when test="${sessionScope.role eq 'STUDENT'}">
-            <div class="leftColumn">
-                <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
-            </div>
+            <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
         </c:when>
+        <c:when test="${sessionScope.role eq 'MENTOR' && requestScope.trainingId == null}">
+            <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
+        </c:when>
+        <c:otherwise>
+            <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
+        </c:otherwise>
     </c:choose>
+    </div>
     <div class="rightColumn">
         <div class="itemLimit">
             <a class=" "
@@ -75,6 +71,9 @@
         <div class="card">
             <table>
                 <tr>
+                    <c:if test="${sessionScope.role eq 'MENTOR' && requestScope.trainingId == null}">
+                        <th>${training}</th>
+                    </c:if>
                     <c:choose>
                         <c:when test="${sessionScope.role eq 'STUDENT'}">
                             <th>${training}</th>
@@ -91,6 +90,13 @@
                 </tr>
                 <c:forEach items="${consultationList}" var="consultation">
                     <tr>
+                        <c:if test="${sessionScope.role eq 'MENTOR' && requestScope.trainingId == null}">
+                            <td>
+                                <div class="data">
+                                        ${consultation.training.name}
+                                </div>
+                            </td>
+                        </c:if>
                         <td>
                             <c:choose>
                                 <c:when test="${sessionScope.role eq 'STUDENT'}">

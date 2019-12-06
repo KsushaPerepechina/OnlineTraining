@@ -10,14 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 
 public class DeleteTrainingCommand implements Command {
     private static final String TRAINING_ID = "trainingId";
+    private static final String SHOW_TRAININGS = "controller?command=showTrainings&pageNumber=1&limit=5&message=deleted";
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int trainingId = Integer.valueOf(request.getParameter(TRAINING_ID));
         TrainingService trainingService = new TrainingService();
         trainingService.delete(trainingId);
-
-        ShowTrainingsCommand showTrainingsCommand = new ShowTrainingsCommand();
-        return showTrainingsCommand.execute(request, response);
+        return CommandResult.redirect(SHOW_TRAININGS);
     }
 }

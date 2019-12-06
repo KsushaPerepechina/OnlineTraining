@@ -11,13 +11,17 @@
 <fmt:message bundle="${naming}" key="assignment.table.type" var="type"/>
 <fmt:message bundle="${naming}" key="assignment.table.type.task" var="task"/>
 <fmt:message bundle="${naming}" key="assignment.table.type.topic" var="topic"/>
-<fmt:message bundle="${naming}" key="button.edit" var="edit"/>
+<fmt:message bundle="${naming}" key="assignment.table.training" var="training"/>
+<fmt:message bundle="${naming}" key="button.add" var="add"/>
+<fmt:message bundle="${naming}" key="assignment.message.added" var="added"/>
+<fmt:message bundle="${naming}" key="assignment.message.invalid" var="invalid"/>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon/favicon.png" type="image/png">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/notifyStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/dataStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/tableStyle.css">
     <jsp:useBean id="assignmentList" scope="request" type="java.util.List"/>
@@ -32,9 +36,6 @@
     </div>
     <div class="leftColumn">
         <c:choose>
-            <c:when test="${sessionScope.role eq 'MENTOR'}">
-                <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
-            </c:when>
             <c:when test="${sessionScope.role eq 'STUDENT'}">
                 <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
             </c:when>
@@ -99,8 +100,40 @@
                 <a href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
             </c:forEach>
         </div>
+        <c:if test="${sessionScope.role eq 'MENTOR'}">
+            <div class="addPanel">
+                <button class="addButton"
+                        onclick="document.getElementById('addAssignment').style.display='block'">${add}
+                </button>
+            </div>
+        </c:if>
+        <c:if test="${not empty requestScope.notifyMessage}">
+            <div class="notify-modal" id="refileBalanceNotify" style="display: block;">
+                <div class="notify-modal-content animate">
+                    <div class="notify-resultButtons">
+                        <c:choose>
+                            <c:when test="${requestScope.notifyMessage eq 'added'}">
+                                <label>${added}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'invalid'}">
+                                <label>${invalid}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'assignmentDelete'}">
+                                <label>${isDeleted}</label>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                    <div class="notify-resultButtons">
+                        <a class="okButton" id="okButton" type="submit"
+                           href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}">Ok
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </c:if>
     </div>
 </div>
+<jsp:include page="/WEB-INF/fragment/training/addAssignment.jsp"/>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>
 </body>
 </html>

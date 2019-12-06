@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class TrainingService { //TODO implements Service<Training> {
+public class TrainingService {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final String ID = "id";
+    private static final String ID = "trainingId";
     private static final String NAME = "trainingName";
     private static final String START_DATE = "startDate";
     private static final String END_DATE = "endDate";

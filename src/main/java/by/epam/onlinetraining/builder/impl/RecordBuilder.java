@@ -26,7 +26,7 @@ public class RecordBuilder implements EntityBuilder<Record> {
     public Record build(ResultSet resultSet) throws RepositoryException {
         try {
             Integer id = resultSet.getInt(ID);
-            User student = userBuilder.buildRepresentation(resultSet);
+            User student = userBuilder.buildStudent(resultSet);
             Training training = trainingBuilder.build(resultSet);
             StudentStatus status = StudentStatus.valueOf(resultSet.getString(STATUS)
                     .toUpperCase().replace(SPACE_CHAR, UNDERSCORE_SYMBOL));

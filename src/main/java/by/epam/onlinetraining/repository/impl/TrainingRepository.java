@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class TrainingRepository extends AbstractRepository<Training> {
     private static final String TABLE_NAME = "trainings";
-    private static final String SELECT_QUERY = "SELECT trainings.id, name, start_date, end_date, progress, users.id, " +
+    private static final String SELECT_QUERY = "SELECT trainings.id, name, start_date, end_date, progress, mentor_id, " +
             "users.first_name, users.last_name FROM trainings JOIN users ON trainings.mentor_id = users.id ";
     private static final String TRAINING_ID = "id";
     private static final String NAME = "name";

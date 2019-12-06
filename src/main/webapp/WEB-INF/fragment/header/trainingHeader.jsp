@@ -21,7 +21,7 @@
 <div class="vertical-menu">
     <div class="buttons">
         <a href="controller?command=showTrainingInfo&trainingId=${requestScope.trainingId}">${info}</a>
-    </div><!-- TODO поверка на то, что студент обучается в этой группе -->
+    </div>
         <div class="buttons">
             <a href="controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5">
                     ${assignments}

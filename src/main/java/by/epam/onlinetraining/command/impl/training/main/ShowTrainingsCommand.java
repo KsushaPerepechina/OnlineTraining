@@ -16,6 +16,7 @@ import by.epam.onlinetraining.service.impl.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShowTrainingsCommand implements Command {
@@ -56,12 +57,14 @@ public class ShowTrainingsCommand implements Command {
         request.setAttribute(FINISHED_TRAINING_LIST, finishedList);
         request.setAttribute(TRAINING_IN_PROCESS_LIST, inProcessList);
         request.setAttribute(REGISTRATION_OPENED_TRAINING_LIST, registrationOpenedList);
+        List<Training> studentTrainingList = new ArrayList<>();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
             RecordService recordService = new RecordService();
-            List<Training> studentTrainingList = recordService.findAllStudentTrainings(studentId);
-            request.setAttribute(STUDENT_TRAINING_LIST, studentTrainingList);
+            studentTrainingList = recordService.findAllStudentTrainings(studentId);
+
         }
+        request.setAttribute(STUDENT_TRAINING_LIST, studentTrainingList);
         return CommandResult.forward(TRAININGS_PAGE);
     }
 }

@@ -31,14 +31,18 @@ public class ShowTrainingInfoCommand implements Command {
         TrainingService trainingService = new TrainingService();
         Optional<Training> training = trainingService.findById(trainingId);
         EnumSet<TrainingProgress> progressSet = EnumSet.allOf(TrainingProgress.class);
+
+        UserService userService = new UserService();
+        List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
+
         training.ifPresent(foundedTraining -> {
             request.setAttribute(TRAINING, foundedTraining);
+            mentorList.removeIf(mentor -> mentor.getId().equals(foundedTraining.getId()));
             progressSet.remove(foundedTraining.getProgress());
         });
         request.setAttribute(PROGRESS_SET, progressSet);
 
-        UserService userService = new UserService();
-        List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
+
         request.setAttribute(TRAINING_ID, trainingId);
         request.setAttribute(MENTOR_LIST, mentorList);
         String message = request.getParameter(MESSAGE);//TODO

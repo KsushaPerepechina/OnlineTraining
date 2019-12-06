@@ -16,6 +16,8 @@
 <fmt:message bundle="${naming}" key="training.section.registrationOpened" var="registrationOpened"/>
 <fmt:message bundle="${naming}" key="training.table.mentor" var="mentor"/>
 <fmt:message bundle="${naming}" key="button.save" var="save"/>
+<fmt:message bundle="${naming}" key="training.message.edited" var="edited"/>
+<fmt:message bundle="${naming}" key="training.message.invalid" var="invalid"/>
 
 <html>
 <head>
@@ -35,13 +37,13 @@
     </div>
     <div class="rightColumn">
         <div class="card">
-            <form action="controller?command=saveTraining" method="post">
+            <form action="controller?command=saveTraining&trainingId=${training.id}" method="post">
                 <div class="row">
                     <div class="label">
                         <label for="trainingName">${name}:</label>
                     </div>
                     <div class="value">
-                        <input type="text" id="trainingName" name="name" value="${training.name}"
+                        <input type="text" id="trainingName" name="trainingName" value="${training.name}"
                                pattern="^[A-z0-9:&+#., ]{2,50}$"
                         <c:choose>
                         <c:when test="${sessionScope.role == 'MAIN_ADMIN' || sessionScope.role == 'ADMIN'}">
@@ -113,6 +115,7 @@
                     <div class="label">
                         <label for="progress">${progress}:</label>
                     </div>
+                    <div class="value">
                     <c:choose>
                         <c:when test="${sessionScope.role == 'MAIN_ADMIN' || sessionScope.role == 'ADMIN'}">
                             <select id="progress" name="progress" required>
@@ -150,27 +153,29 @@
                             <input type="text" id="progress" name="progress"
                             <c:choose>
                             <c:when test="${training.progress == 'REGISTRATION_OPENED'}">
-                                ${registrationOpened}
+                                value="${registrationOpened}"
                             </c:when>
                             <c:when test="${training.progress == 'IN_PROCESS'}">
-                                ${inProcess}
+                                value="${inProcess}"
                             </c:when>
                             <c:when test="${training.progress == 'FINISHED'}">
-                                ${finished}
+                                value="${finished}"
                             </c:when>
                             </c:choose>
                                    readonly>
                         </c:otherwise>
                     </c:choose>
+                    </div>
                 </div>
                 <div class="row">
                     <jsp:useBean id="mentorList" scope="request" type="java.util.List"/>
                     <div class="label">
                         <label for="mentor">${mentor}:</label>
                     </div>
+                    <div class="value">
                     <c:choose>
                         <c:when test="${sessionScope.role == 'MAIN_ADMIN' || sessionScope.role == 'ADMIN'}">
-                            <select id="mentorId" name="mentor" required>
+                            <select id="mentorId" name="mentorId" required>
                             <option selected value=${training.mentor.id}>${training.mentor.firstName} ${training.mentor.lastName}</option>
                             <c:forEach items="${mentorList}" var="mentor">
                                 <option value=${mentor.id}>${mentor.firstName} ${mentor.lastName}</option>
@@ -182,10 +187,13 @@
                                    value="${training.mentor.firstName} ${training.mentor.lastName}" readonly>
                         </c:otherwise>
                     </c:choose>
+                    </div>
                 </div>
-                <div class="submitButton">
-                    <input class="submitButton" type="submit" value="${save}">
-                </div>
+                <c:if test="${sessionScope.role == 'MAIN_ADMIN' || sessionScope.role == 'ADMIN'}">
+                    <div class="submitButton">
+                        <input class="submitButton" type="submit" value="${save}">
+                    </div>
+                </c:if>
             </form>
         </div>
         <c:if test="${not empty requestScope.message}">
@@ -193,11 +201,11 @@
                 <div class="notify-modal-content animate">
                     <div class="notify-resultButtons">
                         <c:choose>
-                            <c:when test="${requestScope.message eq 'savedTraining'}">
-                                <label>${editedTrainingInfo}</label>
+                            <c:when test="${requestScope.message eq 'edited'}">
+                                <label>${edited}</label>
                             </c:when>
-                            <c:when test="${requestScope.message eq 'invalidTraining'}">
-                                <label>${trainingInfoError}</label>
+                            <c:when test="${requestScope.message eq 'invalid'}">
+                                <label>${invalid}</label>
                             </c:when>
                         </c:choose>
                     </div>

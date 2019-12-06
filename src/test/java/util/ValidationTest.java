@@ -21,19 +21,19 @@ public class ValidationTest {
     public Object[][] dataForValidationStringParametersPositiveTest() {
         return new Object[][]{
                 {
-                        "firstName", "Aleksey"
+                        "firstName", "Kseniya"
                 },
                 {
-                        "lastName", "Shmat"
+                        "lastName", "Perepechina"
                 },
                 {
-                        "email", "leha.2409@mail.ru"
+                        "email", "ksusha.perepechina2gmail.com"
                 },
                 {
-                        "userPassword", "12345678zA"
+                        "userPassword", "Password0"
                 },
                 {
-                        "cost", "1050.00"
+                        "cost", "10"
                 }
         };
     }
@@ -65,7 +65,7 @@ public class ValidationTest {
     @DataProvider(name = "isValidDataMapParametersPositiveTest")
     public Object[][] dataForValidationMapParametersPositiveTest() {
         Map<String, String> firstMap = new HashMap<>();
-        firstMap.put("firstName", "Aleksey");
+        firstMap.put("firstName", "Kseniya");
         firstMap.put("cost", "1050.00");
         return new Object[][]{
                 {

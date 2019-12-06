@@ -39,12 +39,13 @@ public class ShowConsultationsCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         UserRole role = (UserRole) session.getAttribute(ROLE);
+        String stringTrainingId = request.getParameter(TRAINING_ID);
         List<Consultation> consultationList;
         ConsultationService consultationService = new ConsultationService();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
             consultationList = consultationService.findByStudentId(studentId);
-        } else if (UserRole.MENTOR == role) {
+        } else if (UserRole.MENTOR == role && (stringTrainingId == null || stringTrainingId.isEmpty())) {
             int mentorId = (Integer) session.getAttribute(ID);
             TrainingService trainingService = new TrainingService();
             List<Consultation> consultations = new LinkedList<>();
@@ -57,8 +58,9 @@ public class ShowConsultationsCommand implements Command {
             });
             consultationList = consultations;
         } else {
-            int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
+            int trainingId = Integer.parseInt(stringTrainingId);
             consultationList = consultationService.findByTrainingId(trainingId);
+            request.setAttribute(TRAINING_ID, trainingId);
         }
 
         String stringLimit = request.getParameter(LIMIT);
@@ -76,7 +78,6 @@ public class ShowConsultationsCommand implements Command {
 
         PagesDelimiter<Consultation> pagesDelimiter = new PagesDelimiter<>();
         List<Integer> pageNumbersList = pagesDelimiter.composePageNumbersList(consultationList, limit);
-        //request.setAttribute(TRAINING_ID, trainingId);
         request.setAttribute(LIMIT, limit);
         request.setAttribute(PAGES, pageNumbersList);
         request.setAttribute(PAGE_NUMBER, pageNumber);
