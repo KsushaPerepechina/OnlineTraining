@@ -1,5 +1,6 @@
 package by.epam.onlinetraining.command;
 
+import by.epam.onlinetraining.command.impl.training.assignment.DeleteAssignmentCommand;
 import by.epam.onlinetraining.command.impl.training.assignment.SaveAssignmentCommand;
 import by.epam.onlinetraining.command.impl.training.assignment.ShowAssignmentsCommand;
 import by.epam.onlinetraining.command.impl.training.consultation.RateConsultationQualityCommand;
@@ -52,6 +53,7 @@ public class CommandFactory {
     private static final String SHOW_TRAINING_STUDENTS = "showTrainingStudents";
     private static final String SHOW_ASSIGNMENTS = "showAssignments";
     private static final String SAVE_ASSIGNMENT = "saveAssignment";
+    private static final String DELETE_ASSIGNMENT = "deleteAssignment";
     private static final String SHOW_CONSULTATIONS = "showConsultations";
     private static final String SHOW_BALANCE = "showBalance";
     private static final String REFILL_BALANCE = "refillBalance";
@@ -88,18 +90,22 @@ public class CommandFactory {
                 return new ShowTrainingsCommand();
             case SHOW_TRAINING_INFO:
                 return new ShowTrainingInfoCommand();
-            case DELETE_TRAINING:
-                return new DeleteTrainingCommand();
             case SAVE_TRAINING:
                 return new SaveTrainingCommand();
+            case DELETE_TRAINING:
+                return new DeleteTrainingCommand();
             case SHOW_ASSIGNMENTS:
                 return new ShowAssignmentsCommand();
             case SAVE_ASSIGNMENT:
                 return new SaveAssignmentCommand();
-            case SHOW_TRAINING_STUDENTS:
-                return new ShowTrainingStudentsCommand();
+            case DELETE_ASSIGNMENT:
+                return new DeleteAssignmentCommand();
             case SHOW_CONSULTATIONS:
                 return new ShowConsultationsCommand();
+            case REQUEST_CONSULTATION:
+                return new RequestConsultationCommand();
+            case SHOW_TRAINING_STUDENTS:
+                return new ShowTrainingStudentsCommand();
             case SHOW_ADMINS:
                 return new ShowAdminsCommand();
             case SHOW_MENTORS:
@@ -120,8 +126,6 @@ public class CommandFactory {
                 return new RateConsultationQualityCommand();
             case APPLY_FOR_TRAINING:
                 return new ApplyForTrainingCommand();
-            case REQUEST_CONSULTATION:
-                return new RequestConsultationCommand();
             case SHOW_STUDENT_REQUESTS:
                 return new ShowStudentRequestsCommand();
             default:

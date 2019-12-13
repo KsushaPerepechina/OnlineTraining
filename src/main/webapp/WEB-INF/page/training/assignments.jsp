@@ -15,6 +15,7 @@
 <fmt:message bundle="${naming}" key="button.add" var="add"/>
 <fmt:message bundle="${naming}" key="assignment.message.added" var="added"/>
 <fmt:message bundle="${naming}" key="assignment.message.invalid" var="invalid"/>
+<fmt:message bundle="${naming}" key="assignment.message.deleted" var="deleted"/>
 
 <html>
 <head>
@@ -65,6 +66,9 @@
                     <th>${name}</th>
                     <th>${type}</th>
                     <th>${training}</th>
+                    <c:if test="${sessionScope.role eq 'MENTOR'}">
+                        <th></th>
+                    </c:if>
                 </tr>
                 <c:forEach items="${assignmentList}" var="assignment">
                     <tr>
@@ -89,6 +93,17 @@
                             <div class="data">
                                     ${assignment.training.name}
                             </div>
+                        </td>
+                        <td>
+                            <c:if test="${sessionScope.role eq 'MENTOR'}">
+                                <div class="deleteTrainingButton">
+                                    <a href="${pageContext.servletContext.contextPath}/controller?command=deleteAssignment&assignmentId=${assignment.id}&trainingId=${requestScope.trainingId}"
+                                       class="deleteTraining">
+                                        <img class="tableImage" src="img/icon/delete.png" alt="${delete}"
+                                             title="${delete}">
+                                    </a>
+                                </div>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>
@@ -118,8 +133,8 @@
                             <c:when test="${requestScope.notifyMessage eq 'invalid'}">
                                 <label>${invalid}</label>
                             </c:when>
-                            <c:when test="${requestScope.notifyMessage eq 'assignmentDelete'}">
-                                <label>${isDeleted}</label>
+                            <c:when test="${requestScope.notifyMessage eq 'deleted'}">
+                                <label>${deleted}</label>
                             </c:when>
                         </c:choose>
                     </div>

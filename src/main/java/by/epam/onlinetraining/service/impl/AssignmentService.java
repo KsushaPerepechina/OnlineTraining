@@ -38,4 +38,14 @@ public class AssignmentService {
             throw new ServiceException(e.getMessage(), e);
         }
     }
+
+    public void delete(int assignmentId) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            AssignmentRepository assignmentRepository = repositoryCreator.getAssignmentRepository();
+            assignmentRepository.remove(assignmentId);
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 }

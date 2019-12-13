@@ -22,6 +22,7 @@
 <fmt:message bundle="${naming}" key="button.edit" var="edit"/>
 <fmt:message bundle="${naming}" key="button.rate" var="rate"/>
 <fmt:message bundle="${naming}" key="button.schedule" var="schedule"/>
+<fmt:message bundle="${naming}" key="button.request" var="request"/>
 
 <html>
 <head>
@@ -256,8 +257,16 @@
                 <a href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
             </c:forEach>
         </div>
+        <c:if test="${sessionScope.role eq 'STUDENT'}">
+            <div class="addPanel">
+                <button class="addButton"
+                        onclick="document.getElementById('requestConsultation').style.display='block'">${request}
+                </button>
+            </div>
+        </c:if>
     </div>
 </div>
+<jsp:include page="/WEB-INF/fragment/training/requestConsultation.jsp"/>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>
 </body>
 </html>
