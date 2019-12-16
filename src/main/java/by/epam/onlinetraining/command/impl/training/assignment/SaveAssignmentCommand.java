@@ -6,7 +6,7 @@ import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.type.AssignmentType;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.AssignmentService;
+import by.epam.onlinetraining.service.impl.AssignmentServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +39,7 @@ public class SaveAssignmentCommand implements Command {
 
         AssignmentType type = AssignmentType.valueOf(stringType.toUpperCase());
         Assignment assignment = new Assignment(null, name, type, new Training(trainingId));
-        AssignmentService assignmentService = new AssignmentService();
+        AssignmentServiceImpl assignmentService = new AssignmentServiceImpl();
         assignmentService.add(assignment);
 
         return CommandResult.redirect(SHOW_ASSIGNMENTS + trainingId + MESSAGE + OK_MESSAGE);

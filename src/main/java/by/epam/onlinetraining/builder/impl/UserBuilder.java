@@ -14,6 +14,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Designed to build an object of type {@link by.epam.onlinetraining.entity.User} with specified characteristics.
+ */
 public class UserBuilder implements EntityBuilder<User> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "users.id";
@@ -29,6 +32,13 @@ public class UserBuilder implements EntityBuilder<User> {
     private static final String SPACE_CHAR = "\u0020";
     private static final String UNDERSCORE_SYMBOL = "\u005f";
 
+    /**
+     * Builds an object of type User with properties.
+     *
+     * @param resultSet Instance of {@link java.sql.ResultSet} with property set to build an object of type User.
+     * @return Returns built object of User type.
+     * @throws RepositoryException Throws when {@link java.sql.SQLException} is caught.
+     */
     @Override
     public User build(ResultSet resultSet) throws RepositoryException {
         try {
@@ -52,6 +62,14 @@ public class UserBuilder implements EntityBuilder<User> {
             throw new RepositoryException(e.getMessage(), e);
         }
     }
+
+    /**
+     * Builds a short representation of an object of type User that represents Student with properties.
+     *
+     * @param resultSet Instance of {@link java.sql.ResultSet} with property set to build an object of type User.
+     * @return Returns built object of User type.
+     * @throws RepositoryException Throws when {@link java.sql.SQLException} is caught.
+     */
     public User buildStudent(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(ID);
@@ -64,6 +82,13 @@ public class UserBuilder implements EntityBuilder<User> {
         }
     }
 
+    /**
+     * Builds a short representation of an object of type User that represents Mentor with properties.
+     *
+     * @param resultSet Instance of {@link java.sql.ResultSet} with property set to build an object of type User.
+     * @return Returns built object of User type.
+     * @throws RepositoryException Throws when {@link java.sql.SQLException} is caught.
+     */
     public User buildMentor(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(MENTOR_ID);

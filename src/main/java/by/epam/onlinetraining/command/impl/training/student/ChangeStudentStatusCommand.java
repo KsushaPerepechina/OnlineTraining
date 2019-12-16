@@ -4,7 +4,7 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.RecordService;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +44,7 @@ public class ChangeStudentStatusCommand implements Command {
         int recordId = Integer.parseInt(stringRecordId);
         StudentStatus status = StudentStatus.valueOf(stringStatus);
 
-        RecordService recordService = new RecordService();
+        RecordServiceImpl recordService = new RecordServiceImpl();
         recordService.updateStudentStatus(recordId, status);
 
         return CommandResult.redirect(SHOW_TRAINING_STUDENTS_COMMAND + trainingId

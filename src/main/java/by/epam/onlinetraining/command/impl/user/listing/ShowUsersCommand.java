@@ -1,10 +1,9 @@
 package by.epam.onlinetraining.command.impl.user.listing;
 
-import by.epam.onlinetraining.entity.Consultation;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -13,6 +12,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Designed to display a list of users.
+ */
 public class ShowUsersCommand {
     private static final String ERROR_PAGE = "/WEB-INF/page/error/Error404.jsp";
     private static final String PAGE_NUMBER = "pageNumber";
@@ -22,6 +24,14 @@ public class ShowUsersCommand {
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
 
+    /**
+     * Process the request, form user list and returns page for displaying.
+     *
+     * @param request an {@link javax.servlet.http.HttpServletRequest} object that contains client request
+     * @param role an {@link by.epam.onlinetraining.entity.type.UserRole} object that contains user role
+     * @param page list display page
+     * @throws ServiceException when {@link by.epam.onlinetraining.exception.RepositoryException} is caught.
+     */
     public String execute(HttpServletRequest request, UserRole role, String page) throws ServiceException {
         String stringLimit = request.getParameter(LIMIT);
         String stringPageNumber = request.getParameter(PAGE_NUMBER);
@@ -36,7 +46,7 @@ public class ShowUsersCommand {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        UserService userService = new UserService();
+        UserServiceImpl userService = new UserServiceImpl();
         List<User> userList = userService.findByRole(role);
         PagesDelimiter<User> pagesDelimiter = new PagesDelimiter<>();
         List<Integer> pageNumbersList = pagesDelimiter.composePageNumbersList(userList, limit);

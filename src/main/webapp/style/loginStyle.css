@@ -8,11 +8,11 @@ input[type=radio]:checked + label {
 }
 
 input:invalid:not(:placeholder-shown) {
-    border-color: hotpink;
+    border-color: pink;
 }
 
 input:valid:not(:placeholder-shown) {
-    border-color: aquamarine;
+    border-color: lightskyblue;
 }
 
 input[type=radio] {

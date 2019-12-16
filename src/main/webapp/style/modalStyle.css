@@ -49,12 +49,12 @@ select {
 }
 
 .processButton {
-    background-color: #4CAF50;
+    background-color: lightblue;
 }
 
 .edtButton {
     color:black;
-    background-color: #FFFF00;
+    background-color: lightyellow;
 }
 
 .processButton:hover, .cancelButton:hover, .edtButton:hover {
@@ -62,7 +62,7 @@ select {
 }
 
 .cancelButton {
-    background-color: #f44336;
+    background-color: lightpink;
     color: black;
     padding: 14px 25px;
     margin: 3px 25%;
@@ -84,10 +84,10 @@ select {
 }
 
 .yesButton{
-    background-color: green;
+    background-color: lightgreen;
 }
 .noButton{
-    background-color: red;
+    background-color: lightpink;
 }
 
 .resultButtons{

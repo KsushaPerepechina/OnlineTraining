@@ -15,26 +15,18 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/modalStyle.css">
-    <script src="${pageContext.request.contextPath}/js/requestConsultation.js"></script>
+    <script src="${pageContext.request.contextPath}/js/add.js"></script>
+    <jsp:useBean id="trainingList" scope="request" type="java.util.List"/>
 </head>
 <body>
-<div id="requestConsultation" class="modal">
+<div id="add" class="modal">
     <div class="modal-content animate">
-        <form action="${pageContext.servletContext.contextPath}/controller?command=saveConsultation&studentId=${requestScope.studentId}&trainingId=${requestScope.trainingId}" method="post">
+        <form action="${pageContext.servletContext.contextPath}/controller?command=requestConsultation&trainingId=${requestScope.trainingId}" method="post">
             <label for="training"><b>${training}</b></label>
-            <jsp:useBean id="trainingList" scope="request" type="java.util.List"/>
             <select id="training" name="training" required>
                 <option selected disabled>${training}</option>
                 <c:forEach items="${trainingList}" var="training">
                     <option value=${training.id}>${training.name}</option>
-                </c:forEach>
-            </select>
-            <label for="assignment"><b>${assignments}</b></label>
-            <jsp:useBean id="assignmentList" scope="request" type="java.util.List"/>
-            <select id="assignment" name="assignment" multiple="multiple" required>
-                <option selected disabled>${assignments}</option>
-                <c:forEach items="${assignmentList}" var="assignment">
-                    <option value=${assignment.id}>${assignment.name}</option>
                 </c:forEach>
             </select>
             <div>
@@ -42,7 +34,7 @@
             </div>
         </form>
         <div>
-            <button class="cancelButton" onclick="document.getElementById('requestConsultation').style.display='none'">${cancel}
+            <button class="cancelButton" onclick="document.getElementById('add').style.display='none'">${cancel}
             </button>
         </div>
     </div>

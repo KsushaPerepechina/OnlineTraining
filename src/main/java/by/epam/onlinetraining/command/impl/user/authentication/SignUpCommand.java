@@ -4,10 +4,8 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,6 +14,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Designed for user sign up.
+ */
 public class SignUpCommand implements Command {
     private static final String LAST_NAME = "lastName";
     private static final String FIRST_NAME = "firstName";
@@ -30,6 +31,16 @@ public class SignUpCommand implements Command {
     private static final String SIGN_UP_ERROR = "signUpError";
     private static final String LOGIN_ERROR = "loginError";
 
+    /**
+     * Process the request, sing up user and generates a result of processing in the form of
+     * {@link by.epam.onlinetraining.command.CommandResult} object.
+     *
+     * @param request an {@link javax.servlet.http.HttpServletRequest} object that contains client request
+     * @param response an {@link javax.servlet.http.HttpServletResponse} object that contains the response
+     *                 the servlet sends to the client
+     * @return A response in the form of {@link by.epam.onlinetraining.command.CommandResult} object.
+     * @throws ServiceException when {@link by.epam.onlinetraining.exception.RepositoryException} is caught.
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         String firstName = request.getParameter(FIRST_NAME);
@@ -56,7 +67,7 @@ public class SignUpCommand implements Command {
             request.setAttribute(SIGN_UP_ERROR, errorName);
             return CommandResult.forward(LOG_IN_PAGE);
         }
-        UserService userService = new UserService();
+        UserServiceImpl userService = new UserServiceImpl();
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
             request.setAttribute(LOGIN_ERROR, LOGIN);

@@ -14,11 +14,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/modalStyle.css">
-    <script src="${pageContext.request.contextPath}/js/addTraining.js"></script>
+    <script src="${pageContext.request.contextPath}/js/add.js"></script>
     <jsp:useBean id="mentorList" scope="request" type="java.util.List"/>
 </head>
 <body>
-<div id="addTraining" class="modal">
+<div id="add" class="modal">
     <div class="modal-content animate">
         <form action="${pageContext.servletContext.contextPath}/controller?command=saveTraining" method="post">
             <label for="trainingName"><b>${name}</b></label>
@@ -58,7 +58,7 @@
             </div>
         </form>
         <div>
-            <button class="cancelButton" onclick="document.getElementById('addTraining').style.display='none'">${cancel}
+            <button class="cancelButton" onclick="document.getElementById('add').style.display='none'">${cancel}
             </button>
         </div>
     </div>

@@ -30,8 +30,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/tabStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/notifyStyle.css">
     <script src="${pageContext.request.contextPath}/js/tab.js"></script>
-    <script src="${pageContext.request.contextPath}/js/adminTrainings.js"></script>
-    <script src="${pageContext.request.contextPath}/js/editTraining.js"></script>
     <title>${trainings}</title>
 </head>
 <body>
@@ -277,7 +275,7 @@
         <c:if test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
         <div class="addPanel">
             <button class="addButton"
-                    onclick="document.getElementById('addTraining').style.display='block'">${add}
+                    onclick="document.getElementById('add').style.display='block'">${add}
             </button>
         </div>
         </c:if>
@@ -307,7 +305,7 @@
         </c:if>
     </div>
 </div>
-<jsp:include page="/WEB-INF/fragment/training/addTraining.jsp"/>
+<jsp:include page="/WEB-INF/fragment/training/trainingForm.jsp"/>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>
 </body>
 </html>

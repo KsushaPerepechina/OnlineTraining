@@ -5,8 +5,8 @@ import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.OperationType;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.TransactionService;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.TransactionServiceImpl;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +16,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
+/**
+ * Designed to refile balance.
+ */
 public class RefillBalanceCommand implements Command {
     private static final String SUM = "sum";
     private static final String ID = "id";
@@ -24,6 +27,15 @@ public class RefillBalanceCommand implements Command {
     private static final String REFILLED_BALANCE = "refilledBalance";
     private static final String INVALID_SUM = "invalidSum";
 
+    /**
+     * Process the request, refile balance and generates a result of processing
+     * in the form of {@link by.epam.onlinetraining.command.CommandResult} object.
+     *
+     * @param request  an {@link javax.servlet.http.HttpServletRequest} object that contains client request
+     * @param response an {@link javax.servlet.http.HttpServletResponse} object that contains the response
+     *                 the servlet sends to the client
+     * @return A response in the form of {@link by.epam.onlinetraining.command.CommandResult} object.
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         LocalDate currentDate = LocalDate.now();
@@ -35,14 +47,14 @@ public class RefillBalanceCommand implements Command {
             return CommandResult.redirect(BALANCE_COMMAND + MESSAGE + INVALID_SUM);
         }
         BigDecimal sum = new BigDecimal(stringSum);
-        UserService userService = new UserService();
+        UserServiceImpl userService = new UserServiceImpl();
         Optional<User> optionalUser = userService.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             BigDecimal balance = user.getBalance();
             BigDecimal newBalance = balance.add(sum);//TODO transactions
             userService.updateBalance(id, newBalance);
-            TransactionService transactionService = new TransactionService();
+            TransactionServiceImpl transactionService = new TransactionServiceImpl();
             transactionService.addOperation(id, OperationType.REFILL, currentDate, sum);
         }
         return CommandResult.redirect(BALANCE_COMMAND + MESSAGE + REFILLED_BALANCE);

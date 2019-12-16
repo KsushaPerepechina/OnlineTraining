@@ -2,12 +2,14 @@ package by.epam.onlinetraining.command.impl.training.consultation;
 
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
-import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.entity.Consultation;
+import by.epam.onlinetraining.entity.Training;
+import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.ConsultationService;
-import by.epam.onlinetraining.service.impl.TrainingService;
+import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
+import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +29,7 @@ public class ShowConsultationsCommand implements Command {
     private static final String ID = "id";
     private static final String TRAINING_ID = "trainingId";
     private static final String CONSULTATION_LIST = "consultationList";
+    private static final String TRAINING_LIST = "trainingList";
     private static final String PAGE_NUMBER = "pageNumber";
     private static final String PAGES = "pages";
     private static final String LIMIT = "limit";
@@ -41,13 +44,16 @@ public class ShowConsultationsCommand implements Command {
         UserRole role = (UserRole) session.getAttribute(ROLE);
         String stringTrainingId = request.getParameter(TRAINING_ID);
         List<Consultation> consultationList;
-        ConsultationService consultationService = new ConsultationService();
+        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
+        RecordServiceImpl recordService = new RecordServiceImpl();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
             consultationList = consultationService.findByStudentId(studentId);
+            List<Training> studentTrainingList = recordService.findStudentTrainingsByStatus(studentId, StudentStatus.IN_PROCESS);
+            request.setAttribute(TRAINING_LIST, studentTrainingList);
         } else if (UserRole.MENTOR == role && (stringTrainingId == null || stringTrainingId.isEmpty())) {
             int mentorId = (Integer) session.getAttribute(ID);
-            TrainingService trainingService = new TrainingService();
             List<Consultation> consultations = new LinkedList<>();
             trainingService.findByMentorId(mentorId).forEach(training -> {
                 try {

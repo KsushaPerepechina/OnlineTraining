@@ -6,9 +6,10 @@ import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.UserRepository;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
 import by.epam.onlinetraining.specification.impl.user.*;
-import by.epam.onlinetraining.util.RepositoryCreator;
+import by.epam.onlinetraining.repository.RepositoryCreator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class UserService {
+public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "id";
     private static final String LAST_NAME = "lastName";
@@ -39,6 +40,7 @@ public class UserService {
     private static final String SPACE_CHAR = "\u0020";
     private static final String UNDERSCORE_SYMBOL = "\u005f";
 
+    @Override
     public Optional<User> logIn(String email, String password) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -49,6 +51,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void signUp(Map<String, String> signUpData, String language) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {//TODO try-with-resources
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -78,6 +81,7 @@ public class UserService {
         }
     }
 
+    @Override
     public Optional<User> findById(int id) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -88,6 +92,7 @@ public class UserService {
         }
     }
 
+    @Override
     public Optional<User> findByEmail(String email) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -98,6 +103,7 @@ public class UserService {
         }
     }
 
+    @Override
     public List<User> findByRole(UserRole role) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -108,6 +114,7 @@ public class UserService {
         }
     }
 
+    @Override
     public List<User> findByRoleAndBlockingStatus(UserRole role, BlockingStatus blockingStatus) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -118,6 +125,7 @@ public class UserService {
         }
     }
 
+    @Override
     public void updateProfile(Map<String, String> profileData, String language) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
@@ -155,21 +163,11 @@ public class UserService {
         }
     }
 
+    @Override
     public void updateBalance(int id, BigDecimal balance) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
             User user = new User(id, balance);
-            userRepository.save(user);
-        } catch (RepositoryException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    public void changeBlockingStatus(int id, BlockingStatus blockingStatus) throws ServiceException {
-        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
-            User user = new User(id, blockingStatus);
-            UserRepository userRepository = repositoryCreator.getUserRepository();
             userRepository.save(user);
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);

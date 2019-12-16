@@ -12,6 +12,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Designed to build an object of type {@link by.epam.onlinetraining.entity.Transaction} with specified characteristics.
+ */
 public class TransactionBuilder implements EntityBuilder<Transaction> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "transactions.id";
@@ -22,6 +25,13 @@ public class TransactionBuilder implements EntityBuilder<Transaction> {
     private static final String SPACE_CHAR = "\u0020";
     private static final String UNDERSCORE_SYMBOL = "\u005f";
 
+    /**
+     * Builds an object of type Transaction with properties.
+     *
+     * @param resultSet Instance of {@link java.sql.ResultSet} with property set to build an object of type Transaction.
+     * @return Returns built object of Transaction type.
+     * @throws RepositoryException Throws when {@link java.sql.SQLException} is caught.
+     */
     @Override
     public Transaction build(ResultSet resultSet) throws RepositoryException {
         try {

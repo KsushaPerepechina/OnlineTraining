@@ -6,13 +6,16 @@ import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * Designed for user logout.
+ */
 public class LogInCommand implements Command {
     private static final String MAIN_PAGE = "controller?command=showMainPage";
     private static final String LOG_IN_PAGE = "/WEB-INF/page/common/login.jsp";
@@ -25,10 +28,20 @@ public class LogInCommand implements Command {
     private static final String WRONG_PARAMETER = "Wrong login or password.";
     private static final String BLOCKED_ACCOUNT = "Your account is blocked.";
 
+    /**
+     * Process the request, logs in and generates a result of processing in the form of
+     * {@link by.epam.onlinetraining.command.CommandResult} object.
+     *
+     * @param request an {@link javax.servlet.http.HttpServletRequest} object that contains client request
+     * @param response an {@link javax.servlet.http.HttpServletResponse} object that contains the response
+     *                 the servlet sends to the client
+     * @return A response in the form of {@link by.epam.onlinetraining.command.CommandResult} object.
+     * @throws ServiceException when {@link by.epam.onlinetraining.exception.RepositoryException} is caught.
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
-        UserService service = new UserService();
+        UserServiceImpl service = new UserServiceImpl();
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
         Optional<User> optionalUser = service.logIn(login, password);

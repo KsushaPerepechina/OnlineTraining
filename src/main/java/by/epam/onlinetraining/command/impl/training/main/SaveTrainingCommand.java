@@ -3,14 +3,13 @@ package by.epam.onlinetraining.command.impl.training.main;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.TrainingService;
+import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class SaveTrainingCommand implements Command {
@@ -58,7 +57,7 @@ public class SaveTrainingCommand implements Command {
             return CommandResult.redirect(redirectionPage + MESSAGE + message);
         }
 
-        TrainingService trainingService = new TrainingService();
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         trainingService.update(pageData, language);
         return CommandResult.redirect(redirectionPage + MESSAGE + message);
     }

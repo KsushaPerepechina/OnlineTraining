@@ -3,6 +3,7 @@ package by.epam.onlinetraining.entity;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Training extends Entity {
@@ -85,11 +86,11 @@ public class Training extends Entity {
         }
         Training training = (Training) o;
         return progress == training.progress &&
-                getId() != null && getId().equals(training.getId()) &&
-                (name == training.name || (name != null && name.equals(training.name))) &&
-                (startDate == training.startDate || (startDate != null && startDate.equals(training.startDate))) &&
-                (endDate == training.endDate || (endDate != null && endDate.equals(training.endDate))) &&
-                (mentor == training.mentor || (mentor != null && mentor.equals(training.mentor)));
+                Objects.equals(getId(), training.getId()) &&
+                Objects.equals(name, training.name) &&
+                Objects.equals(startDate, training.startDate) &&
+                Objects.equals(endDate, training.endDate) &&
+                Objects.equals(mentor, training.mentor);
     }
 
     @Override

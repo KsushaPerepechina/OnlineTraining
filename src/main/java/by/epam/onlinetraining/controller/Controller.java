@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Provides a HTTP servlet class suitable for a Web site.
+ */
 public class Controller extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String COMMAND = "command";
@@ -30,6 +33,16 @@ public class Controller extends HttpServlet {
         processRequest(request, response);
     }
 
+    /**
+     * Processes the request by obtaining a command from the {@link javax.servlet.http.HttpServletRequest} object,
+     * execute this command and redirects or forwards on destination page depending on the result of the command execution.
+     *
+     * @param request an {@link javax.servlet.http.HttpServletRequest} object that contains client request
+     * @param response an {@link javax.servlet.http.HttpServletResponse} object that contains the response
+     *                 the servlet sends to the client
+     * @throws ServletException The general exception that a servlet may throw when some problems occur.
+     * @throws IOException signals that an I/O exception of some type has occurred.
+     */
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CommandFactory commandFactory = new CommandFactory();
         String parameter = request.getParameter(COMMAND);

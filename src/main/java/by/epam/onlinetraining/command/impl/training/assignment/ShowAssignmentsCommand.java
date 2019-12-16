@@ -6,8 +6,8 @@ import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.AssignmentService;
-import by.epam.onlinetraining.service.impl.RecordService;
+import by.epam.onlinetraining.service.impl.AssignmentServiceImpl;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
 import org.apache.logging.log4j.LogManager;
@@ -37,11 +37,11 @@ public class ShowAssignmentsCommand implements Command {
         HttpSession session = request.getSession();
         UserRole role = (UserRole) session.getAttribute(ROLE);
         List<Assignment> assignmentList;
-        AssignmentService assignmentService = new AssignmentService();
+        AssignmentServiceImpl assignmentService = new AssignmentServiceImpl();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
-            RecordService recordService = new RecordService();
-            List<Training> trainingList = recordService.findAllStudentTrainings(studentId);
+            RecordServiceImpl recordService = new RecordServiceImpl();
+            List<Training> trainingList = recordService.findStudentTrainings(studentId);
             List<Assignment> assignments = new ArrayList<>();
             trainingList.forEach(training -> {
                 try {

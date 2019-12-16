@@ -66,7 +66,7 @@
                     <th>${name}</th>
                     <th>${type}</th>
                     <th>${training}</th>
-                    <c:if test="${sessionScope.role eq 'MENTOR'}">
+                    <c:if test="${sessionScope.role ne 'STUDENT'}">
                         <th></th>
                     </c:if>
                 </tr>
@@ -94,8 +94,8 @@
                                     ${assignment.training.name}
                             </div>
                         </td>
-                        <td>
-                            <c:if test="${sessionScope.role eq 'MENTOR'}">
+                        <c:if test="${sessionScope.role ne 'STUDENT'}">
+                            <td>
                                 <div class="deleteTrainingButton">
                                     <a href="${pageContext.servletContext.contextPath}/controller?command=deleteAssignment&assignmentId=${assignment.id}&trainingId=${requestScope.trainingId}"
                                        class="deleteTraining">
@@ -103,8 +103,8 @@
                                              title="${delete}">
                                     </a>
                                 </div>
-                            </c:if>
-                        </td>
+                            </td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </table>
@@ -115,10 +115,10 @@
                 <a href="${pageContext.servletContext.contextPath}/controller?command=showAssignments&trainingId=${requestScope.trainingId}&pageNumber=${pages}&limit=${requestScope.limit}">${pages}</a>
             </c:forEach>
         </div>
-        <c:if test="${sessionScope.role eq 'MENTOR'}">
+        <c:if test="${sessionScope.role ne 'STUDENT'}">
             <div class="addPanel">
                 <button class="addButton"
-                        onclick="document.getElementById('addAssignment').style.display='block'">${add}
+                        onclick="document.getElementById('add').style.display='block'">${add}
                 </button>
             </div>
         </c:if>
@@ -148,7 +148,7 @@
         </c:if>
     </div>
 </div>
-<jsp:include page="/WEB-INF/fragment/training/addAssignment.jsp"/>
+<jsp:include page="/WEB-INF/fragment/training/assignmentForm.jsp"/>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>
 </body>
 </html>

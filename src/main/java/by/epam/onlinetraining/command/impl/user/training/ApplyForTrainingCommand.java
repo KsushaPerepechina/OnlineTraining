@@ -3,7 +3,7 @@ package by.epam.onlinetraining.command.impl.user.training;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.RecordService;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,7 +21,7 @@ public class ApplyForTrainingCommand implements Command {
         int studentId = (Integer) session.getAttribute(ID);
         int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
 
-        RecordService recordService = new RecordService();
+        RecordServiceImpl recordService = new RecordServiceImpl();
         recordService.applyForTraining(studentId, trainingId);
 
         request.setAttribute(STUDENT_TRAINING_LIST, request.getAttribute(STUDENT_TRAINING_LIST));

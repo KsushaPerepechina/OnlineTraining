@@ -7,18 +7,17 @@ import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.RecordRepository;
-import by.epam.onlinetraining.specification.impl.record.FindByStudentIdAndTrainingIdSpecification;
+import by.epam.onlinetraining.service.RecordService;
 import by.epam.onlinetraining.specification.impl.record.FindByStudentIdSpecification;
 import by.epam.onlinetraining.specification.impl.record.FindByTrainingIdSpecification;
-import by.epam.onlinetraining.util.RepositoryCreator;
+import by.epam.onlinetraining.repository.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
-public class RecordService {
+public class RecordServiceImpl implements RecordService {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public void updateStudentStatus(int recordId, StudentStatus status) throws ServiceException {
@@ -32,7 +31,7 @@ public class RecordService {
         }
     }
 
-    public List<Record> findAllByTrainingId(int trainingId) throws ServiceException {
+    public List<Record> findByTrainingId(int trainingId) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             RecordRepository recordRepository = repositoryCreator.getRecordRepository();
             return recordRepository.queryAll(new FindByTrainingIdSpecification(trainingId, recordRepository.getTableName()));
@@ -42,7 +41,7 @@ public class RecordService {
         }
     }
 
-    public List<Record> findAllByStudentId(int studentId) throws ServiceException {
+    public List<Record> findByStudentId(int studentId) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             RecordRepository recordRepository = repositoryCreator.getRecordRepository();
             return recordRepository.queryAll(new FindByStudentIdSpecification(studentId, recordRepository.getTableName()));
@@ -52,9 +51,19 @@ public class RecordService {
         }
     }
 
-    public List<Training> findAllStudentTrainings(int studentId) throws ServiceException {
+    public List<Training> findStudentTrainings(int studentId) throws ServiceException {
         List<Training> studentTrainings = new LinkedList<>();
-        findAllByStudentId(studentId).forEach(record -> studentTrainings.add(record.getTraining()));
+        findByStudentId(studentId).forEach(record -> studentTrainings.add(record.getTraining()));
+        return studentTrainings;
+    }
+
+    public List<Training> findStudentTrainingsByStatus(int studentId, StudentStatus status) throws ServiceException {
+        List<Training> studentTrainings = new LinkedList<>();
+        findByStudentId(studentId).forEach(record -> {
+            if (status == record.getStatus()) {
+                studentTrainings.add(record.getTraining());
+            }
+        });
         return studentTrainings;
     }
 

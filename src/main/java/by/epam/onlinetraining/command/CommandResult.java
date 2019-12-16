@@ -1,5 +1,8 @@
 package by.epam.onlinetraining.command;
 
+/**
+ * Designed to display the result of the command processing.
+ */
 public class CommandResult {
     private final String page;
     private final boolean redirect;

@@ -2,16 +2,15 @@ package by.epam.onlinetraining.command.impl.training.main;
 
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
-import by.epam.onlinetraining.entity.Record;
 import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.RecordService;
-import by.epam.onlinetraining.service.impl.TrainingService;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
+import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +26,8 @@ public class ShowTrainingsCommand implements Command {
     private static final String TRAINING_IN_PROCESS_LIST = "trainingInProcessList";
     private static final String MENTOR_LIST = "mentorList";
     private static final String STUDENT_TRAINING_LIST = "studentTrainingList";
+    private static final String MESSAGE = "message";
+    private static final String NOTIFY_MESSAGE = "notifyMessage";
     private static final String TRAININGS_PAGE = "/WEB-INF/page/training/trainings.jsp";
 
     @Override
@@ -34,7 +35,7 @@ public class ShowTrainingsCommand implements Command {
         HttpSession session = request.getSession();
         UserRole role = (UserRole) session.getAttribute(ROLE);
 
-        TrainingService trainingService = new TrainingService();
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         List<Training> finishedList;
         List<Training> inProcessList;
         List<Training> registrationOpenedList;
@@ -49,7 +50,7 @@ public class ShowTrainingsCommand implements Command {
             finishedList = trainingService.findByProgress(TrainingProgress.FINISHED);
             inProcessList = trainingService.findByProgress(TrainingProgress.IN_PROCESS);
             registrationOpenedList = trainingService.findByProgress(TrainingProgress.REGISTRATION_OPENED);
-            UserService userService = new UserService();
+            UserServiceImpl userService = new UserServiceImpl();
             List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
             request.setAttribute(MENTOR_LIST, mentorList);
         }
@@ -60,11 +61,17 @@ public class ShowTrainingsCommand implements Command {
         List<Training> studentTrainingList = new ArrayList<>();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
-            RecordService recordService = new RecordService();
-            studentTrainingList = recordService.findAllStudentTrainings(studentId);
+            RecordServiceImpl recordService = new RecordServiceImpl();
+            studentTrainingList = recordService.findStudentTrainings(studentId);
 
         }
         request.setAttribute(STUDENT_TRAINING_LIST, studentTrainingList);
+
+        String notifyMessage = request.getParameter(MESSAGE);
+        if (notifyMessage != null) {
+            request.setAttribute(NOTIFY_MESSAGE, notifyMessage);
+        }
+
         return CommandResult.forward(TRAININGS_PAGE);
     }
 }

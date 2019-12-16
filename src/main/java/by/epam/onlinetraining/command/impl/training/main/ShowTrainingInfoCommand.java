@@ -8,8 +8,8 @@ import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.TrainingService;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,11 +28,11 @@ public class ShowTrainingInfoCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
-        TrainingService trainingService = new TrainingService();
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         Optional<Training> training = trainingService.findById(trainingId);
         EnumSet<TrainingProgress> progressSet = EnumSet.allOf(TrainingProgress.class);
 
-        UserService userService = new UserService();
+        UserServiceImpl userService = new UserServiceImpl();
         List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
 
         training.ifPresent(foundedTraining -> {

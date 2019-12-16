@@ -1,7 +1,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <fmt:setLocale value="${sessionScope.language}"/>
@@ -15,20 +14,22 @@
 <fmt:message bundle="${naming}" key="student.table.performance" var="performance"/>
 <fmt:message bundle="${naming}" key="consultation.table.quality" var="quality"/>
 <fmt:message bundle="${naming}" key="student.table.status" var="status"/>
-<fmt:message bundle="${naming}" key="consultation.table.details" var="details"/>
 <fmt:message bundle="${naming}" key="consultation.table.status.requested" var="requested"/>
 <fmt:message bundle="${naming}" key="consultation.table.status.scheduled" var="scheduled"/>
 <fmt:message bundle="${naming}" key="consultation.table.status.completed" var="completed"/>
-<fmt:message bundle="${naming}" key="button.edit" var="edit"/>
 <fmt:message bundle="${naming}" key="button.rate" var="rate"/>
 <fmt:message bundle="${naming}" key="button.schedule" var="schedule"/>
-<fmt:message bundle="${naming}" key="button.request" var="request"/>
+<fmt:message bundle="${naming}" key="button.add" var="add"/>
+<fmt:message bundle="${naming}" key="consultation.message.added" var="added"/>
+<fmt:message bundle="${naming}" key="consultation.message.invalid" var="invalid"/>
+<fmt:message bundle="${naming}" key="consultation.message.deleted" var="deleted"/>
 
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/img/icon/favicon.png" type="image/png">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/style/notifyStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/dataStyle.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/style/tableStyle.css">
     <jsp:useBean id="consultationList" scope="request" type="java.util.List"/>
@@ -42,17 +43,14 @@
         ${consultations}
     </div>
     <div class="leftColumn">
-    <c:choose>
-        <c:when test="${sessionScope.role eq 'STUDENT'}">
-            <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
-        </c:when>
-        <c:when test="${sessionScope.role eq 'MENTOR' && requestScope.trainingId == null}">
-            <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
-        </c:when>
-        <c:otherwise>
-            <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
-        </c:otherwise>
-    </c:choose>
+        <c:choose>
+            <c:when test="${sessionScope.role eq 'STUDENT'}">
+                <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
+            </c:when>
+            <c:otherwise>
+                <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
+            </c:otherwise>
+        </c:choose>
     </div>
     <div class="rightColumn">
         <div class="itemLimit">
@@ -87,7 +85,7 @@
                     <th>${status}</th>
                     <th>${performance}</th>
                     <th>${quality}</th>
-                    <th>${details}</th>
+                    <th></th>
                 </tr>
                 <c:forEach items="${consultationList}" var="consultation">
                     <tr>
@@ -117,7 +115,7 @@
                                 <c:choose>
                                     <c:when test="${consultation.dateTime == null}">
                                         <c:choose>
-                                            <c:when test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}">
+                                            <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
                                                 <form action="${pageContext.servletContext.contextPath}/controller?command=scheduleConsultation&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}"
                                                       method="post">
                                                     <div class="value">
@@ -155,13 +153,13 @@
                         <td>
                             <div class="data">
                                 <c:choose>
-                                    <c:when test="${consultation.status == 'REQUESTED'}">
+                                    <c:when test="${consultation.status eq 'REQUESTED'}">
                                         ${requested}
                                     </c:when>
-                                    <c:when test="${consultation.status == 'SCHEDULED'}">
+                                    <c:when test="${consultation.status eq 'SCHEDULED'}">
                                         ${scheduled}
                                     </c:when>
-                                    <c:when test="${consultation.status == 'COMPLETED'}">
+                                    <c:when test="${consultation.status eq 'COMPLETED'}">
                                         ${completed}
                                     </c:when>
                                 </c:choose>
@@ -172,7 +170,7 @@
                                 <c:choose>
                                     <c:when test="${consultation.performance == 0}">
                                         <c:choose>
-                                            <c:when test="${consultation.training.mentor.id == sessionScope.id && consultation.status == 'SCHEDULED'}">
+                                            <c:when test="${consultation.training.mentor.id eq sessionScope.id && consultation.status eq 'SCHEDULED'}">
                                                 <form action="${pageContext.servletContext.contextPath}/controller?command=rateStudentPerformance&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}"
                                                       method="post">
                                                     <div class="value">
@@ -186,7 +184,7 @@
                                             </c:when>
                                             <c:otherwise>
                                                 <div class="data">
-                                                        -
+                                                    -
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
@@ -204,7 +202,7 @@
                                 <c:choose>
                                     <c:when test="${consultation.quality == 0}">
                                         <c:choose>
-                                            <c:when test="${consultation.student.id == sessionScope.id && consultation.status == 'SCHEDULED'}">
+                                            <c:when test="${consultation.student.id eq sessionScope.id && consultation.status eq 'SCHEDULED'}">
                                                 <form action="${pageContext.servletContext.contextPath}/controller?command=rateConsultationQuality&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}"
                                                       method="post">
                                                     <div class="value">
@@ -233,18 +231,18 @@
                         </td>
                         <td>
                             <div class="showConsultationInfoButton">
-                                <a href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${consultation.id}"
+                                <a href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${consultation.id}&pageNumber=1&limit=5"
                                    class="showConsultationInfo">
                                     <img class="tableImage" src="img/icon/info.png">
                                 </a>
                             </div>
-                            <c:if test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
-                            <div class="deleteConsultationButton">
-                                <a href="${pageContext.servletContext.contextPath}/controller?command=deleteConsultation&consultationId=${consultation.id}"
-                                   class="showConsultationInfo">
-                                    <img class="tableImage" src="img/icon/delete.png">
-                                </a>
-                            </div>
+                            <c:if test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN' || (sessionScope.role eq 'STUDENT' && consultation.status eq 'REQUESTED')}">
+                                <div class="deleteConsultationButton">
+                                    <a href="${pageContext.servletContext.contextPath}/controller?command=deleteConsultation&consultationId=${consultation.id}"
+                                       class="showConsultationInfo">
+                                        <img class="tableImage" src="img/icon/delete.png">
+                                    </a>
+                                </div>
                             </c:if>
                         </td>
                     </tr>
@@ -260,13 +258,37 @@
         <c:if test="${sessionScope.role eq 'STUDENT'}">
             <div class="addPanel">
                 <button class="addButton"
-                        onclick="document.getElementById('requestConsultation').style.display='block'">${request}
+                        onclick="document.getElementById('add').style.display='block'">${add}
                 </button>
+            </div>
+        </c:if>
+        <c:if test="${not empty requestScope.notifyMessage}">
+            <div class="notify-modal" id="refileBalanceNotify" style="display: block;">
+                <div class="notify-modal-content animate">
+                    <div class="notify-resultButtons">
+                        <c:choose>
+                            <c:when test="${requestScope.notifyMessage eq 'added'}">
+                                <label>${added}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'invalid'}">
+                                <label>${invalid}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'deleted'}">
+                                <label>${deleted}</label>
+                            </c:when>
+                        </c:choose>
+                    </div>
+                    <div class="notify-resultButtons">
+                        <a class="okButton" id="okButton" type="submit"
+                           href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}">Ok
+                        </a>
+                    </div>
+                </div>
             </div>
         </c:if>
     </div>
 </div>
-<jsp:include page="/WEB-INF/fragment/training/requestConsultation.jsp"/>
+<jsp:include page="/WEB-INF/fragment/training/consultationForm.jsp"/>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>
 </body>
 </html>

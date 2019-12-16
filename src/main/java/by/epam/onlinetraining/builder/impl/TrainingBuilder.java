@@ -15,6 +15,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Designed to build an object of type {@link by.epam.onlinetraining.entity.Training} with specified characteristics.
+ */
 public class TrainingBuilder implements EntityBuilder<Training> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "trainings.id";
@@ -26,6 +29,13 @@ public class TrainingBuilder implements EntityBuilder<Training> {
     private static final String SPACE_CHAR = "\u0020";
     private static final String UNDERSCORE_SYMBOL = "\u005f";
 
+    /**
+     * Builds an object of type Training with properties.
+     *
+     * @param resultSet Instance of {@link java.sql.ResultSet} with property set to build an object of type Training.
+     * @return Returns built object of Training type.
+     * @throws RepositoryException Throws when {@link java.sql.SQLException} is caught.
+     */
     @Override
     public Training build(ResultSet resultSet) throws RepositoryException {
         try {
@@ -44,6 +54,13 @@ public class TrainingBuilder implements EntityBuilder<Training> {
         }
     }
 
+    /**
+     * Builds a short representation of an object of type Training with properties.
+     *
+     * @param resultSet Instance of {@link java.sql.ResultSet} with property set to build an object of type Training.
+     * @return Returns built object of Training type.
+     * @throws RepositoryException Throws when {@link java.sql.SQLException} is caught.
+     */
     public Training buildRepresentation(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(ID);

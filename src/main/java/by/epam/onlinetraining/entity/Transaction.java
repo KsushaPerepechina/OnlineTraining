@@ -4,6 +4,7 @@ import by.epam.onlinetraining.entity.type.OperationType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Transaction extends Entity {
@@ -61,10 +62,11 @@ public class Transaction extends Entity {
             return false;
         }
         Transaction that = (Transaction) o;
-        return payerId == that.payerId && operationType == that.operationType &&
-                getId() != null && getId().equals(that.getId()) &&
-                (date == that.date || (date != null && date.equals(that.date))) &&
-                (sum == that.sum || (sum != null && sum.equals(that.sum)));
+        return payerId == that.payerId &&
+                operationType == that.operationType &&
+                Objects.equals(getId(), that.getId()) &&
+                Objects.equals(date, that.date) &&
+                Objects.equals(sum, that.sum);
     }
 
     @Override

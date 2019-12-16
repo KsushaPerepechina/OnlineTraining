@@ -4,7 +4,7 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.Record;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.RecordService;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -42,8 +42,8 @@ public class ShowStudentRequestsCommand implements Command {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        RecordService recordService = new RecordService();
-        List<Record> recordList = recordService.findAllByStudentId(studentId);
+        RecordServiceImpl recordService = new RecordServiceImpl();
+        List<Record> recordList = recordService.findByStudentId(studentId);
         request.setAttribute(RECORD_LIST, recordList);
 
         PagesDelimiter<Record> pagesDelimiter = new PagesDelimiter<>();

@@ -5,6 +5,7 @@ import by.epam.onlinetraining.entity.type.UserRole;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class User extends Entity {
@@ -158,15 +159,16 @@ public class User extends Entity {
             return false;
         }
         User user = (User) o;
-        return blockingStatus == user.blockingStatus && role != null && role == user.role &&
-                (getId() != null && getId().equals(user.getId()) &&
-                (firstName == user.firstName || (firstName != null && firstName.equals(user.firstName))) &&
-                (lastName == user.lastName || (lastName != null && lastName.equals(user.lastName))) &&
-                (birthDate == user.birthDate || (birthDate != null && birthDate.equals(user.birthDate))) &&
-                (email == user.email || (email != null && email.equals(user.email))) &&
-                        (phoneNumber == user.phoneNumber || (phoneNumber != null && phoneNumber.equals(user.phoneNumber))) &&
-                (password == user.password || (password != null && password.equals(user.password))) &&
-                (balance == user.balance || (balance != null && balance.equals(user.balance))));
+        return blockingStatus == user.blockingStatus &&
+                role == user.role &&
+                Objects.equals(getId(), user.getId()) &&
+                Objects.equals(firstName, user.firstName) &&
+                Objects.equals(lastName, user.lastName) &&
+                Objects.equals(birthDate, user.birthDate) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(phoneNumber, user.phoneNumber) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(balance, user.balance);
     }
 
     @Override

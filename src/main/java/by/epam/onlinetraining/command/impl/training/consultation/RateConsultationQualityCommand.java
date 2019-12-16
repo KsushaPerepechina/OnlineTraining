@@ -3,7 +3,7 @@ package by.epam.onlinetraining.command.impl.training.consultation;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.ConsultationService;
+import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,7 +40,7 @@ public class RateConsultationQualityCommand implements Command {
         int consultationId = Integer.parseInt(stringConsultationId);
         int quality = Integer.valueOf(stringQuality);
 
-        ConsultationService consultationService = new ConsultationService();
+        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
         consultationService.rateConsultationQuality(consultationId, quality);
 
         return CommandResult.redirect(SHOW_STUDENT_CONSULTATIONS_COMMAND + PAGE_NUMBER_PARAMETER + pageNumber

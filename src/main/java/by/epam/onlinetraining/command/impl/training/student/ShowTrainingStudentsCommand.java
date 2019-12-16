@@ -4,12 +4,11 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.Record;
 import by.epam.onlinetraining.entity.Training;
-import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.RecordService;
-import by.epam.onlinetraining.service.impl.TrainingService;
+import by.epam.onlinetraining.service.impl.RecordServiceImpl;
+import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -45,10 +44,10 @@ public class ShowTrainingStudentsCommand implements Command {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        RecordService recordService = new RecordService();
-        List<Record> records = recordService.findAllByTrainingId(trainingId);
+        RecordServiceImpl recordService = new RecordServiceImpl();
+        List<Record> records = recordService.findByTrainingId(trainingId);
 
-        TrainingService trainingService = new TrainingService();
+        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         Optional<Training> training = trainingService.findById(trainingId);
         List<Record> recordList = new LinkedList<>();
         training.ifPresent(tr -> {

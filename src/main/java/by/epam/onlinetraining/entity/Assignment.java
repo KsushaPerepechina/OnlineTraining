@@ -2,6 +2,7 @@ package by.epam.onlinetraining.entity;
 
 import by.epam.onlinetraining.entity.type.AssignmentType;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Assignment extends Entity {
@@ -10,6 +11,10 @@ public class Assignment extends Entity {
     private Training training;
 
     public Assignment() {
+    }
+
+    public Assignment(int id) {
+        super(id);
     }
 
     public Assignment(Integer id, String name, AssignmentType type, Training training) {
@@ -51,11 +56,11 @@ public class Assignment extends Entity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Assignment assignment = (Assignment) o;
-        return type == assignment.type &&
-                getId() != null && getId().equals(assignment.getId()) &&
-                training != null && training.equals(assignment.getTraining()) &&
-                name != null && name.equals(assignment.name);
+        Assignment that = (Assignment) o;
+        return type == that.type &&
+                Objects.equals(getId(), that.getId()) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(training, that.training);
     }
 
     @Override

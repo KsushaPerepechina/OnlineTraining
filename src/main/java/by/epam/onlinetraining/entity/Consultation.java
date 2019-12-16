@@ -5,6 +5,7 @@ import by.epam.onlinetraining.entity.type.ConsultationStatus;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Consultation extends Entity {
@@ -15,10 +16,15 @@ public class Consultation extends Entity {
     private ConsultationStatus status;
     private int performance;
     private int quality;
-    private List<Assignment> assignments;//TODO
+    private List<ConsultationAssignment> assignments;
 
     public Consultation() {
     }
+
+    public Consultation(int id) {
+        super(id);
+    }
+
 
     public Consultation(Integer id, User student, Training training, LocalDate dateTime, BigDecimal cost,
                         ConsultationStatus status, int performance, int quality) {
@@ -93,11 +99,11 @@ public class Consultation extends Entity {
         this.quality = quality;
     }
 
-    public List<Assignment> getAssignments() {
+    public List<ConsultationAssignment> getAssignments() {
         return assignments;
     }
 
-    public void setAssignments(List<Assignment> assignments) {
+    public void setAssignments(List<ConsultationAssignment> assignments) {
         this.assignments = assignments;
     }
 
@@ -110,12 +116,15 @@ public class Consultation extends Entity {
             return false;
         }
         Consultation that = (Consultation) o;
-        return performance == that.performance && quality == that.quality && status != null && status == that.status &&
-                getId() != null && getId().equals(that.getId()) &&
-                (student == that.student || (student != null && student.equals(that.student))) &&
-                (training == that.training || (training != null && training.equals(that.training))) &&
-                (dateTime == that.dateTime || (dateTime != null && dateTime.equals(that.dateTime))) &&
-                (cost == that.cost || (cost != null && cost.equals(that.cost)));
+        return performance == that.performance &&
+                quality == that.quality &&
+                status == that.status &&
+                Objects.equals(getId(), that.getId()) &&
+                Objects.equals(student, that.student) &&
+                Objects.equals(training, that.training) &&
+                Objects.equals(dateTime, that.dateTime) &&
+                Objects.equals(cost, that.cost) &&
+                Objects.equals(assignments, that.assignments);
     }
 
     @Override

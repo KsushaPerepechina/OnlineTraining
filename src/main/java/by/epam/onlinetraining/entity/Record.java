@@ -2,6 +2,7 @@ package by.epam.onlinetraining.entity;
 
 import by.epam.onlinetraining.entity.type.StudentStatus;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class Record extends Entity {
@@ -58,11 +59,12 @@ public class Record extends Entity {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Record that = (Record) o;
-        return status != null && status == that.status && getId() != null && getId().equals(that.getId()) &&
-                (training == that.training || (training != null && training.equals(that.training))) &&
-                (student == that.student || (student != null && student.equals(that.student))) &&
-                (mark == that.mark || (mark != null && mark.equals(that.mark)));
+        Record record = (Record) o;
+        return status == record.status &&
+                Objects.equals(getId(), record.getId()) &&
+                Objects.equals(student, record.student) &&
+                Objects.equals(training, record.training) &&
+                Objects.equals(mark, record.mark);
     }
 
     @Override

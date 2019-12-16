@@ -13,6 +13,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Designed to create, work and store database connections in the singleton style.
+ */
 public class ProxyConnectionPool {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String RESOURCE_FILE_NAME = "db.properties";

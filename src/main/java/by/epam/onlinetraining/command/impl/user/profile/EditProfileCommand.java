@@ -3,7 +3,7 @@ package by.epam.onlinetraining.command.impl.user.profile;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
-import by.epam.onlinetraining.service.impl.UserService;
+import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +12,9 @@ import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Designed to edit user's profile information.
+ */
 public class EditProfileCommand implements Command {
     private static final String SHOW_PROFILE = "controller?command=showProfile&userId=";
     private static final String MESSAGE = "&message=";
@@ -28,6 +31,16 @@ public class EditProfileCommand implements Command {
     private static final String EDITING_PROFILE = "editedProfile";
     private static final String PROFILE_ERROR = "profileError";
 
+    /**
+     * Process the request, edit user's profile information and generates a result of processing in the form of
+     * {@link by.epam.onlinetraining.command.CommandResult} object.
+     *
+     * @param request an {@link javax.servlet.http.HttpServletRequest} object that contains client request
+     * @param response an {@link javax.servlet.http.HttpServletResponse} object that contains the response
+     *                 the servlet sends to the client
+     * @return A response in the form of {@link by.epam.onlinetraining.command.CommandResult} object.
+     * @throws ServiceException when {@link by.epam.onlinetraining.exception.RepositoryException} is caught.
+     */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
@@ -55,7 +68,7 @@ public class EditProfileCommand implements Command {
         inputData.put(BLOCKING_STATUS, blockingStatus);
         inputData.put(ROLE, role);
         inputData.put(ID, id);
-        UserService userService = new UserService();
+        UserServiceImpl userService = new UserServiceImpl();
         userService.updateProfile(inputData, language);
         session.removeAttribute(NAME);
         session.setAttribute(NAME, firstName);

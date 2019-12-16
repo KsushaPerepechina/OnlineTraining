@@ -30,7 +30,7 @@ body{
 }
 
 .vertical-menu a.active {
-    background-color: #4CAF50;
+    background-color: lightgreen;
     color: white;
     opacity: 1;
 }

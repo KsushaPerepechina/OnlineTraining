@@ -6,12 +6,13 @@ import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.TrainingRepository;
-import by.epam.onlinetraining.specification.impl.FindAllSpecification;
+import by.epam.onlinetraining.service.TrainingService;
+import by.epam.onlinetraining.service.TransactionService;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByMentorIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByProgressAndMentorIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByProgressSpecification;
-import by.epam.onlinetraining.util.RepositoryCreator;
+import by.epam.onlinetraining.repository.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class TrainingService {
+public class TrainingServiceImpl implements TrainingService {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "trainingId";
     private static final String NAME = "trainingName";
@@ -35,6 +36,7 @@ public class TrainingService {
     private static final String EN_DATE_FORMAT = "MM-dd-yyyy";
     private static final String RU_DATE_FORMAT = "dd.MM.yyyy";
 
+    @Override
     public Optional<Training> findById(int id) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
@@ -45,6 +47,7 @@ public class TrainingService {
         }
     }
 
+    @Override
     public List<Training> findByMentorId(int mentorId) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
@@ -55,6 +58,7 @@ public class TrainingService {
         }
     }
 
+    @Override
     public List<Training> findByProgress(TrainingProgress progress) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
@@ -65,6 +69,7 @@ public class TrainingService {
         }
     }
 
+    @Override
     public List<Training> findByProgressAndMentorId(TrainingProgress progress, int mentorId) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
@@ -75,16 +80,7 @@ public class TrainingService {
         }
     }
 
-    public List<Training> findAll() throws ServiceException {
-        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
-            TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
-            return trainingRepository.queryAll(new FindAllSpecification(trainingRepository.getTableName()));
-        } catch (RepositoryException e) {
-            LOGGER.error(e.getMessage(), e);
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
+    @Override
     public void update(Map<String, String> trainingData, String language) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
@@ -123,6 +119,7 @@ public class TrainingService {
         }
     }
 
+    @Override
     public void delete(int id) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();

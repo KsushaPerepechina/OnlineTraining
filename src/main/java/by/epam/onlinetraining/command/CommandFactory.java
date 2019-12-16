@@ -3,10 +3,10 @@ package by.epam.onlinetraining.command;
 import by.epam.onlinetraining.command.impl.training.assignment.DeleteAssignmentCommand;
 import by.epam.onlinetraining.command.impl.training.assignment.SaveAssignmentCommand;
 import by.epam.onlinetraining.command.impl.training.assignment.ShowAssignmentsCommand;
-import by.epam.onlinetraining.command.impl.training.consultation.RateConsultationQualityCommand;
-import by.epam.onlinetraining.command.impl.training.consultation.RateStudentPerformanceCommand;
-import by.epam.onlinetraining.command.impl.training.consultation.RequestConsultationCommand;
-import by.epam.onlinetraining.command.impl.training.consultation.ShowConsultationsCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.*;
+import by.epam.onlinetraining.command.impl.training.consultation.assignment.ExcludeAssignmentCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.assignment.IncludeAssignmentCommand;
+import by.epam.onlinetraining.command.impl.training.consultation.assignment.ShowConsultationInfoCommand;
 import by.epam.onlinetraining.command.impl.training.main.DeleteTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.main.SaveTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.main.ShowTrainingInfoCommand;
@@ -55,6 +55,10 @@ public class CommandFactory {
     private static final String SAVE_ASSIGNMENT = "saveAssignment";
     private static final String DELETE_ASSIGNMENT = "deleteAssignment";
     private static final String SHOW_CONSULTATIONS = "showConsultations";
+    private static final String SHOW_CONSULTATION_INFO = "showConsultationInfo";
+    private static final String INCLUDE_ASSIGNMENT = "includeAssignment";
+    private static final String EXCLUDE_ASSIGNMENT = "excludeAssignment";
+    private static final String DELETE_CONSULTATION = "deleteConsultation";
     private static final String SHOW_BALANCE = "showBalance";
     private static final String REFILL_BALANCE = "refillBalance";
     private static final String CHANGE_STUDENT_STATUS = "changeStudentStatus";
@@ -104,6 +108,14 @@ public class CommandFactory {
                 return new ShowConsultationsCommand();
             case REQUEST_CONSULTATION:
                 return new RequestConsultationCommand();
+            case SHOW_CONSULTATION_INFO:
+                return new ShowConsultationInfoCommand();
+            case INCLUDE_ASSIGNMENT:
+                return new IncludeAssignmentCommand();
+            case EXCLUDE_ASSIGNMENT:
+                return new ExcludeAssignmentCommand();
+            case DELETE_CONSULTATION:
+                return new DeleteConsultationCommand();
             case SHOW_TRAINING_STUDENTS:
                 return new ShowTrainingStudentsCommand();
             case SHOW_ADMINS:
