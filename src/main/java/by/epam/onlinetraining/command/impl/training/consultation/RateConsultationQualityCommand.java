@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.training.consultation;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.ConsultationService;
 import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -20,6 +21,7 @@ public class RateConsultationQualityCommand implements Command {
     private static final String SHOW_STUDENT_CONSULTATIONS_COMMAND = "controller?command=showConsultations";
     private static final String PAGE_NUMBER_PARAMETER = "&pageNumber=";
     private static final String LIMIT_PARAMETER = "&limit=";
+    private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -40,7 +42,6 @@ public class RateConsultationQualityCommand implements Command {
         int consultationId = Integer.parseInt(stringConsultationId);
         int quality = Integer.valueOf(stringQuality);
 
-        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
         consultationService.rateConsultationQuality(consultationId, quality);
 
         return CommandResult.redirect(SHOW_STUDENT_CONSULTATIONS_COMMAND + PAGE_NUMBER_PARAMETER + pageNumber

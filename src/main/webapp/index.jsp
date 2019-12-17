@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <html>
-<jsp:forward page="/WEB-INF/page/common/login.jsp"/>
+<jsp:forward page="/WEB-INF/page/user/login.jsp"/>
 <head>
 </head>
 <body>

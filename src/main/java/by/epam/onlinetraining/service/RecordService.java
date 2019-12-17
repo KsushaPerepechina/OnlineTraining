@@ -31,6 +31,16 @@ public interface RecordService {
     List<Record> findByTrainingId(int trainingId) throws ServiceException;
 
     /**
+     * The method searches for records with given training and status.
+     *
+     * @param trainingId training identifier in repository.
+     * @param status a {@link by.epam.onlinetraining.entity.type.StudentStatus} object contains training status.
+     * @return a {@link java.util.List} implementation with {@link by.epam.onlinetraining.entity.Record} objects.
+     * @throws ServiceException Signals that service exception of some sort has occurred.
+     */
+    List<Record> findByTrainingIdAndStatus(int trainingId, StudentStatus status) throws ServiceException;
+
+    /**
      * The method searches for records with given student.
      *
      * @param studentId student identifier in repository.

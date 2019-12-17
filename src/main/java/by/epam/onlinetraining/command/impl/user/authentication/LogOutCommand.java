@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
  * Designed for user logout.
  */
 public class LogOutCommand implements Command {
-    private static final String LOG_IN_PAGE = "/WEB-INF/page/common/login.jsp";
+    private static final String LOG_IN_PAGE = "/WEB-INF/page/user/login.jsp";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String ROLE = "role";

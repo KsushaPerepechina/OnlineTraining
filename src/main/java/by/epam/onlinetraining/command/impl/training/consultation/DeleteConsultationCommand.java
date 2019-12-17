@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.training.consultation;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.ConsultationService;
 import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ public class DeleteConsultationCommand implements Command {
     private static final String TRAINING_ID = "trainingId";
     private static final String SHOW_CONSULTATIONS = "controller?command=showConsultations&pageNumber=1&limit=5&trainingId=";
     private static final String MESSAGE = "&message=deleted";
+    private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -22,7 +24,6 @@ public class DeleteConsultationCommand implements Command {
         if (stringTrainingId != null) {
             trainingId = Integer.parseInt(stringTrainingId);
         }
-        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
         consultationService.delete(consultationId);
         return CommandResult.redirect(SHOW_CONSULTATIONS + trainingId + MESSAGE);
     }

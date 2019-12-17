@@ -7,6 +7,8 @@ import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.RecordService;
+import by.epam.onlinetraining.service.TrainingService;
 import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
@@ -27,6 +29,8 @@ public class ShowTrainingStudentsCommand implements Command {
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
     private static final String STUDENTS_PAGE = "/WEB-INF/page/training/trainingStudents.jsp";
+    private static RecordService recordService = new RecordServiceImpl();
+    private static TrainingService trainingService = new TrainingServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -44,10 +48,8 @@ public class ShowTrainingStudentsCommand implements Command {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        RecordServiceImpl recordService = new RecordServiceImpl();
         List<Record> records = recordService.findByTrainingId(trainingId);
 
-        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         Optional<Training> training = trainingService.findById(trainingId);
         List<Record> recordList = new LinkedList<>();
         training.ifPresent(tr -> {

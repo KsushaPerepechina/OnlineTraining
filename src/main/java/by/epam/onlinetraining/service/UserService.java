@@ -87,4 +87,6 @@ public interface UserService {
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
     void updateBalance(int id, BigDecimal balance) throws ServiceException;
+
+    boolean payForConsultation(int consultationId) throws ServiceException;
 }

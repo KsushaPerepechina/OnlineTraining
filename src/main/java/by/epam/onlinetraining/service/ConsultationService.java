@@ -3,6 +3,7 @@ package by.epam.onlinetraining.service;
 import by.epam.onlinetraining.entity.Consultation;
 import by.epam.onlinetraining.exception.ServiceException;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 

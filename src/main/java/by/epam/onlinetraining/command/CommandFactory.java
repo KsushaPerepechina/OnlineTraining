@@ -67,6 +67,7 @@ public class CommandFactory {
     private static final String RATE_STUDENT_PERFORMANCE = "rateStudentPerformance";
     private static final String APPLY_FOR_TRAINING = "applyForTraining";
     private static final String REQUEST_CONSULTATION = "requestConsultation";
+    private static final String PAY_FOR_CONSULTATION = "payForConsultation";
     private static final String SHOW_STUDENT_REQUESTS = "showStudentRequests";
     private static final String UNSUPPORTED_OPERATION_MESSAGE = "Called operation is unsupported currently: ";
 
@@ -108,6 +109,8 @@ public class CommandFactory {
                 return new ShowConsultationsCommand();
             case REQUEST_CONSULTATION:
                 return new RequestConsultationCommand();
+            case PAY_FOR_CONSULTATION:
+                return new PayForConsultationCommand();
             case SHOW_CONSULTATION_INFO:
                 return new ShowConsultationInfoCommand();
             case INCLUDE_ASSIGNMENT:

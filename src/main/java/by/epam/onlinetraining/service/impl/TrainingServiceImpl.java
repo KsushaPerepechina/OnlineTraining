@@ -1,18 +1,21 @@
 package by.epam.onlinetraining.service.impl;
 
+import by.epam.onlinetraining.entity.Record;
 import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.User;
+import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.repository.impl.RecordRepository;
 import by.epam.onlinetraining.repository.impl.TrainingRepository;
+import by.epam.onlinetraining.service.RecordService;
 import by.epam.onlinetraining.service.TrainingService;
-import by.epam.onlinetraining.service.TransactionService;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByMentorIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByProgressAndMentorIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByProgressSpecification;
-import by.epam.onlinetraining.repository.RepositoryCreator;
+import by.epam.onlinetraining.repository.impl.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -35,6 +38,7 @@ public class TrainingServiceImpl implements TrainingService {
     private static final String UNSUPPORTED_LANG_MESSAGE = "Unsupported language: ";
     private static final String EN_DATE_FORMAT = "MM-dd-yyyy";
     private static final String RU_DATE_FORMAT = "dd.MM.yyyy";
+    private static RecordService recordService = new RecordServiceImpl();
 
     @Override
     public Optional<Training> findById(int id) throws ServiceException {
@@ -81,7 +85,7 @@ public class TrainingServiceImpl implements TrainingService {
     }
 
     @Override
-    public void update(Map<String, String> trainingData, String language) throws ServiceException {
+    public boolean update(Map<String, String> trainingData, String language) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
             String stringId = (trainingData.get(ID));
@@ -102,6 +106,9 @@ public class TrainingServiceImpl implements TrainingService {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RU_DATE_FORMAT);
                 startDate = LocalDate.parse(stringStartDate, formatter);
                 endDate = LocalDate.parse(stringEndDate, formatter);
+                if (startDate.isAfter(endDate)) {
+                    return false;
+                }
             } else {
                 throw new ServiceException(UNSUPPORTED_LANG_MESSAGE + language);
             }
@@ -109,12 +116,55 @@ public class TrainingServiceImpl implements TrainingService {
             TrainingProgress progress = null;
             if (stringProgress != null) {
                 progress = TrainingProgress.valueOf(trainingData.get(PROGRESS));
+                if (TrainingProgress.IN_PROCESS == progress && id != null) {
+                    activateStudents(id);
+                }
             }
             int mentorId = Integer.valueOf(trainingData.get(MENTOR_ID));
             Training training = new Training(id, name, startDate, endDate, progress, new User(mentorId));
             trainingRepository.save(training);
+            return true;
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    private void activateStudents(int trainingId) throws ServiceException {
+        try {
+            Optional<Training> training = findById(trainingId);
+            training.ifPresent(tr -> {
+                if (TrainingProgress.REGISTRATION_OPENED == tr.getProgress()) {
+                    try {
+                        List<Record> records = recordService.findByTrainingId(trainingId);
+                        records.forEach(record -> {
+                            try {
+                                if (StudentStatus.APPROVED == record.getStatus()) {
+                                    changeStudentStatus(record, StudentStatus.IN_PROCESS);
+                                } else if (StudentStatus.REQUESTED == record.getStatus()) {
+                                    changeStudentStatus(record, StudentStatus.REJECTED);
+                                }
+                            } catch (ServiceException e) {
+                                LOGGER.error(e.getMessage(), e);
+                            }
+                        });
+                    } catch (ServiceException e) {
+                        LOGGER.error(e.getMessage(), e);
+                    }
+                }
+            });
+        } catch (ServiceException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    private void changeStudentStatus(Record record, StudentStatus status) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            RecordRepository recordRepository = repositoryCreator.getRecordRepository();
+            record.setStatus(status);
+            recordRepository.save(record);
+        } catch (RepositoryException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }

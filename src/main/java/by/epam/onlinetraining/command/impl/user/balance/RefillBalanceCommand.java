@@ -5,6 +5,8 @@ import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.OperationType;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.TransactionService;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.TransactionServiceImpl;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
@@ -26,6 +28,8 @@ public class RefillBalanceCommand implements Command {
     private static final String MESSAGE = "&message=";
     private static final String REFILLED_BALANCE = "refilledBalance";
     private static final String INVALID_SUM = "invalidSum";
+    private static UserService userService = new UserServiceImpl();
+    private static TransactionService transactionService = new TransactionServiceImpl();
 
     /**
      * Process the request, refile balance and generates a result of processing
@@ -47,14 +51,12 @@ public class RefillBalanceCommand implements Command {
             return CommandResult.redirect(BALANCE_COMMAND + MESSAGE + INVALID_SUM);
         }
         BigDecimal sum = new BigDecimal(stringSum);
-        UserServiceImpl userService = new UserServiceImpl();
         Optional<User> optionalUser = userService.findById(id);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             BigDecimal balance = user.getBalance();
             BigDecimal newBalance = balance.add(sum);//TODO transactions
             userService.updateBalance(id, newBalance);
-            TransactionServiceImpl transactionService = new TransactionServiceImpl();
             transactionService.addOperation(id, OperationType.REFILL, currentDate, sum);
         }
         return CommandResult.redirect(BALANCE_COMMAND + MESSAGE + REFILLED_BALANCE);

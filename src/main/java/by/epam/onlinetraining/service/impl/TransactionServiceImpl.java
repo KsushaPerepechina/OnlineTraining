@@ -7,7 +7,7 @@ import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.repository.impl.TransactionRepository;
 import by.epam.onlinetraining.service.TransactionService;
 import by.epam.onlinetraining.specification.impl.transaction.FindByPayerIdSpecification;
-import by.epam.onlinetraining.repository.RepositoryCreator;
+import by.epam.onlinetraining.repository.impl.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

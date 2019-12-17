@@ -4,6 +4,8 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.AssignmentService;
+import by.epam.onlinetraining.service.ConsultationService;
 import by.epam.onlinetraining.service.impl.AssignmentServiceImpl;
 import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
@@ -22,11 +24,12 @@ public class ShowConsultationInfoCommand implements Command {
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
     private static final String CONSULTATION_INFO_PAGE = "/WEB-INF/page/training/consultationInfo.jsp";
+    private static AssignmentService assignmentService = new AssignmentServiceImpl();
+    private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int consultationId = Integer.parseInt(request.getParameter(CONSULTATION_ID));
-        AssignmentServiceImpl assignmentService = new AssignmentServiceImpl();
         List<Assignment> consultationAssignmentList = assignmentService.findByConsultationId(consultationId);
 
         int limit = Integer.parseInt(request.getParameter(LIMIT));
@@ -41,7 +44,6 @@ public class ShowConsultationInfoCommand implements Command {
         List<Assignment> resultConsultationAssignmentList = pagesDelimiter.composePageList(consultationAssignmentList, limit, offset);
         request.setAttribute(CONSULTATION_ASSIGNMENT_LIST, resultConsultationAssignmentList);
 
-        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
         consultationService.findById(consultationId).ifPresent(cons -> {
             try {
                 List<Assignment> assignmentList = assignmentService.findByTrainingId(cons.getTraining().getId());

@@ -8,6 +8,8 @@ import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.TrainingService;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
@@ -24,15 +26,15 @@ public class ShowTrainingInfoCommand implements Command {
     private static final String MENTOR_LIST = "mentorList";
     private static final String PROGRESS_SET = "progressSet";
     private static final String MESSAGE = "message";
+    private static TrainingService trainingService = new TrainingServiceImpl();
+    private static UserService userService = new UserServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int trainingId = Integer.parseInt(request.getParameter(TRAINING_ID));
-        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         Optional<Training> training = trainingService.findById(trainingId);
         EnumSet<TrainingProgress> progressSet = EnumSet.allOf(TrainingProgress.class);
 
-        UserServiceImpl userService = new UserServiceImpl();
         List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
 
         training.ifPresent(foundedTraining -> {
@@ -42,13 +44,12 @@ public class ShowTrainingInfoCommand implements Command {
         });
         request.setAttribute(PROGRESS_SET, progressSet);
 
-
         request.setAttribute(TRAINING_ID, trainingId);
         request.setAttribute(MENTOR_LIST, mentorList);
-        String message = request.getParameter(MESSAGE);//TODO
+        String message = request.getParameter(MESSAGE);
         if (message != null) {
             request.setAttribute(MESSAGE, message);
         }
-        return CommandResult.forward(TRAINING_INFO_PAGE);//TODO
+        return CommandResult.forward(TRAINING_INFO_PAGE);
     }
 }

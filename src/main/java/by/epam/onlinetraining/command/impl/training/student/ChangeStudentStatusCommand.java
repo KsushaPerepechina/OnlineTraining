@@ -4,6 +4,7 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.RecordService;
 import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -22,6 +23,7 @@ public class ChangeStudentStatusCommand implements Command {
     private static final String SHOW_TRAINING_STUDENTS_COMMAND = "controller?command=showTrainingStudents&trainingId=";
     private static final String PAGE_NUMBER_PARAMETER = "&pageNumber=";
     private static final String LIMIT_PARAMETER = "&limit=";
+    private static RecordService recordService = new RecordServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -44,7 +46,6 @@ public class ChangeStudentStatusCommand implements Command {
         int recordId = Integer.parseInt(stringRecordId);
         StudentStatus status = StudentStatus.valueOf(stringStatus);
 
-        RecordServiceImpl recordService = new RecordServiceImpl();
         recordService.updateStudentStatus(recordId, status);
 
         return CommandResult.redirect(SHOW_TRAINING_STUDENTS_COMMAND + trainingId

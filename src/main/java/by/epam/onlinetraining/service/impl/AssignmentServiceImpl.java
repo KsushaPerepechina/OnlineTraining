@@ -9,7 +9,7 @@ import by.epam.onlinetraining.repository.impl.ConsultationAssignmentRepository;
 import by.epam.onlinetraining.service.AssignmentService;
 import by.epam.onlinetraining.specification.impl.assignment.FindByConsultationIdSpecification;
 import by.epam.onlinetraining.specification.impl.record.FindByTrainingIdSpecification;
-import by.epam.onlinetraining.repository.RepositoryCreator;
+import by.epam.onlinetraining.repository.impl.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

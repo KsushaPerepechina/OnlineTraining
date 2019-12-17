@@ -5,6 +5,8 @@ import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.Transaction;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.TransactionService;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.TransactionServiceImpl;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
@@ -23,6 +25,8 @@ public class ShowBalanceCommand implements Command {
     private static final String STUDENT = "student";
     private static final String TRANSACTION_LIST = "transactionList";
     private static final String MESSAGE = "message";
+    private static TransactionService transactionService = new TransactionServiceImpl();
+    private static UserService userService = new UserServiceImpl();
 
     /**
      * Process the request, display balance and history of operations with the balance and generates a result
@@ -37,9 +41,7 @@ public class ShowBalanceCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         int id = (int) session.getAttribute(ID);
-        TransactionServiceImpl transactionService = new TransactionServiceImpl();
         List<Transaction> transactionList = transactionService.findByPayerId(id);
-        UserServiceImpl userService = new UserServiceImpl();
         Optional<User> optionalUser = userService.findById(id);
         if (optionalUser.isPresent()) {
             User student = optionalUser.get();

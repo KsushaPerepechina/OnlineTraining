@@ -6,6 +6,7 @@ import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +19,7 @@ import java.util.Optional;
  */
 public class LogInCommand implements Command {
     private static final String MAIN_PAGE = "controller?command=showMainPage";
-    private static final String LOG_IN_PAGE = "/WEB-INF/page/common/login.jsp";
+    private static final String LOG_IN_PAGE = "/WEB-INF/page/user/login.jsp";
     private static final String ID = "id";
     private static final String NAME = "name";
     private static final String ROLE = "role";
@@ -27,6 +28,7 @@ public class LogInCommand implements Command {
     private static final String ERROR_MESSAGE = "errorMessage";
     private static final String WRONG_PARAMETER = "Wrong login or password.";
     private static final String BLOCKED_ACCOUNT = "Your account is blocked.";
+    private static UserService userService = new UserServiceImpl();
 
     /**
      * Process the request, logs in and generates a result of processing in the form of
@@ -41,10 +43,9 @@ public class LogInCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
-        UserServiceImpl service = new UserServiceImpl();
         String login = request.getParameter(LOGIN);
         String password = request.getParameter(PASSWORD);
-        Optional<User> optionalUser = service.logIn(login, password);
+        Optional<User> optionalUser = userService.logIn(login, password);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             BlockingStatus blockingStatus = user.getBlockingStatus();

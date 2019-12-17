@@ -4,6 +4,7 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.Record;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.RecordService;
 import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
@@ -23,6 +24,7 @@ public class ShowStudentRequestsCommand implements Command {
     private static final String ERROR_PAGE = "/WEB-INF/page/error/Error404.jsp";
     private static final String RECORD_LIST = "recordList";
     private static final String STUDENT_REQUESTS_PAGE = "/WEB-INF/page/user/student/studentRequests.jsp";
+    private static RecordService recordService = new RecordServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -42,7 +44,6 @@ public class ShowStudentRequestsCommand implements Command {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        RecordServiceImpl recordService = new RecordServiceImpl();
         List<Record> recordList = recordService.findByStudentId(studentId);
         request.setAttribute(RECORD_LIST, recordList);
 

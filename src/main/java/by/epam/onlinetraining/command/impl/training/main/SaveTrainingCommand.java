@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.training.main;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.TrainingService;
 import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -26,6 +27,7 @@ public class SaveTrainingCommand implements Command {
     private static final String ERROR_MESSAGE = "invalid";
     private static final String ADDED_TRAINING = "added";
     private static final String EDITED_TRAINING = "edited";
+    private static TrainingService trainingService = new TrainingServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -35,12 +37,12 @@ public class SaveTrainingCommand implements Command {
         String message = ADDED_TRAINING;
         String trainingId = request.getParameter(TRAINING_ID);
         Map<String, String> pageData = new HashMap<>();
+        String progress = null;
         if (trainingId != null) {
             message = EDITED_TRAINING;
             redirectionPage = SHOW_TRAINING_INFO_ADDRESS + trainingId;
             pageData.put(TRAINING_ID, trainingId);
-            String progress = request.getParameter(PROGRESS);
-            pageData.put(PROGRESS, progress);
+            progress = request.getParameter(PROGRESS);
         }
         String name = request.getParameter(TRAINING_NAME);
         String startDate = request.getParameter(START_DATE);
@@ -56,9 +58,12 @@ public class SaveTrainingCommand implements Command {
             message = ERROR_MESSAGE;
             return CommandResult.redirect(redirectionPage + MESSAGE + message);
         }
+        pageData.put(PROGRESS, progress);
 
-        TrainingServiceImpl trainingService = new TrainingServiceImpl();
-        trainingService.update(pageData, language);
+        if (!trainingService.update(pageData, language)) {
+            message = ERROR_MESSAGE;
+        }
+
         return CommandResult.redirect(redirectionPage + MESSAGE + message);
     }
 }

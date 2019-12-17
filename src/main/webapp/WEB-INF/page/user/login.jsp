@@ -22,6 +22,7 @@
 <fmt:message bundle="${naming}" key="signUp.valid.validEmail" var="validEmail"/>
 <fmt:message bundle="${naming}" key="signUp.valid.errorLogin" var="errorLogin"/>
 <fmt:message bundle="${naming}" key="signUp.valid.validPassword" var="validPassword"/>
+<fmt:message bundle="${naming}" key="signUp.valid.passwordMismatch" var="passwordMismatch"/>
 
 <html>
 <head>
@@ -149,6 +150,18 @@
             <c:if test="${(not empty requestScope.signUpError) and (requestScope.signUpError eq 'userPassword')}">
                 <div class="wrongSignUpParameters">
                     <label>${validPassword}</label>
+                </div>
+            </c:if>
+
+            <div class="inputText">
+                <input class="signUpForm" type="password" id="userPasswordDuplication" name="userPasswordDuplication" placeholder="${placePassword}"
+                       autocomplete="off" pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$"
+                       required>
+            </div>
+
+            <c:if test="${(not empty requestScope.signUpError) and (requestScope.signUpError eq 'userPasswordDuplication')}">
+                <div class="wrongSignUpParameters">
+                    <label>${passwordMismatch}</label>
                 </div>
             </c:if>
 

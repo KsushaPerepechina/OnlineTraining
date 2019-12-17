@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.user.listing;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
 import by.epam.onlinetraining.validation.Validation;
@@ -23,6 +24,7 @@ public class ShowUsersCommand {
     private static final String USER_LIST = "userList";
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
+    private static UserService userService = new UserServiceImpl();
 
     /**
      * Process the request, form user list and returns page for displaying.
@@ -46,7 +48,6 @@ public class ShowUsersCommand {
         int pageNumber = Integer.valueOf(stringPageNumber);
         int offset = limit * (pageNumber - 1);
 
-        UserServiceImpl userService = new UserServiceImpl();
         List<User> userList = userService.findByRole(role);
         PagesDelimiter<User> pagesDelimiter = new PagesDelimiter<>();
         List<Integer> pageNumbersList = pagesDelimiter.composePageNumbersList(userList, limit);

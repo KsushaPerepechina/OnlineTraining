@@ -13,6 +13,9 @@
 <fmt:message bundle="${naming}" key="consultation.table.cost" var="cost"/>
 <fmt:message bundle="${naming}" key="student.table.performance" var="performance"/>
 <fmt:message bundle="${naming}" key="consultation.table.quality" var="quality"/>
+<fmt:message bundle="${naming}" key="consultation.payment" var="payment"/>
+<fmt:message bundle="${naming}" key="consultation.message.payed" var="payed"/>
+<fmt:message bundle="${naming}" key="consultation.message.notEnoughMoney" var="notEnoughMoney"/>
 <fmt:message bundle="${naming}" key="student.table.status" var="status"/>
 <fmt:message bundle="${naming}" key="consultation.table.status.requested" var="requested"/>
 <fmt:message bundle="${naming}" key="consultation.table.status.scheduled" var="scheduled"/>
@@ -85,6 +88,7 @@
                     <th>${status}</th>
                     <th>${performance}</th>
                     <th>${quality}</th>
+                    <th>${payment}</th>
                     <th></th>
                 </tr>
                 <c:forEach items="${consultationList}" var="consultation">
@@ -230,6 +234,37 @@
                             </div>
                         </td>
                         <td>
+                            <c:choose>
+                                <c:when test="${sessionScope.role ne 'STUDENT'}">
+                                    <div class="data">
+                                        <c:choose>
+                                            <c:when test="${consultation.payed == false}">
+                                                -
+                                            </c:when>
+                                            <c:otherwise>
+                                                +
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:choose>
+                                        <c:when test="${consultation.payed == false}">
+                                            <div class="payForConsultationButton">
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=payForConsultation&consultationId=${consultation.id}"
+                                                   class="payForConsultation">
+                                                    <img class="tableImage" src="img/icon/pay.png">
+                                                </a>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            +
+                                        </c:otherwise>
+                                    </c:choose>
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
                             <div class="showConsultationInfoButton">
                                 <a href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${consultation.id}&pageNumber=1&limit=5"
                                    class="showConsultationInfo">
@@ -272,6 +307,12 @@
                             </c:when>
                             <c:when test="${requestScope.notifyMessage eq 'invalid'}">
                                 <label>${invalid}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'payed'}">
+                                <label>${payed}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'notEnoughMoney'}">
+                                <label>${notEnoughMoney}</label>
                             </c:when>
                             <c:when test="${requestScope.notifyMessage eq 'deleted'}">
                                 <label>${deleted}</label>

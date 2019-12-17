@@ -8,6 +8,9 @@ import by.epam.onlinetraining.entity.type.BlockingStatus;
 import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.RecordService;
+import by.epam.onlinetraining.service.TrainingService;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
@@ -29,13 +32,15 @@ public class ShowTrainingsCommand implements Command {
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
     private static final String TRAININGS_PAGE = "/WEB-INF/page/training/trainings.jsp";
+    private static TrainingService trainingService = new TrainingServiceImpl();
+    private static UserService userService = new UserServiceImpl();
+    private static RecordService recordService = new RecordServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         UserRole role = (UserRole) session.getAttribute(ROLE);
 
-        TrainingServiceImpl trainingService = new TrainingServiceImpl();
         List<Training> finishedList;
         List<Training> inProcessList;
         List<Training> registrationOpenedList;
@@ -50,7 +55,6 @@ public class ShowTrainingsCommand implements Command {
             finishedList = trainingService.findByProgress(TrainingProgress.FINISHED);
             inProcessList = trainingService.findByProgress(TrainingProgress.IN_PROCESS);
             registrationOpenedList = trainingService.findByProgress(TrainingProgress.REGISTRATION_OPENED);
-            UserServiceImpl userService = new UserServiceImpl();
             List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
             request.setAttribute(MENTOR_LIST, mentorList);
         }
@@ -61,7 +65,6 @@ public class ShowTrainingsCommand implements Command {
         List<Training> studentTrainingList = new ArrayList<>();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
-            RecordServiceImpl recordService = new RecordServiceImpl();
             studentTrainingList = recordService.findStudentTrainings(studentId);
 
         }

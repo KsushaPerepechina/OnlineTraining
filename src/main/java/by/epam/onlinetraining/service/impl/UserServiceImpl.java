@@ -1,15 +1,20 @@
 package by.epam.onlinetraining.service.impl;
 
+import by.epam.onlinetraining.entity.Consultation;
+import by.epam.onlinetraining.entity.Transaction;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.BlockingStatus;
+import by.epam.onlinetraining.entity.type.OperationType;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.repository.impl.ConsultationRepository;
+import by.epam.onlinetraining.repository.impl.TransactionRepository;
 import by.epam.onlinetraining.repository.impl.UserRepository;
 import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.specification.impl.FindByIdSpecification;
 import by.epam.onlinetraining.specification.impl.user.*;
-import by.epam.onlinetraining.repository.RepositoryCreator;
+import by.epam.onlinetraining.repository.impl.RepositoryCreator;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -173,5 +178,45 @@ public class UserServiceImpl implements UserService {
             LOGGER.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public boolean payForConsultation(int consultationId) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            UserRepository userRepository = repositoryCreator.getUserRepository();
+            ConsultationRepository consultationRepository = repositoryCreator.getConsultationRepository();
+            TransactionRepository transactionRepository = repositoryCreator.getTransactionRepository();
+            Optional<Consultation> consultation = consultationRepository.query(new FindByIdSpecification(consultationId,
+                    consultationRepository.getTableName()));
+            if (consultation.isPresent()) {
+                Consultation cons = consultation.get();
+                BigDecimal cost = cons.getCost();
+                User student = userRepository.query(new FindByIdSpecification(cons.getStudent().getId(),
+                        userRepository.getTableName())).get();
+                BigDecimal balance = student.getBalance();
+                if (cost.compareTo(balance) > 0) {
+                    return false;
+                } else {
+                    repositoryCreator.startTransaction();
+                    student.setBalance(balance.subtract(cost));
+                    cons.setPayed(true);
+                    Transaction transaction = new Transaction(null, student.getId(), LocalDate.now(),
+                            OperationType.PAYMENT, cost);
+                    try {
+                        userRepository.save(student);
+                        consultationRepository.save(cons);
+                        transactionRepository.save(transaction);
+                    } catch (RepositoryException e) {
+                        LOGGER.error(e.getMessage(), e);
+                        repositoryCreator.rollbackTransaction();
+                    }
+                    repositoryCreator.commitTransaction();
+                }
+            }
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+        return true;
     }
 }

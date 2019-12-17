@@ -16,6 +16,7 @@ public class Consultation extends Entity {
     private ConsultationStatus status;
     private int performance;
     private int quality;
+    private boolean payed;
     private List<ConsultationAssignment> assignments;
 
     public Consultation() {
@@ -27,7 +28,7 @@ public class Consultation extends Entity {
 
 
     public Consultation(Integer id, User student, Training training, LocalDate dateTime, BigDecimal cost,
-                        ConsultationStatus status, int performance, int quality) {
+                        ConsultationStatus status, int performance, int quality, boolean payed) {
         super(id);
         this.student = student;
         this.training = training;
@@ -36,6 +37,7 @@ public class Consultation extends Entity {
         this.status = status;
         this.performance = performance;
         this.quality = quality;
+        this.payed = payed;
     }
 
     public Consultation(User student, Training training) {
@@ -107,6 +109,14 @@ public class Consultation extends Entity {
         this.assignments = assignments;
     }
 
+    public boolean isPayed() {
+        return payed;
+    }
+
+    public void setPayed(boolean payed) {
+        this.payed = payed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -119,6 +129,7 @@ public class Consultation extends Entity {
         return performance == that.performance &&
                 quality == that.quality &&
                 status == that.status &&
+                payed == that.payed &&
                 Objects.equals(getId(), that.getId()) &&
                 Objects.equals(student, that.student) &&
                 Objects.equals(training, that.training) &&
@@ -139,6 +150,7 @@ public class Consultation extends Entity {
         result += seed * (status == null ? 0 : status.hashCode());
         result += seed * performance;
         result += seed * quality;
+        result += seed * Boolean.hashCode(payed);
         return result;
     }
 
@@ -152,6 +164,7 @@ public class Consultation extends Entity {
                 .add("cost=" + cost)
                 .add("performance=" + performance)
                 .add("quality=" + quality)
+                .add("payed=" + payed)
                 .add("assignments=" + assignments)
                 .toString();
     }

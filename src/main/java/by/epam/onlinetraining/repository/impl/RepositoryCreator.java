@@ -1,19 +1,32 @@
-package by.epam.onlinetraining.repository;
+package by.epam.onlinetraining.repository.impl;
 
 import by.epam.onlinetraining.database.ProxyConnectionPool;
 import by.epam.onlinetraining.database.ProxyConnection;
-import by.epam.onlinetraining.repository.impl.*;
+import by.epam.onlinetraining.exception.RepositoryException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.sql.SQLException;
 
 /**
  * Provides {@link java.lang.AutoCloseable} creator of repository implementation class with connection to database for each.
  */
 public class RepositoryCreator implements AutoCloseable {
+    private static final Logger LOGGER = LogManager.getLogger();
     private ProxyConnectionPool proxyConnectionPool;
     private ProxyConnection connection;
 
     public RepositoryCreator() {
         proxyConnectionPool = ProxyConnectionPool.getInstance();
         connection = proxyConnectionPool.getConnection();
+    }
+
+    /**
+     *  Returns database connection to {@link by.epam.onlinetraining.database.ProxyConnectionPool}
+     */
+    @Override
+    public void close() {
+        proxyConnectionPool.closeConnection(connection);
     }
 
     /**
@@ -65,11 +78,30 @@ public class RepositoryCreator implements AutoCloseable {
         return new ConsultationAssignmentRepository(connection);
     }
 
-    /**
-     *  Returns database connection to {@link by.epam.onlinetraining.database.ProxyConnectionPool}
-     */
-    @Override
-    public void close() {
-        proxyConnectionPool.closeConnection(connection);
+    public void startTransaction() throws RepositoryException {
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e.getMessage(), e);
+        }
+    }
+
+    public void commitTransaction() throws RepositoryException {
+        try {
+            connection.commit();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e.getMessage(), e);
+        }
+    }
+
+    public void rollbackTransaction() throws RepositoryException {
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new RepositoryException(e.getMessage(), e);
+        }
     }
 }

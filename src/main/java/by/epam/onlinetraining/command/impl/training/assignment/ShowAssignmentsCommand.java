@@ -6,6 +6,8 @@ import by.epam.onlinetraining.entity.Assignment;
 import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.AssignmentService;
+import by.epam.onlinetraining.service.RecordService;
 import by.epam.onlinetraining.service.impl.AssignmentServiceImpl;
 import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.util.PagesDelimiter;
@@ -31,16 +33,16 @@ public class ShowAssignmentsCommand implements Command {
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
     private static final String TRAINING_ASSIGNMENTS_PAGE = "/WEB-INF/page/training/assignments.jsp";
+    private static AssignmentService assignmentService = new AssignmentServiceImpl();
+    private static RecordService recordService = new RecordServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         HttpSession session = request.getSession();
         UserRole role = (UserRole) session.getAttribute(ROLE);
         List<Assignment> assignmentList;
-        AssignmentServiceImpl assignmentService = new AssignmentServiceImpl();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
-            RecordServiceImpl recordService = new RecordServiceImpl();
             List<Training> trainingList = recordService.findStudentTrainings(studentId);
             List<Assignment> assignments = new ArrayList<>();
             trainingList.forEach(training -> {

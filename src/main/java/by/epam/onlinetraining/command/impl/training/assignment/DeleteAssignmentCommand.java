@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.training.assignment;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.AssignmentService;
 import by.epam.onlinetraining.service.impl.AssignmentServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ public class DeleteAssignmentCommand implements Command {
     private static final String TRAINING_ID = "trainingId";
     private static final String SHOW_ASSIGNMENTS = "controller?command=showAssignments&pageNumber=1&limit=5&trainingId=";
     private static final String MESSAGE = "&message=deleted";
+    private static AssignmentService assignmentService = new AssignmentServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -22,7 +24,6 @@ public class DeleteAssignmentCommand implements Command {
         if (stringTrainingId != null) {
             trainingId = Integer.parseInt(stringTrainingId);
         }
-        AssignmentServiceImpl assignmentService = new AssignmentServiceImpl();
         assignmentService.delete(assignmentId);
         return CommandResult.redirect(SHOW_ASSIGNMENTS + trainingId + MESSAGE);
     }

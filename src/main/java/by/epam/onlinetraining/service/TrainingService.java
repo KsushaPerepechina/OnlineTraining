@@ -60,9 +60,10 @@ public interface TrainingService {
      * @param trainingData a {@link java.util.Map} object, that contains training data.
      * @param language a {@link java.lang.String} object, that contains the language of the processed data
      *                necessary for the correct processing of dates.
+     * @return operation success
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
-    void update(Map<String, String> trainingData, String language) throws ServiceException;
+    boolean update(Map<String, String> trainingData, String language) throws ServiceException;
 
     /**
      * The method removes training with given identifier from repository.

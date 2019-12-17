@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.training.consultation.assignment;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.ConsultationService;
 import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,12 +15,12 @@ public class ExcludeAssignmentCommand implements Command {
     private static final String SHOW_CONSULTATION_INFO_COMMAND =
             "controller?command=showConsultationInfo&pageNumber=1&limit=5&consultationId=";
     private static final String MESSAGE = "&message=deleted";
+    private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
         int assignmentId = Integer.parseInt(request.getParameter(ASSIGNMENT_ID));
         int consultationId = Integer.parseInt(request.getParameter(CONSULTATION_ID));
-        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
         consultationService.excludeAssignment(assignmentId, consultationId);
         return CommandResult.redirect(SHOW_CONSULTATION_INFO_COMMAND + consultationId + MESSAGE);
     }

@@ -4,6 +4,7 @@ import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -26,10 +27,12 @@ public class SignUpCommand implements Command {
     private static final String BIRTH_DATE = "birthDate";
     private static final String LOGIN = "login";
     private static final String PASSWORD = "userPassword";
+    private static final String PASSWORD_DUPLICATION = "userPasswordDuplication";
     private static final String START_PAGE = "controller?command=startLogIn";
-    private static final String LOG_IN_PAGE = "/WEB-INF/page/common/login.jsp";
+    private static final String LOG_IN_PAGE = "/WEB-INF/page/user/login.jsp";
     private static final String SIGN_UP_ERROR = "signUpError";
     private static final String LOGIN_ERROR = "loginError";
+    private static UserService userService = new UserServiceImpl();
 
     /**
      * Process the request, sing up user and generates a result of processing in the form of
@@ -52,6 +55,7 @@ public class SignUpCommand implements Command {
         String email = request.getParameter(EMAIL);
         String phoneNumber = request.getParameter(PHONE_NUMBER);
         String password = request.getParameter(PASSWORD);
+        String passwordDuplication = request.getParameter(PASSWORD_DUPLICATION);
 
         Map<String, String> signUpData = new HashMap<>();
         signUpData.put(FIRST_NAME, firstName);
@@ -67,7 +71,12 @@ public class SignUpCommand implements Command {
             request.setAttribute(SIGN_UP_ERROR, errorName);
             return CommandResult.forward(LOG_IN_PAGE);
         }
-        UserServiceImpl userService = new UserServiceImpl();
+
+        if (!password.equals(passwordDuplication)) {
+            request.setAttribute(SIGN_UP_ERROR, PASSWORD_DUPLICATION);
+            return CommandResult.forward(LOG_IN_PAGE);
+        }
+
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
             request.setAttribute(LOGIN_ERROR, LOGIN);

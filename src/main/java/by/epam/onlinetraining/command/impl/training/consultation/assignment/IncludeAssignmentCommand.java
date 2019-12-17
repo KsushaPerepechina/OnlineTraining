@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.training.consultation.assignment;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.ConsultationService;
 import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ public class IncludeAssignmentCommand implements Command {
             "controller?command=showConsultationInfo&pageNumber=1&limit=5&consultationId=";
     private static final String OK_MESSAGE = "&message=added";
     private static final String ERROR_MESSAGE = "&message=invalid";
+    private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -26,7 +28,6 @@ public class IncludeAssignmentCommand implements Command {
         } else {
             assignmentId = Integer.parseInt(stringAssignmentId);
         }
-        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
         consultationService.includeAssignment(assignmentId, consultationId);
         return CommandResult.redirect(SHOW_CONSULTATION_INFO_COMMAND + consultationId + OK_MESSAGE);
     }

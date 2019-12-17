@@ -7,6 +7,9 @@ import by.epam.onlinetraining.entity.Training;
 import by.epam.onlinetraining.entity.type.StudentStatus;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.ConsultationService;
+import by.epam.onlinetraining.service.RecordService;
+import by.epam.onlinetraining.service.TrainingService;
 import by.epam.onlinetraining.service.impl.ConsultationServiceImpl;
 import by.epam.onlinetraining.service.impl.RecordServiceImpl;
 import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
@@ -37,6 +40,9 @@ public class ShowConsultationsCommand implements Command {
     private static final String MESSAGE = "message";
     private static final String NOTIFY_MESSAGE = "notifyMessage";
     private static final String TRAINING_CONSULTATIONS_PAGE = "/WEB-INF/page/training/consultations.jsp";
+    private static ConsultationService consultationService = new ConsultationServiceImpl();
+    private static TrainingService trainingService = new TrainingServiceImpl();
+    private static RecordService recordService = new RecordServiceImpl();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
@@ -44,9 +50,6 @@ public class ShowConsultationsCommand implements Command {
         UserRole role = (UserRole) session.getAttribute(ROLE);
         String stringTrainingId = request.getParameter(TRAINING_ID);
         List<Consultation> consultationList;
-        ConsultationServiceImpl consultationService = new ConsultationServiceImpl();
-        TrainingServiceImpl trainingService = new TrainingServiceImpl();
-        RecordServiceImpl recordService = new RecordServiceImpl();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
             consultationList = consultationService.findByStudentId(studentId);

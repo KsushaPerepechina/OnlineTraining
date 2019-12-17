@@ -5,6 +5,7 @@ import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.User;
 import by.epam.onlinetraining.entity.type.UserRole;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ public class ShowProfileCommand implements Command {
     private static final String ROLE_SET = "roleSet";
     private static final String PROFILE = "/WEB-INF/page/user/profile.jsp";
     private static final String MESSAGE = "message";
+    private static UserService userService = new UserServiceImpl();
 
     /**
      * Process the request, display user's profile information and generates a result of processing in the form of
@@ -47,7 +49,6 @@ public class ShowProfileCommand implements Command {
         }
         EnumSet<UserRole> roleSet = EnumSet.of(UserRole.MENTOR, UserRole.STUDENT, UserRole.ADMIN);
 
-        UserServiceImpl userService = new UserServiceImpl();
         Optional<User> user = userService.findById(id);
         user.ifPresent(usr -> {
             request.setAttribute(USER, usr);

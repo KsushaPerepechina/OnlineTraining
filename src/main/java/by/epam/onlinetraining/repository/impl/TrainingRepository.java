@@ -4,7 +4,6 @@ import by.epam.onlinetraining.builder.EntityBuilder;
 import by.epam.onlinetraining.builder.impl.TrainingBuilder;
 import by.epam.onlinetraining.database.ProxyConnection;
 import by.epam.onlinetraining.entity.Training;
-import by.epam.onlinetraining.entity.type.TrainingProgress;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.specification.SqlSpecification;
 

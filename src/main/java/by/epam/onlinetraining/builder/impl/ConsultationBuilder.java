@@ -26,6 +26,7 @@ public class ConsultationBuilder implements EntityBuilder<Consultation> {
     private static final String STATUS = "status";
     private static final String PERFORMANCE = "performance";
     private static final String QUALITY = "quality";
+    private static final String PAYED = "payed";
     private static UserBuilder userBuilder = new UserBuilder();
     private static TrainingBuilder trainingBuilder = new TrainingBuilder();
 
@@ -51,7 +52,8 @@ public class ConsultationBuilder implements EntityBuilder<Consultation> {
             int quality = resultSet.getInt(QUALITY);
             User student = userBuilder.buildStudent(resultSet);
             Training training = trainingBuilder.buildRepresentation(resultSet);
-            return new Consultation(id, student, training, dateTime, cost, status, performance, quality);
+            boolean payed = resultSet.getBoolean(PAYED);
+            return new Consultation(id, student, training, dateTime, cost, status, performance, quality, payed);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
             throw new RepositoryException(e.getMessage(), e);

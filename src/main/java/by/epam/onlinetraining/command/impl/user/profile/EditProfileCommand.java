@@ -3,6 +3,7 @@ package by.epam.onlinetraining.command.impl.user.profile;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.exception.ServiceException;
+import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
 import by.epam.onlinetraining.validation.Validation;
 
@@ -30,6 +31,7 @@ public class EditProfileCommand implements Command {
     private static final String ROLE = "role";
     private static final String EDITING_PROFILE = "editedProfile";
     private static final String PROFILE_ERROR = "profileError";
+    private static UserService userService = new UserServiceImpl();
 
     /**
      * Process the request, edit user's profile information and generates a result of processing in the form of
@@ -68,7 +70,7 @@ public class EditProfileCommand implements Command {
         inputData.put(BLOCKING_STATUS, blockingStatus);
         inputData.put(ROLE, role);
         inputData.put(ID, id);
-        UserServiceImpl userService = new UserServiceImpl();
+
         userService.updateProfile(inputData, language);
         session.removeAttribute(NAME);
         session.setAttribute(NAME, firstName);
