@@ -11,7 +11,7 @@ import by.epam.onlinetraining.command.impl.training.main.DeleteTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.main.SaveTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.main.ShowTrainingInfoCommand;
 import by.epam.onlinetraining.command.impl.training.main.ShowTrainingsCommand;
-import by.epam.onlinetraining.command.impl.user.training.ApplyForTrainingCommand;
+import by.epam.onlinetraining.command.impl.training.student.ApplyForTrainingCommand;
 import by.epam.onlinetraining.command.impl.training.student.ChangeStudentStatusCommand;
 import by.epam.onlinetraining.command.impl.training.student.RateStudentCommand;
 import by.epam.onlinetraining.command.impl.training.student.ShowTrainingStudentsCommand;
@@ -24,11 +24,10 @@ import by.epam.onlinetraining.command.impl.user.balance.ShowBalanceCommand;
 import by.epam.onlinetraining.command.impl.user.authentication.LogInCommand;
 import by.epam.onlinetraining.command.impl.common.ShowStartPageCommand;
 import by.epam.onlinetraining.command.impl.user.authentication.SignUpCommand;
-import by.epam.onlinetraining.command.impl.user.authentication.StartLogInCommand;
 import by.epam.onlinetraining.command.impl.user.balance.RefillBalanceCommand;
 import by.epam.onlinetraining.command.impl.user.profile.EditProfileCommand;
 import by.epam.onlinetraining.command.impl.user.profile.ShowProfileCommand;
-import by.epam.onlinetraining.command.impl.user.training.ShowStudentRequestsCommand;
+import by.epam.onlinetraining.command.impl.training.student.ShowStudentRequestsCommand;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -79,8 +78,8 @@ public class CommandFactory {
                 return new ShowMainPageCommand();
             case LOG_IN:
                 return new LogInCommand();
-            case START_LOG_IN:
-                return new StartLogInCommand();
+//            case START_LOG_IN:
+//                return new StartLogInCommand();
             case LOG_OUT:
                 return new LogOutCommand();
             case SIGN_UP:

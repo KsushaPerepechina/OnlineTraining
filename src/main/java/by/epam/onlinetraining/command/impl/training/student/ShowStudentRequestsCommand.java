@@ -1,4 +1,4 @@
-package by.epam.onlinetraining.command.impl.user.training;
+package by.epam.onlinetraining.command.impl.training.student;
 
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;

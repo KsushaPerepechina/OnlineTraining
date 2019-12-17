@@ -1,4 +1,4 @@
-package by.epam.onlinetraining.command.impl.user.training;
+package by.epam.onlinetraining.command.impl.training.student;
 
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
@@ -14,7 +14,7 @@ public class ApplyForTrainingCommand implements Command {
     private static final String ID = "id";
     private static final String TRAINING_ID = "trainingId";
     private static final String STUDENT_TRAINING_LIST = "studentTrainingList";
-    private static final String REDIRECTION_PAGE = "controller?command=showTrainings&message=applicationSent";
+    private static final String REDIRECTION_PAGE = "controller?command=showTrainings&message=requested";
     private static RecordService recordService = new RecordServiceImpl();
 
     @Override

@@ -15,6 +15,7 @@
 <fmt:message bundle="${naming}" key="training.section.inProcess" var="inProcess"/>
 <fmt:message bundle="${naming}" key="training.section.registrationOpened" var="registrationOpened"/>
 <fmt:message bundle="${naming}" key="training.table.button.showInfo" var="showInfo"/>
+<fmt:message bundle="${naming}" key="training.message.requested" var="requested"/>
 <fmt:message bundle="${naming}" key="training.message.added" var="added"/>
 <fmt:message bundle="${naming}" key="training.message.invalid" var="invalid"/>
 <fmt:message bundle="${naming}" key="button.add" var="add"/>
@@ -289,6 +290,9 @@
                             </c:when>
                             <c:when test="${requestScope.notifyMessage eq 'invalid'}">
                                 <label>${invalid}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'requested'}">
+                                <label>${requested}</label>
                             </c:when>
                             <c:when test="${requestScope.notifyMessage eq 'deleted'}">
                                 <label>${deleted}</label>

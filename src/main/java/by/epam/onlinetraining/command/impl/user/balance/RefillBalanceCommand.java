@@ -3,7 +3,6 @@ package by.epam.onlinetraining.command.impl.user.balance;
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
 import by.epam.onlinetraining.entity.User;
-import by.epam.onlinetraining.entity.type.OperationType;
 import by.epam.onlinetraining.exception.ServiceException;
 import by.epam.onlinetraining.service.TransactionService;
 import by.epam.onlinetraining.service.UserService;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -42,7 +40,6 @@ public class RefillBalanceCommand implements Command {
      */
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) throws ServiceException {
-        LocalDate currentDate = LocalDate.now();
         HttpSession session = request.getSession();
         Integer id = (Integer) session.getAttribute(ID);
         String stringSum = request.getParameter(SUM);
@@ -55,9 +52,8 @@ public class RefillBalanceCommand implements Command {
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             BigDecimal balance = user.getBalance();
-            BigDecimal newBalance = balance.add(sum);//TODO transactions
-            userService.updateBalance(id, newBalance);
-            transactionService.addOperation(id, OperationType.REFILL, currentDate, sum);
+            BigDecimal newBalance = balance.add(sum);
+            userService.refillBalance(id, newBalance);
         }
         return CommandResult.redirect(BALANCE_COMMAND + MESSAGE + REFILLED_BALANCE);
     }

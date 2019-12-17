@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void signUp(Map<String, String> signUpData, String language) throws ServiceException {
-        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {//TODO try-with-resources
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
             String firstName = signUpData.get(FIRST_NAME);
             String lastName = signUpData.get(LAST_NAME);
@@ -169,11 +169,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateBalance(int id, BigDecimal balance) throws ServiceException {
+    public void refillBalance(int studentId, BigDecimal sum) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             UserRepository userRepository = repositoryCreator.getUserRepository();
-            User user = new User(id, balance);
-            userRepository.save(user);
+            TransactionRepository transactionRepository = repositoryCreator.getTransactionRepository();
+            User user = userRepository.query(new FindByIdSpecification(studentId, userRepository.getTableName())).get();
+            user.setBalance(user.getBalance().add(sum));
+            Transaction transaction = new Transaction(null, studentId, LocalDate.now(), OperationType.REFILL, sum);
+            try {
+                repositoryCreator.startTransaction();
+                userRepository.save(user);
+                transactionRepository.save(transaction);
+            } catch (RepositoryException e) {
+                LOGGER.error(e.getMessage(), e);
+                repositoryCreator.rollbackTransaction();
+            }
+            repositoryCreator.commitTransaction();
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

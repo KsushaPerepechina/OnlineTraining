@@ -44,15 +44,15 @@
     <div class="rightColumn">
         <div class="itemLimit">
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${requestScope.trainingId}&pageNumber=1&limit=15"
+               href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${requestScope.consultationId}&pageNumber=1&limit=15"
                formmethod="post" onclick=changeStatus(event)>15
             </a>
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${requestScope.trainingId}&pageNumber=1&limit=10"
+               href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${requestScope.consultationId}&pageNumber=1&limit=10"
                formmethod="post" onclick=changeStatus(event)>10
             </a>
             <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${requestScope.trainingId}&pageNumber=1&limit=5"
+               href="${pageContext.servletContext.contextPath}/controller?command=showConsultationInfo&consultationId=${requestScope.consultationId}&pageNumber=1&limit=5"
                formmethod="post" onclick=changeStatus(event)>5
             </a>
         </div>
