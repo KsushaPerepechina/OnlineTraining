@@ -39,7 +39,7 @@ public class ShowTrainingInfoCommand implements Command {
 
         training.ifPresent(foundedTraining -> {
             request.setAttribute(TRAINING, foundedTraining);
-            mentorList.removeIf(mentor -> mentor.getId().equals(foundedTraining.getId()));
+            mentorList.removeIf(mentor -> mentor.getId().equals(foundedTraining.getMentor().getId()));
             progressSet.remove(foundedTraining.getProgress());
         });
         request.setAttribute(PROGRESS_SET, progressSet);

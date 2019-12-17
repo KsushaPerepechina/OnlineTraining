@@ -136,33 +136,38 @@
                                     </div>
                                 </td>
                                 <td>
-                                <c:if test="${record.training.mentor.id == sessionScope.id && record.status == 'IN_PROCESS'}">
-
-                                    <div class="data">
-                                        <div class="expelButton">
-                                            <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=expelled"
-                                               class="showTrainingInfo">
-                                                <img class="tableImage" src="img/icon/reject.png">
-                                            </a>
+                                <c:if test="${record.training.mentor.id == sessionScope.id && record.status eq 'IN_PROCESS'}">
+                                    <td>
+                                        <div class="data">
+                                            <div class="expelButton">
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=expelled"
+                                                   class="showTrainingInfo">
+                                                    <img class="tableImage" src="img/icon/reject.png">
+                                                </a>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </td>
                                 </c:if>
                             </c:when>
-                            <c:when test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}">
-                                    <c:if test="${record.status == 'REQUESTED'}">
-                                    <div class="approveRequestButton">
-                                        <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=approved"
-                                           class="showTrainingInfo">
-                                            <img class="tableImage" src="img/icon/approve.png">
-                                        </a>
-                                    </div>
-                                    <div class="rejectRequestButton">
-                                        <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=rejected"
-                                           class="showTrainingInfo">
-                                            <img class="tableImage" src="img/icon/reject.png">
-                                        </a>
-                                    </div>
+                            <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
+                                <td>
+                                    <c:if test="${record.status eq 'REQUESTED'}">
+
+                                            <div class="approveRequestButton">
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=approved"
+                                                   class="showTrainingInfo">
+                                                    <img class="tableImage" src="img/icon/approve.png">
+                                                </a>
+                                            </div>
+                                            <div class="rejectRequestButton">
+                                                <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=rejected"
+                                                   class="showTrainingInfo">
+                                                    <img class="tableImage" src="img/icon/reject.png">
+                                                </a>
+                                            </div>
+
                                     </c:if>
+                                </td>
                             </c:when>
                         </c:choose>
                     </tr>

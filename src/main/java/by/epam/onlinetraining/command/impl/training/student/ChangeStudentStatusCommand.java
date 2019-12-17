@@ -38,7 +38,6 @@ public class ChangeStudentStatusCommand implements Command {
         pageData.put(PAGE_NUMBER, pageNumber);
         pageData.put(RECORD_ID, stringRecordId);
         pageData.put(TRAINING_ID, trainingId);
-        pageData.put(STATUS, stringStatus);
         Validation validation = new Validation();
         if (!validation.isValidData(pageData)) {
             return CommandResult.forward(ERROR_PAGE);

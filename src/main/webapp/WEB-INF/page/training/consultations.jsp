@@ -50,6 +50,9 @@
             <c:when test="${sessionScope.role eq 'STUDENT'}">
                 <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
             </c:when>
+            <c:when test="${sessionScope.role eq 'MENTOR'}">
+                <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
+            </c:when>
             <c:otherwise>
                 <jsp:include page="/WEB-INF/fragment/header/trainingHeader.jsp"/>
             </c:otherwise>
@@ -57,18 +60,36 @@
     </div>
     <div class="rightColumn">
         <div class="itemLimit">
-            <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=15"
-               formmethod="post" onclick=changeStatus(event)>15
-            </a>
-            <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=10"
-               formmethod="post" onclick=changeStatus(event)>10
-            </a>
-            <a class=" "
-               href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5"
-               formmethod="post" onclick=changeStatus(event)>5
-            </a>
+            <c:choose>
+                <c:when test="${sessionScope.role eq 'STUDENT'}">
+                    <a class=" "
+                       href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&pageNumber=1&limit=15"
+                       formmethod="post" onclick=changeStatus(event)>15
+                    </a>
+                    <a class=" "
+                       href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&pageNumber=1&limit=10"
+                       formmethod="post" onclick=changeStatus(event)>10
+                    </a>
+                    <a class=" "
+                       href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&pageNumber=1&limit=5"
+                       formmethod="post" onclick=changeStatus(event)>5
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a class=" "
+                       href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=15"
+                       formmethod="post" onclick=changeStatus(event)>15
+                    </a>
+                    <a class=" "
+                       href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=10"
+                       formmethod="post" onclick=changeStatus(event)>10
+                    </a>
+                    <a class=" "
+                       href="${pageContext.servletContext.contextPath}/controller?command=showConsultations&trainingId=${requestScope.trainingId}&pageNumber=1&limit=5"
+                       formmethod="post" onclick=changeStatus(event)>5
+                    </a>
+                </c:otherwise>
+            </c:choose>
         </div>
         <div class="card">
             <table>

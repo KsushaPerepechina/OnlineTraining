@@ -119,7 +119,7 @@
                     <c:choose>
                         <c:when test="${sessionScope.role == 'MAIN_ADMIN' || sessionScope.role == 'ADMIN'}">
                             <select id="progress" name="progress" required>
-                            <option selected>
+                            <option selected value="${training.progress}">
                                 <c:choose>
                                     <c:when test="${training.progress == 'REGISTRATION_OPENED'}">
                                         ${registrationOpened}
