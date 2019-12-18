@@ -1,6 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="tags" tagdir="/WEB-INF/tags"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <fmt:setLocale value="${sessionScope.language}"/>
@@ -25,6 +26,7 @@
 <fmt:message bundle="${naming}" key="button.add" var="add"/>
 <fmt:message bundle="${naming}" key="consultation.message.added" var="added"/>
 <fmt:message bundle="${naming}" key="consultation.message.invalid" var="invalid"/>
+<fmt:message bundle="${naming}" key="consultation.message.rated" var="rated"/>
 <fmt:message bundle="${naming}" key="consultation.message.deleted" var="deleted"/>
 
 <html>
@@ -50,7 +52,7 @@
             <c:when test="${sessionScope.role eq 'STUDENT'}">
                 <jsp:include page="/WEB-INF/fragment/header/studentHeader.jsp"/>
             </c:when>
-            <c:when test="${sessionScope.role eq 'MENTOR'}">
+            <c:when test="${sessionScope.role eq 'MENTOR' && empty requestScope.trainingId}">
                 <jsp:include page="/WEB-INF/fragment/header/mentorHeader.jsp"/>
             </c:when>
             <c:otherwise>
@@ -138,13 +140,13 @@
                         <td>
                             <div class="data">
                                 <c:choose>
-                                    <c:when test="${consultation.dateTime == null}">
+                                    <c:when test="${consultation.date eq null}">
                                         <c:choose>
-                                            <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
-                                                <form action="${pageContext.servletContext.contextPath}/controller?command=scheduleConsultation&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}"
+                                            <c:when test="${(sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN') && consultation.payed}">
+                                                <form action="${pageContext.servletContext.contextPath}/controller?command=scheduleConsultation&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${consultation.training.id}"
                                                       method="post">
                                                     <div class="value">
-                                                        <input type="text" id="dateTime" name="dateTime"
+                                                        <input type="text" id="date" name="date"
                                                         <c:choose>
                                                         <c:when test="${sessionScope.language eq 'EN'}">
                                                                pattern="^(((0[13-9]|1[012])[-]?(0[1-9]|[12][0-9]|30)|(0[13578]|1[02])[-]?31|02[-]?(0[1-9]|1[0-9]|2[0-8]))[-]?[0-9]{4}|02[-]?29[-]?([0-9]{2}(([2468][048]|[02468][48])|[13579][26])|([13579][26]|[02468][048]|0[0-9]|1[0-6])00))$"
@@ -169,7 +171,7 @@
                                     </c:when>
                                     <c:otherwise>
                                         <div class="data">
-                                            <tags:localDate date="${consultation.dateTime}"/>
+                                            <tags:localDate date="${consultation.date}"/>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
@@ -195,8 +197,8 @@
                                 <c:choose>
                                     <c:when test="${consultation.performance == 0}">
                                         <c:choose>
-                                            <c:when test="${consultation.training.mentor.id eq sessionScope.id && consultation.status eq 'SCHEDULED'}">
-                                                <form action="${pageContext.servletContext.contextPath}/controller?command=rateStudentPerformance&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}"
+                                            <c:when test="${consultation.training.mentor.id == sessionScope.id && consultation.status eq 'SCHEDULED'}">
+                                                <form action="${pageContext.servletContext.contextPath}/controller?command=rateStudentPerformance&consultationId=${consultation.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${consultation.training.id}"
                                                       method="post">
                                                     <div class="value">
                                                         <input type="text" id="performance" name="performance"
@@ -329,8 +331,14 @@
                             <c:when test="${requestScope.notifyMessage eq 'invalid'}">
                                 <label>${invalid}</label>
                             </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'scheduled'}">
+                                <label>${scheduled}</label>
+                            </c:when>
                             <c:when test="${requestScope.notifyMessage eq 'payed'}">
                                 <label>${payed}</label>
+                            </c:when>
+                            <c:when test="${requestScope.notifyMessage eq 'rated'}">
+                                <label>${rated}</label>
                             </c:when>
                             <c:when test="${requestScope.notifyMessage eq 'notEnoughMoney'}">
                                 <label>${notEnoughMoney}</label>

@@ -15,6 +15,7 @@ import by.epam.onlinetraining.repository.impl.RepositoryCreator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,6 +145,18 @@ public class ConsultationServiceImpl implements ConsultationService {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             ConsultationRepository consultationRepository = repositoryCreator.getConsultationRepository();
             consultationRepository.remove(id);
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void scheduleConsultation(int consultationId, LocalDate date) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            ConsultationRepository consultationRepository = repositoryCreator.getConsultationRepository();
+            Consultation consultation = new Consultation(consultationId, date, ConsultationStatus.SCHEDULED, true);
+            consultationRepository.save(consultation);
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);

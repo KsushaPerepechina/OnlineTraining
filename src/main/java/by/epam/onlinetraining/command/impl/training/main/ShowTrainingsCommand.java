@@ -55,10 +55,10 @@ public class ShowTrainingsCommand implements Command {
             finishedList = trainingService.findByProgress(TrainingProgress.FINISHED);
             inProcessList = trainingService.findByProgress(TrainingProgress.IN_PROCESS);
             registrationOpenedList = trainingService.findByProgress(TrainingProgress.REGISTRATION_OPENED);
-            List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
-            request.setAttribute(MENTOR_LIST, mentorList);
         }
 
+        List<User> mentorList = userService.findByRoleAndBlockingStatus(UserRole.MENTOR, BlockingStatus.ACTIVE);
+        request.setAttribute(MENTOR_LIST, mentorList);
         request.setAttribute(FINISHED_TRAINING_LIST, finishedList);
         request.setAttribute(TRAINING_IN_PROCESS_LIST, inProcessList);
         request.setAttribute(REGISTRATION_OPENED_TRAINING_LIST, registrationOpenedList);

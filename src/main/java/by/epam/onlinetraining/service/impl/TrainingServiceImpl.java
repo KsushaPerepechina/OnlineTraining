@@ -16,6 +16,7 @@ import by.epam.onlinetraining.specification.impl.training.FindByMentorIdSpecific
 import by.epam.onlinetraining.specification.impl.training.FindByProgressAndMentorIdSpecification;
 import by.epam.onlinetraining.specification.impl.training.FindByProgressSpecification;
 import by.epam.onlinetraining.repository.impl.RepositoryCreator;
+import by.epam.onlinetraining.util.DateFormatter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,12 +34,8 @@ public class TrainingServiceImpl implements TrainingService {
     private static final String END_DATE = "endDate";
     private static final String PROGRESS = "progress";
     private static final String MENTOR_ID = "mentorId";
-    private static final String EN = "EN";
-    private static final String RU = "RU";
-    private static final String UNSUPPORTED_LANG_MESSAGE = "Unsupported language: ";
-    private static final String EN_DATE_FORMAT = "MM-dd-yyyy";
-    private static final String RU_DATE_FORMAT = "dd.MM.yyyy";
     private static RecordService recordService = new RecordServiceImpl();
+    private static DateFormatter dateFormatter = new DateFormatter();
 
     @Override
     public Optional<Training> findById(int id) throws ServiceException {
@@ -94,23 +91,10 @@ public class TrainingServiceImpl implements TrainingService {
                 id = Integer.parseInt(stringId);
             }
             String name = trainingData.get(NAME);
-            LocalDate startDate;
-            LocalDate endDate;
-            String stringStartDate = trainingData.get(START_DATE);
-            String stringEndDate = trainingData.get(END_DATE);
-            if (EN.equals(language)) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(EN_DATE_FORMAT);
-                startDate = LocalDate.parse(stringStartDate, formatter);
-                endDate = LocalDate.parse(stringEndDate, formatter);
-            } else if (RU.equals(language)) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(RU_DATE_FORMAT);
-                startDate = LocalDate.parse(stringStartDate, formatter);
-                endDate = LocalDate.parse(stringEndDate, formatter);
-                if (startDate.isAfter(endDate)) {
+            LocalDate startDate = dateFormatter.format(START_DATE, language);
+            LocalDate endDate = dateFormatter.format(END_DATE, language);
+            if (startDate.isAfter(endDate)) {
                     return false;
-                }
-            } else {
-                throw new ServiceException(UNSUPPORTED_LANG_MESSAGE + language);
             }
             String stringProgress = trainingData.get(PROGRESS);
             TrainingProgress progress = null;

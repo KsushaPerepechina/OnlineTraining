@@ -39,7 +39,7 @@
             <div class="balanceStatus">
                 ${consultation.training.name}
             </div>
-            <form action="${pageContext.request.contextPath}/controller?command=payForConsultation&consultationId=${consultation.id}" method="post">
+            <form action="${pageContext.request.contextPath}/controller?command=completePayment&consultationId=${consultation.id}" method="post">
                 <div class="inputBalance">
                     <input type="text" id="sum" name="sum" placeholder="${cost}: ${consultation.cost}" readonly>
                 </div>

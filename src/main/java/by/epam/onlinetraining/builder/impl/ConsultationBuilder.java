@@ -21,7 +21,7 @@ import java.time.LocalDate;
 public class ConsultationBuilder implements EntityBuilder<Consultation> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final String ID = "consultations.id";
-    private static final String DATE_TIME = "date_time";
+    private static final String DATE = "date";
     private static final String COST = "cost";
     private static final String STATUS = "status";
     private static final String PERFORMANCE = "performance";
@@ -41,10 +41,10 @@ public class ConsultationBuilder implements EntityBuilder<Consultation> {
     public Consultation build(ResultSet resultSet) throws RepositoryException {
         try {
             int id = resultSet.getInt(ID);
-            Date sqlDateTime = resultSet.getDate(DATE_TIME);
-            LocalDate dateTime = null;
-            if (sqlDateTime != null) {
-                dateTime = sqlDateTime.toLocalDate();
+            Date sqlDate = resultSet.getDate(DATE);
+            LocalDate date = null;
+            if (sqlDate != null) {
+                date = sqlDate.toLocalDate();
             }
             BigDecimal cost = resultSet.getBigDecimal(COST);
             ConsultationStatus status = ConsultationStatus.valueOf(resultSet.getString(STATUS).toUpperCase());
@@ -53,7 +53,7 @@ public class ConsultationBuilder implements EntityBuilder<Consultation> {
             User student = userBuilder.buildStudent(resultSet);
             Training training = trainingBuilder.buildRepresentation(resultSet);
             boolean payed = resultSet.getBoolean(PAYED);
-            return new Consultation(id, student, training, dateTime, cost, status, performance, quality, payed);
+            return new Consultation(id, student, training, date, cost, status, performance, quality, payed);
         } catch (SQLException e) {
             LOGGER.error(e.getMessage(), e);
             throw new RepositoryException(e.getMessage(), e);

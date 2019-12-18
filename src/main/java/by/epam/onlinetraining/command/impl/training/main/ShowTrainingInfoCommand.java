@@ -12,6 +12,8 @@ import by.epam.onlinetraining.service.TrainingService;
 import by.epam.onlinetraining.service.UserService;
 import by.epam.onlinetraining.service.impl.TrainingServiceImpl;
 import by.epam.onlinetraining.service.impl.UserServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

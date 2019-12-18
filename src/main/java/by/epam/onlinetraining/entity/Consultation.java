@@ -11,7 +11,7 @@ import java.util.StringJoiner;
 public class Consultation extends Entity {
     private User student;
     private Training training;
-    private LocalDate dateTime;
+    private LocalDate date;
     private BigDecimal cost;
     private ConsultationStatus status;
     private int performance;
@@ -27,12 +27,12 @@ public class Consultation extends Entity {
     }
 
 
-    public Consultation(Integer id, User student, Training training, LocalDate dateTime, BigDecimal cost,
+    public Consultation(Integer id, User student, Training training, LocalDate date, BigDecimal cost,
                         ConsultationStatus status, int performance, int quality, boolean payed) {
         super(id);
         this.student = student;
         this.training = training;
-        this.dateTime = dateTime;
+        this.date = date;
         this.cost = cost;
         this.status = status;
         this.performance = performance;
@@ -43,6 +43,13 @@ public class Consultation extends Entity {
     public Consultation(User student, Training training) {
         this.student = student;
         this.training = training;
+    }
+
+    public Consultation(int id, LocalDate date, ConsultationStatus status, boolean payed) {
+        super(id);
+        this.date = date;
+        this.status = status;
+        this.payed = payed;
     }
 
     public User getStudent() {
@@ -61,12 +68,12 @@ public class Consultation extends Entity {
         this.training = training;
     }
 
-    public LocalDate getDateTime() {
-        return dateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setDateTime(LocalDate dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public BigDecimal getCost() {
@@ -133,7 +140,7 @@ public class Consultation extends Entity {
                 Objects.equals(getId(), that.getId()) &&
                 Objects.equals(student, that.student) &&
                 Objects.equals(training, that.training) &&
-                Objects.equals(dateTime, that.dateTime) &&
+                Objects.equals(date, that.date) &&
                 Objects.equals(cost, that.cost) &&
                 Objects.equals(assignments, that.assignments);
     }
@@ -145,7 +152,7 @@ public class Consultation extends Entity {
         result += seed * (getId() == null ? 0 : getId().hashCode());
         result += seed * (student == null ? 0 : student.hashCode());
         result += seed * (training == null ? 0 : training.hashCode());
-        result += seed * (dateTime == null ? 0 : dateTime.hashCode());
+        result += seed * (date == null ? 0 : date.hashCode());
         result += seed * (cost == null ? 0 : cost.hashCode());
         result += seed * (status == null ? 0 : status.hashCode());
         result += seed * performance;
@@ -160,7 +167,7 @@ public class Consultation extends Entity {
                 .add("id=" + getId())
                 .add("student=" + student)
                 .add("training=" + training)
-                .add("dateTime=" + dateTime)
+                .add("date=" + date)
                 .add("cost=" + cost)
                 .add("performance=" + performance)
                 .add("quality=" + quality)

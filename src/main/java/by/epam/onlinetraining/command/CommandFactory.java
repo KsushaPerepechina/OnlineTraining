@@ -16,6 +16,7 @@ import by.epam.onlinetraining.command.impl.training.student.ChangeStudentStatusC
 import by.epam.onlinetraining.command.impl.training.student.RateStudentCommand;
 import by.epam.onlinetraining.command.impl.training.student.ShowTrainingStudentsCommand;
 import by.epam.onlinetraining.command.impl.user.authentication.LogOutCommand;
+import by.epam.onlinetraining.command.impl.user.authentication.StartLogInCommand;
 import by.epam.onlinetraining.command.impl.user.listing.ShowAdminsCommand;
 import by.epam.onlinetraining.command.impl.user.listing.ShowMentorsCommand;
 import by.epam.onlinetraining.command.impl.user.listing.ShowStudentsCommand;
@@ -54,6 +55,7 @@ public class CommandFactory {
     private static final String SAVE_ASSIGNMENT = "saveAssignment";
     private static final String DELETE_ASSIGNMENT = "deleteAssignment";
     private static final String SHOW_CONSULTATIONS = "showConsultations";
+    private static final String SCHEDULE_CONSULTATION = "scheduleConsultation";
     private static final String SHOW_CONSULTATION_INFO = "showConsultationInfo";
     private static final String INCLUDE_ASSIGNMENT = "includeAssignment";
     private static final String EXCLUDE_ASSIGNMENT = "excludeAssignment";
@@ -67,6 +69,7 @@ public class CommandFactory {
     private static final String APPLY_FOR_TRAINING = "applyForTraining";
     private static final String REQUEST_CONSULTATION = "requestConsultation";
     private static final String PAY_FOR_CONSULTATION = "payForConsultation";
+    private static final String COMPLETE_PAYMENT = "completePayment";
     private static final String SHOW_STUDENT_REQUESTS = "showStudentRequests";
     private static final String UNSUPPORTED_OPERATION_MESSAGE = "Called operation is unsupported currently: ";
 
@@ -78,8 +81,8 @@ public class CommandFactory {
                 return new ShowMainPageCommand();
             case LOG_IN:
                 return new LogInCommand();
-//            case START_LOG_IN:
-//                return new StartLogInCommand();
+            case START_LOG_IN:
+                return new StartLogInCommand();
             case LOG_OUT:
                 return new LogOutCommand();
             case SIGN_UP:
@@ -110,8 +113,12 @@ public class CommandFactory {
                 return new RequestConsultationCommand();
             case PAY_FOR_CONSULTATION:
                 return new PayForConsultationCommand();
+            case COMPLETE_PAYMENT:
+                return new CompletePaymentCommand();
             case SHOW_CONSULTATION_INFO:
                 return new ShowConsultationInfoCommand();
+            case SCHEDULE_CONSULTATION:
+                return new ScheduleConsultationCommand();
             case INCLUDE_ASSIGNMENT:
                 return new IncludeAssignmentCommand();
             case EXCLUDE_ASSIGNMENT:

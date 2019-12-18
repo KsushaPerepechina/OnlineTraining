@@ -65,7 +65,9 @@
                     <c:if test="${requestScope.progress != 'REGISTRATION_OPENED'}">
                         <th>${mark}</th>
                     </c:if>
-                    <c:if test="${(requestScope.progress == 'REGISTRATION_OPENED' && (sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN')) || (sessionScope.id == recordList.get(0).training.mentor.id && requestScope.progress == 'IN_PROCESS')}">
+                    <c:if test="${(requestScope.progress == 'REGISTRATION_OPENED' &&
+                    (sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'))
+                    || (not empty recordList && sessionScope.id == recordList.get(0).training.mentor.id && requestScope.progress == 'IN_PROCESS')}">
                     <th></th>
                     </c:if>
                 </tr>
@@ -137,17 +139,16 @@
                                 </td>
                                 <td>
                                 <c:if test="${record.training.mentor.id == sessionScope.id && record.status eq 'IN_PROCESS'}">
-                                    <td>
-                                        <div class="data">
-                                            <div class="expelButton">
-                                                <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=expelled"
-                                                   class="showTrainingInfo">
-                                                    <img class="tableImage" src="img/icon/reject.png">
-                                                </a>
-                                            </div>
+                                    <div class="data">
+                                        <div class="expelButton">
+                                            <a href="${pageContext.servletContext.contextPath}/controller?command=changeStudentStatus&recordId=${record.id}&pageNumber=${requestScope.pageNumber}&limit=${requestScope.limit}&trainingId=${requestScope.trainingId}&status=expelled"
+                                               class="showTrainingInfo">
+                                                <img class="tableImage" src="img/icon/reject.png">
+                                            </a>
                                         </div>
-                                    </td>
+                                    </div>
                                 </c:if>
+                                </td>
                             </c:when>
                             <c:when test="${sessionScope.role eq 'ADMIN' || sessionScope.role eq 'MAIN_ADMIN'}">
                                 <td>

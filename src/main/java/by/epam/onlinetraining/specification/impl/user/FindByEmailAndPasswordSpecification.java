@@ -21,8 +21,8 @@ public class FindByEmailAndPasswordSpecification implements SqlSpecification {
     }
 
     public List<Object> getParameters() {
-        //String encryptedPassword = decryptPassword(password);//TODO
-        return Arrays.asList(email, password);
+        String encryptedPassword = decryptPassword(password);
+        return Arrays.asList(email, encryptedPassword);
     }
 
     private String decryptPassword(String password) {

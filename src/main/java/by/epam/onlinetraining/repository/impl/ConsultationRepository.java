@@ -4,6 +4,9 @@ import by.epam.onlinetraining.builder.EntityBuilder;
 import by.epam.onlinetraining.builder.impl.ConsultationBuilder;
 import by.epam.onlinetraining.database.ProxyConnection;
 import by.epam.onlinetraining.entity.Consultation;
+import by.epam.onlinetraining.entity.Training;
+import by.epam.onlinetraining.entity.User;
+import by.epam.onlinetraining.entity.type.ConsultationStatus;
 import by.epam.onlinetraining.exception.RepositoryException;
 import by.epam.onlinetraining.specification.SqlSpecification;
 
@@ -14,18 +17,21 @@ import java.util.Optional;
 
 public class ConsultationRepository extends AbstractRepository<Consultation> {
     private static final String TABLE_NAME = "consultations";
-    private static final String SELECT_QUERY = "SELECT consultations.id, date_time, cost, status, performance, quality, " +
+    private static final String SELECT_QUERY = "SELECT consultations.id, date, cost, status, performance, quality, " +
             "payed, users.id, first_name, last_name, trainings.id, trainings.name, trainings.mentor_id FROM consultations " +
             "LEFT JOIN users ON consultations.student_id = users.id LEFT JOIN trainings ON consultations.training_id = " +
             "trainings.id ";
     private static final String ID = "id";
     private static final String STUDENT_ID = "student_id";
     private static final String TRAINING_ID = "training_id";
-    private static final String DATE_TIME = "date_time";
+    private static final String DATE = "date";
     private static final String COST = "cost";
+    private static final String STATUS = "status";
     private static final String PERFORMANCE = "performance";
     private static final String QUALITY = "quality";
     private static final String PAYED = "payed";
+    private static final String SPACE_CHAR = "\u0020";
+    private static final String UNDERSCORE_SYMBOL = "\u005f";
 
     public ConsultationRepository(ProxyConnection connection) {
         super(connection);
@@ -34,10 +40,20 @@ public class ConsultationRepository extends AbstractRepository<Consultation> {
     @Override
     public Map<String, Object> getFields(Consultation consultation) {
         Map<String, Object> values = new LinkedHashMap<>();
-        values.put(STUDENT_ID, consultation.getStudent().getId());
-        values.put(TRAINING_ID, consultation.getTraining().getId());
-        values.put(DATE_TIME, consultation.getDateTime());
+        User student = consultation.getStudent();
+        if (student != null) {
+            values.put(STUDENT_ID, student.getId());
+        }
+        Training training = consultation.getTraining();
+        if (student != null) {
+            values.put(TRAINING_ID, training.getId());
+        }
+        values.put(DATE, consultation.getDate());
         values.put(COST, consultation.getCost());
+        ConsultationStatus status = consultation.getStatus();
+        if (status != null) {
+            values.put(STATUS, status.toString().toLowerCase().replace(UNDERSCORE_SYMBOL, SPACE_CHAR));
+        }
         values.put(PERFORMANCE, consultation.getPerformance());
         values.put(QUALITY, consultation.getQuality());
         values.put(PAYED, consultation.isPayed());

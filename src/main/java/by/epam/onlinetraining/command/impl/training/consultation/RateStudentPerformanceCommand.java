@@ -18,10 +18,11 @@ public class RateStudentPerformanceCommand implements Command {
     private static final String PERFORMANCE = "performance";
     private static final String PAGE_NUMBER = "pageNumber";
     private static final String LIMIT = "limit";
-    private static final String ERROR_PAGE = "/WEB-INF/page/error/Error500.jsp";
     private static final String SHOW_TRAINING_CONSULTATIONS_COMMAND = "controller?command=showConsultations&trainingId=";
     private static final String PAGE_NUMBER_PARAMETER = "&pageNumber=";
     private static final String LIMIT_PARAMETER = "&limit=";
+    private static final String OK_MESSAGE = "&message=rated";
+    private static final String ERROR_MESSAGE = "&message=invalid";
     private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
@@ -40,13 +41,14 @@ public class RateStudentPerformanceCommand implements Command {
         pageData.put(PERFORMANCE, stringPerformance);
         Validation validation = new Validation();
         if (!validation.isValidData(pageData)) {
-            return CommandResult.forward(ERROR_PAGE);
+            return CommandResult.redirect(SHOW_TRAINING_CONSULTATIONS_COMMAND + trainingId
+                    + PAGE_NUMBER_PARAMETER + pageNumber + LIMIT_PARAMETER + limit + ERROR_MESSAGE);
         }
         int consultationId = Integer.parseInt(stringConsultationId);
         int performance = Integer.valueOf(stringPerformance);
 
         consultationService.rateStudentPerformance(consultationId, performance);
         return CommandResult.redirect(SHOW_TRAINING_CONSULTATIONS_COMMAND + trainingId
-                + PAGE_NUMBER_PARAMETER + pageNumber + LIMIT_PARAMETER + limit);
+                + PAGE_NUMBER_PARAMETER + pageNumber + LIMIT_PARAMETER + limit + OK_MESSAGE);
     }
 }

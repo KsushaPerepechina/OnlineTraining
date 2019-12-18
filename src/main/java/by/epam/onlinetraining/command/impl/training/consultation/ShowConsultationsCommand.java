@@ -21,10 +21,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShowConsultationsCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -50,11 +47,11 @@ public class ShowConsultationsCommand implements Command {
         UserRole role = (UserRole) session.getAttribute(ROLE);
         String stringTrainingId = request.getParameter(TRAINING_ID);
         List<Consultation> consultationList;
+        List<Training> studentTrainingList = new ArrayList<>();
         if (UserRole.STUDENT == role) {
             int studentId = (Integer) session.getAttribute(ID);
             consultationList = consultationService.findByStudentId(studentId);
-            List<Training> studentTrainingList = recordService.findStudentTrainingsByStatus(studentId, StudentStatus.IN_PROCESS);
-            request.setAttribute(TRAINING_LIST, studentTrainingList);
+            studentTrainingList = recordService.findStudentTrainingsByStatus(studentId, StudentStatus.IN_PROCESS);
         } else if (UserRole.MENTOR == role && (stringTrainingId == null || stringTrainingId.isEmpty())) {
             int mentorId = (Integer) session.getAttribute(ID);
             List<Consultation> consultations = new LinkedList<>();
@@ -72,6 +69,7 @@ public class ShowConsultationsCommand implements Command {
             request.setAttribute(TRAINING_ID, trainingId);
         }
 
+        request.setAttribute(TRAINING_LIST, studentTrainingList);
         String stringLimit = request.getParameter(LIMIT);
         String stringPageNumber = request.getParameter(PAGE_NUMBER);
         Map<String, String> pageData = new HashMap<>();

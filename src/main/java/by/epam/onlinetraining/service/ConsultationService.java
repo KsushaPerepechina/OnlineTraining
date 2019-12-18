@@ -4,6 +4,7 @@ import by.epam.onlinetraining.entity.Consultation;
 import by.epam.onlinetraining.exception.ServiceException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,4 +92,6 @@ public interface ConsultationService {
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
     void delete(int id) throws ServiceException;
+
+    void scheduleConsultation(int consultationId, LocalDate date) throws ServiceException;
 }

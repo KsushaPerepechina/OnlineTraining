@@ -17,10 +17,11 @@ public class RateConsultationQualityCommand implements Command {
     private static final String QUALITY = "quality";
     private static final String PAGE_NUMBER = "pageNumber";
     private static final String LIMIT = "limit";
-    private static final String ERROR_PAGE = "/WEB-INF/page/error/Error500.jsp";
     private static final String SHOW_STUDENT_CONSULTATIONS_COMMAND = "controller?command=showConsultations";
     private static final String PAGE_NUMBER_PARAMETER = "&pageNumber=";
     private static final String LIMIT_PARAMETER = "&limit=";
+    private static final String OK_MESSAGE = "&message=rated";
+    private static final String ERROR_MESSAGE = "&message=invalid";
     private static ConsultationService consultationService = new ConsultationServiceImpl();
 
     @Override
@@ -37,7 +38,8 @@ public class RateConsultationQualityCommand implements Command {
         pageData.put(QUALITY, stringQuality);
         Validation validation = new Validation();
         if (!validation.isValidData(pageData)) {
-            return CommandResult.forward(ERROR_PAGE);
+            return CommandResult.redirect(SHOW_STUDENT_CONSULTATIONS_COMMAND + PAGE_NUMBER_PARAMETER + pageNumber
+                    + LIMIT_PARAMETER + limit + ERROR_MESSAGE);
         }
         int consultationId = Integer.parseInt(stringConsultationId);
         int quality = Integer.valueOf(stringQuality);
@@ -45,6 +47,6 @@ public class RateConsultationQualityCommand implements Command {
         consultationService.rateConsultationQuality(consultationId, quality);
 
         return CommandResult.redirect(SHOW_STUDENT_CONSULTATIONS_COMMAND + PAGE_NUMBER_PARAMETER + pageNumber
-                + LIMIT_PARAMETER + limit);
+                + LIMIT_PARAMETER + limit + OK_MESSAGE);
     }
 }

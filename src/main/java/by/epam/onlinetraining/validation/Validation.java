@@ -8,8 +8,10 @@ public class Validation {
     private static final String TRAINING_ID = "trainingId";
     private static final String STUDENT_ID = "studentId";
     private static final String RECORD_ID = "recordId";
+    private static final String CONSULTATION_ID = "consultationId";
     private static final String FIRST_NAME = "firstName";
     private static final String LAST_NAME = "lastName";
+    private static final String DATE = "date";
     private static final String BIRTH_DATE = "birthDate";
     private static final String EMAIL = "email";
     private static final String PHONE_NUMBER = "phoneNumber";
@@ -89,10 +91,12 @@ public class Validation {
             case MENTOR_ID:
             case TRAINING_ID:
             case RECORD_ID:
+            case CONSULTATION_ID:
                 return ID_PATTERN;
             case FIRST_NAME:
             case LAST_NAME:
                 return NAME_PATTERN;
+            case DATE:
             case BIRTH_DATE:
             case START_DATE:
             case END_DATE:
