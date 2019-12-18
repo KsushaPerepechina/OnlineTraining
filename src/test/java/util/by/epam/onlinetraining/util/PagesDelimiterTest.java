@@ -48,12 +48,6 @@ public class PagesDelimiterTest {
         };
     }
 
-    @Test(dataProvider = "composePageNumbersListTest")
-    public void composePageNumbersListTest(List<Object> itemList, int limit, List<Integer> expected) {
-        List<Integer> actual = pagesDelimiter.composePageNumbersList(itemList, limit);
-        Assert.assertEquals(actual, expected);
-    }
-
     @DataProvider(name = "composePageListTest")
     public Object[][] dataForComposePageListTest() {
         return new Object[][]{
@@ -86,6 +80,12 @@ public class PagesDelimiterTest {
                         Collections.singletonList(new User(6))
                 }
         };
+    }
+
+    @Test(dataProvider = "composePageNumbersListTest")
+    public void composePageNumbersListTest(List<Object> itemList, int limit, List<Integer> expected) {
+        List<Integer> actual = pagesDelimiter.composePageNumbersList(itemList, limit);
+        Assert.assertEquals(actual, expected);
     }
 
     @Test(dataProvider = "composePageListTest")

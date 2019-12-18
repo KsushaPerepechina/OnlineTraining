@@ -1,5 +1,7 @@
 package by.epam.onlinetraining.command;
 
+import java.util.StringJoiner;
+
 /**
  * Designed to display the result of the command processing.
  */
@@ -26,5 +28,22 @@ public class CommandResult {
 
     public boolean isRedirect() {
         return redirect;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CommandResult that = (CommandResult) o;
+        return redirect == that.redirect &&
+                page.equals(that.page);
+    }
+
+    @Override
+    public String toString() {//TODO
+        return new StringJoiner(", ", CommandResult.class.getSimpleName() + "[", "]")
+                .add("page='" + page + "'")
+                .add("redirect=" + redirect)
+                .toString();
     }
 }

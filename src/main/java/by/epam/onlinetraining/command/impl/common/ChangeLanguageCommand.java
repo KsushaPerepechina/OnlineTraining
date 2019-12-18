@@ -2,6 +2,8 @@ package by.epam.onlinetraining.command.impl.common;
 
 import by.epam.onlinetraining.command.Command;
 import by.epam.onlinetraining.command.CommandResult;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

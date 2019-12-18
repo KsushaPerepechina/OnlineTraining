@@ -27,7 +27,6 @@ public class RefillBalanceCommand implements Command {
     private static final String REFILLED_BALANCE = "refilledBalance";
     private static final String INVALID_SUM = "invalidSum";
     private static UserService userService = new UserServiceImpl();
-    private static TransactionService transactionService = new TransactionServiceImpl();
 
     /**
      * Process the request, refile balance and generates a result of processing

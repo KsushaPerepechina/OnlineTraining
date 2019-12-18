@@ -13,6 +13,9 @@ public class Transaction extends Entity {
     private OperationType operationType;
     private BigDecimal sum;
 
+    public Transaction() {
+    }
+
     public Transaction(Integer id, int payerId, LocalDate date, OperationType operationType, BigDecimal sum) {
         super(id);
         this.payerId = payerId;

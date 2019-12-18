@@ -45,17 +45,15 @@ public class UserRepository extends AbstractRepository<User> {
         values.put(PHONE_NUMBER, user.getPhoneNumber());
         values.put(PASSWORD, user.getPassword());
         BlockingStatus blockingStatus = user.getBlockingStatus();
-        String stringBlockingStatus = null;
         if(blockingStatus != null) {
-            stringBlockingStatus = blockingStatus.toString().toLowerCase();
+            String stringBlockingStatus = blockingStatus.toString().toLowerCase();
+            values.put(BLOCKING_STATUS, stringBlockingStatus);
         }
-        values.put(BLOCKING_STATUS, stringBlockingStatus);
         UserRole role = user.getRole();
-        String stringRole = null;
         if(role != null) {
-            stringRole = role.toString().toLowerCase().replace(UNDERSCORE_SYMBOL, SPACE_CHAR);
+            String stringRole = role.toString().toLowerCase().replace(UNDERSCORE_SYMBOL, SPACE_CHAR);
+            values.put(ROLE, stringRole);
         }
-        values.put(ROLE, stringRole);
         values.put(BALANCE, user.getBalance());
         values.put(ID, user.getId());
         return values;
