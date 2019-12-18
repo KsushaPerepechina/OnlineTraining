@@ -91,8 +91,8 @@ public class TrainingServiceImpl implements TrainingService {
                 id = Integer.parseInt(stringId);
             }
             String name = trainingData.get(NAME);
-            LocalDate startDate = dateFormatter.format(START_DATE, language);
-            LocalDate endDate = dateFormatter.format(END_DATE, language);
+            LocalDate startDate = dateFormatter.format(trainingData.get(START_DATE), language);
+            LocalDate endDate = dateFormatter.format(trainingData.get(END_DATE), language);
             if (startDate.isAfter(endDate)) {
                     return false;
             }
