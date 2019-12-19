@@ -152,10 +152,10 @@ public class ConsultationServiceImpl implements ConsultationService {
     }
 
     @Override
-    public void scheduleConsultation(int consultationId, LocalDate date) throws ServiceException {
+    public void schedule(int id, LocalDate date) throws ServiceException {
         try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
             ConsultationRepository consultationRepository = repositoryCreator.getConsultationRepository();
-            Consultation consultation = new Consultation(consultationId, date, ConsultationStatus.SCHEDULED, true);
+            Consultation consultation = new Consultation(id, date, ConsultationStatus.SCHEDULED, true);
             consultationRepository.save(consultation);
         } catch (RepositoryException e) {
             LOGGER.error(e.getMessage(), e);

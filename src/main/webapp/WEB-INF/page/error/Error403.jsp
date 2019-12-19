@@ -23,8 +23,8 @@
 <body>
 <div class="infoError">
     <H1>${error} 403</H1>
-    <h2>${info403}</h2><!-- TODO back to ... -->
-    <h3>${backTo} <a href="${pageContext.servletContext.contextPath}/controller?command=signOut"> ${mainPage}</a></h3>
+    <h2>${info403}</h2>
+    <h3>${backTo} <a href="${pageContext.servletContext.contextPath}/controller?command=showMainPage"> ${mainPage}</a></h3>
 </div>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>
 </body>

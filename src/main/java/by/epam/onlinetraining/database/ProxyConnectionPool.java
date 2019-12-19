@@ -3,14 +3,19 @@ package by.epam.onlinetraining.database;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Externalizable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.rmi.Remote;
 import java.sql.SQLException;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.EventListener;
 import java.util.Properties;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -21,11 +26,10 @@ public class ProxyConnectionPool {
     private static final String RESOURCE_FILE_NAME = "db.properties";
     private static final String POOL_CAPACITY_PROPERTY = "db.poolCapacity";
     private static final String EMPTY_POOL = "Connection pool is empty.";
-    private static final String CANT_ENABLE_AUTO_COMMIT = "Can't enable auto commit.";
     private static final String FILE_NOT_FOUND = "File not found.";
-    private static final ReentrantLock initializationLock = new ReentrantLock();
-    private static final ReentrantLock connectionLock = new ReentrantLock();
-    private static final ReentrantLock reconnectionLock = new ReentrantLock();
+    private static final Lock initializationLock = new ReentrantLock();
+    private static final Lock connectionLock = new ReentrantLock();
+    private static final Lock reconnectionLock = new ReentrantLock();
     private static AtomicBoolean initialized = new AtomicBoolean(false);
     private static ProxyConnectionPool instance;
     private Deque<ProxyConnection> connections;
@@ -69,16 +73,10 @@ public class ProxyConnectionPool {
     }
 
     public void closeConnection(ProxyConnection connection) {
-        try {
-            connection.setAutoCommit(true);
-            reconnectionLock.lock();
-            connections.push(connection);
-            semaphore.release();
-        } catch (SQLException e) {
-            LOGGER.error(CANT_ENABLE_AUTO_COMMIT, e);
-        } finally {
-            reconnectionLock.unlock();
-        }
+        reconnectionLock.lock();
+        connections.push(connection);
+        semaphore.release();
+        reconnectionLock.unlock();
     }
 
     private void readPoolCapacityFromProperties() {

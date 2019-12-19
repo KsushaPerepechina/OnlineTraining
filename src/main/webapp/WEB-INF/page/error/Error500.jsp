@@ -22,7 +22,7 @@
 <body>
 <div class="infoError">
     <H1>${error} 500</H1>
-    <h2>${info500}</h2><!-- TODO back to ... -->
+    <h2>${info500}</h2>
     <h3>${backTo} <a href="${pageContext.servletContext.contextPath}/controller?command=showMainPage> ${mainPage}</a></h3>
 </div>
 <jsp:include page="/WEB-INF/fragment/header/footer.jsp"/>

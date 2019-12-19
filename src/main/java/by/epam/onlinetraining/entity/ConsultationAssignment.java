@@ -7,8 +7,6 @@ public class ConsultationAssignment extends Entity {
     private Consultation consultation;
     private Assignment assignment;
 
-    public ConsultationAssignment() {
-    }
 
     public ConsultationAssignment(Consultation consultation, Assignment assignment) {
         this.consultation = consultation;

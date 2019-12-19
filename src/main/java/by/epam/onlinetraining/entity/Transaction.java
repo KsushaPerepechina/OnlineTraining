@@ -28,10 +28,6 @@ public class Transaction extends Entity {
         return payerId;
     }
 
-    public void setPayerId(int payerId) {
-        this.payerId = payerId;
-    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -42,10 +38,6 @@ public class Transaction extends Entity {
 
     public OperationType getOperationType() {
         return operationType;
-    }
-
-    public void setOperationType(OperationType operationType) {
-        this.operationType = operationType;
     }
 
     public BigDecimal getSum() {

@@ -25,7 +25,7 @@ public class AccessFilter implements Filter {
     private static final String SAVE_ASSIGNMENT = "saveAssignment";
     private static final String DELETE_ASSIGNMENT = "deleteAssignment";
     private static final String SHOW_CONSULTATIONS = "showConsultations";
-    private static final String SCHEDULE_CONSULTATION = "scheduleConsultation";
+    private static final String SCHEDULE_CONSULTATION = "schedule";
     private static final String SHOW_CONSULTATION_INFO = "showConsultationInfo";
     private static final String INCLUDE_ASSIGNMENT = "includeAssignment";
     private static final String EXCLUDE_ASSIGNMENT = "excludeAssignment";

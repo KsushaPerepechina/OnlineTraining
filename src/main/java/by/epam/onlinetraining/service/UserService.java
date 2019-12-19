@@ -36,7 +36,7 @@ public interface UserService {
     /**
      * The method searches for user with given identifier.
      *
-     * @param id an object identifier in database
+     * @param id user identifier in repository.
      * @return a {@link java.util.Optional} implementation with object.
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
@@ -45,7 +45,7 @@ public interface UserService {
     /**
      * The method searches for user with given email.
      *
-     * @param email an object email in database
+     * @param email user email.
      * @return a {@link java.util.Optional} implementation with object.
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
@@ -54,7 +54,7 @@ public interface UserService {
     /**
      * The method searches for user with given role.
      *
-     * @param role a {@link by.epam.onlinetraining.entity.type.UserRole} object identifier in database
+     * @param role a {@link by.epam.onlinetraining.entity.type.UserRole} object identifier in repository.
      * @return a {@link java.util.List} implementation with {@link User} object.
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
@@ -63,7 +63,7 @@ public interface UserService {
     /**
      * The method for update profile information with given parameters.
      *
-     * @param role a {@link by.epam.onlinetraining.entity.type.UserRole} object identifier in database
+     * @param role a {@link by.epam.onlinetraining.entity.type.UserRole} object identifier in repository.
      * @param blockingStatus a {@link by.epam.onlinetraining.entity.type.BlockingStatus} implementation
      *                       with {@link by.epam.onlinetraining.entity.User} object.
      * @return a {@link java.util.List} implementation with {@link User} object.
@@ -82,11 +82,18 @@ public interface UserService {
     /**
      * The method for update balance information with given parameters.
      *
-     * @param id a {@link java.lang.Integer} object identifier in database
+     * @param id a {@link java.lang.Integer} object identifier in repository.
      * @param balance a {@link java.math.BigDecimal} object that maps sum for refile balance.
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
     void refillBalance(int id, BigDecimal balance) throws ServiceException;
 
-    boolean payForConsultation(int consultationId) throws ServiceException;
+    /**
+     * The method for payment for consultation with given identifier.
+     *
+     * @param id user identifier in repository.
+     * @return flag of operation success.
+     * @throws ServiceException Signals that service exception of some sort has occurred.
+     */
+    boolean payForConsultation(int id) throws ServiceException;
 }

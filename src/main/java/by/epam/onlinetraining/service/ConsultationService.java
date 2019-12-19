@@ -88,10 +88,17 @@ public interface ConsultationService {
     /**
      * The method removes consultation with given identifier from repository.
      *
-     * @param id training identifier in repository.
+     * @param id consultation identifier in repository.
      * @throws ServiceException Signals that service exception of some sort has occurred.
      */
     void delete(int id) throws ServiceException;
 
-    void scheduleConsultation(int consultationId, LocalDate date) throws ServiceException;
+    /**
+     * The method schedule consultation with given identifier from repository and date of assignment.
+     *
+     * @param id consultation identifier in repository.
+     * @param date a {@link java.time.LocalDate} object, that contains date of assignment.
+     * @throws ServiceException Signals that service exception of some sort has occurred.
+     */
+    void schedule(int id, LocalDate date) throws ServiceException;
 }

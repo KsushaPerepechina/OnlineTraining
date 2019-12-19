@@ -38,7 +38,7 @@ public class ScheduleConsultationCommand implements Command {
         }
 
         LocalDate date = dateFormatter.format(stringDate, language);
-        consultationService.scheduleConsultation(consultationId, date);
+        consultationService.schedule(consultationId, date);
 
         return CommandResult.redirect(SHOW_CONSULTATIONS + trainingId + OK_MESSAGE);
     }

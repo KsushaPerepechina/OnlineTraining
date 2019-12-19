@@ -114,6 +114,17 @@ public class TrainingServiceImpl implements TrainingService {
         }
     }
 
+    @Override
+    public void delete(int id) throws ServiceException {
+        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
+            TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
+            trainingRepository.remove(id);
+        } catch (RepositoryException e) {
+            LOGGER.error(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
     private void activateStudents(int trainingId) throws ServiceException {
         try {
             Optional<Training> training = findById(trainingId);
@@ -149,17 +160,6 @@ public class TrainingServiceImpl implements TrainingService {
             record.setStatus(status);
             recordRepository.save(record);
         } catch (RepositoryException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void delete(int id) throws ServiceException {
-        try (RepositoryCreator repositoryCreator = new RepositoryCreator()) {
-            TrainingRepository trainingRepository = repositoryCreator.getTrainingRepository();
-            trainingRepository.remove(id);
-        } catch (RepositoryException e) {
-            LOGGER.error(e.getMessage(), e);
             throw new ServiceException(e.getMessage(), e);
         }
     }
